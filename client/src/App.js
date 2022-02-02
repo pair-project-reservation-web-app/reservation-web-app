@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import Tables from './components/reservation/Tables';
-import Axios from 'axios';
+import { useEffect, useState } from "react";
+import Tables from "./components/reservation/Tables";
+import Axios from "axios";
 import "./App.css";
-
 
 function App() {
   const [usernameReg, setUsernameReg] = useState("");
