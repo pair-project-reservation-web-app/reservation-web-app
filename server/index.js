@@ -74,6 +74,37 @@ app.get("/api/user/logout", (req, res) => {
   });
 });
 
+app.get("/api/reservation", (req, res) => {
+  const dineinDate = req.body.dineinDate;
+  const dineinTime = req.body.dineinTime;
+  const dineinTimeEnd = req.body.dineinTimeEnd;
+
+  db.query(
+    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime <= ?);",
+    [dineinDate, dineinTime, dineinTimeEnd],
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+/*
+app.post('/api/reservation', (req,res)=>{
+  const userId = req.body.userId;
+  const tableId = req.body.tableId;
+  const dineinDate = req.body.dineinDate;
+  const dineinTime = req.body.dineinTime;
+
+  db.query(
+    ''
+  )
+})
+*/
+
 app.post("/api/user/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
