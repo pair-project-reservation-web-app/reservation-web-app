@@ -62,6 +62,7 @@ app.post("/api/user/register", (req, res) => {
 
 app.get("/", (req, res) => {
   if (req.session.user) {
+    console.log(req.session);
     res.send({ loggedIn: true, user: req.session.user });
   } else {
     res.send({ loggedIn: false });
@@ -79,10 +80,6 @@ app.post("/api/reservation", (req, res) => {
   const dineinTime = req.body.dineinTime;
   const dineinTimeEnd = req.body.dineinTimeEnd;
 
-  // console.log(dineinDate);
-  // console.log(dineinTime);
-  // console.log(dineinTimeEnd);
-
   db.query(
     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime <= ?);",
     [dineinDate, dineinTime, dineinTimeEnd],
@@ -91,24 +88,31 @@ app.post("/api/reservation", (req, res) => {
         res.send(err);
       } else {
         res.send(result);
-        console.log(result);
       }
     }
   );
 });
 
-/*
-app.post('/api/reservation', (req,res)=>{
-  const userId = req.body.userId;
+app.post("/api/reservation-table", (req, res) => {
+  const userId = req.session.userId;
   const tableId = req.body.tableId;
   const dineinDate = req.body.dineinDate;
   const dineinTime = req.body.dineinTime;
 
   db.query(
-    ''
-  )
-})
-*/
+    "INSERT INTO reservations (userId, tableId, dineinDate, dineinTime) VALUES(?,?,?,?)",
+    [userId, tableId, dineinDate, dineinTime],
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(`Reservation has been set on ${dineinDate} at ${dineinTime}`);
+      }
+    }
+  );
+
+  console.log(userId, tableId, dineinDate, dineinTime);
+});
 
 app.post("/api/user/login", (req, res) => {
   const username = req.body.username;
@@ -125,6 +129,7 @@ app.post("/api/user/login", (req, res) => {
         bcrypt.compare(password, result[0].userPassword, (err, response) => {
           if (response) {
             req.session.user = result[0].userName;
+            req.session.userId = result[0].userId;
             res.send(req.session.user);
           } else {
             res.send({ message: "Wrong username or password" });
