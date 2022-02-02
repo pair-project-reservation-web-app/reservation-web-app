@@ -2,12 +2,10 @@ import { useState } from "react";
 import Select from "react-select";
 import Axios from "axios";
 
-const Tables = () => {
+const Reservation = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedChair, setSelectedChair] = useState("");
-
-  const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
+  const [selectedTable, setSelectedTable] = useState("");
   const [userData, setUserData] = useState("");
 
   const time = [
@@ -30,42 +28,41 @@ const Tables = () => {
     { value: "19:00", label: "19:00" },
   ];
 
-  const chair = [
+  const table = [
+    { value: 1, label: 1 },
     { value: 2, label: 2 },
+    { value: 3, label: 3 },
     { value: 4, label: 4 },
+    { value: 5, label: 5 },
+    { value: 6, label: 6 },
+    { value: 7, label: 7 },
     { value: 8, label: 8 },
+    { value: 9, label: 9 },
+    { value: 10, label: 10 },
+    { value: 11, label: 11 },
   ];
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
   };
 
-  const userChairHandler = (input) => {
-    setSelectedChair(input.value);
+  const userTableHandler = (input) => {
+    setSelectedTable(input.value);
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:8080/api/reservation", {
+    Axios.post("http://localhost:8080/api/reservation-table", {
+      tableId: selectedTable,
       dineinDate: selectedDate,
       dineinTime: selectedTime,
-      dineinTimeEnd: selectedTimeEnd,
     }).then((response) => {
-      setUserData(response.data[0].dineinTime);
+      setUserData(response.data);
     });
-    console.log(selectedDate, selectedTime, selectedChair, selectedTimeEnd);
   };
 
   const userTimeHandler = (input) => {
     setSelectedTime(input.value);
-    const time = input.value;
-
-    const [hours, min] = time.split(":");
-    const convertToInt = +hours;
-    const result = `${convertToInt + 2}:${min}`;
-
-    setSelectedTimeEnd(result);
-
     // let time = input.value
     // const [h, m] = time.split(':');
     // let totalSec = (+h) * 60 * 60 + (+m) * 60;
@@ -82,13 +79,14 @@ const Tables = () => {
 
   return (
     <div>
+      <h1>Add Reservation</h1>
       <form onSubmit={submitHandler}>
         <label htmlFor="reservationDate">Date</label>
         <input type="date" onChange={reservationDateHandler} />
 
         <Select options={time} onChange={userTimeHandler} />
 
-        <Select options={chair} onChange={userChairHandler} />
+        <Select options={table} onChange={userTableHandler} />
 
         <button>ddd</button>
       </form>
@@ -98,4 +96,4 @@ const Tables = () => {
   );
 };
 
-export default Tables;
+export default Reservation;
