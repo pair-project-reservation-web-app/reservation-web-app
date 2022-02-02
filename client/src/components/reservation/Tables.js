@@ -4,28 +4,11 @@ import Axios from 'axios';
 
 const Tables = () => {
     const [selectedDate, setSelectedDate] = useState('');
-    const [userName, setUserName] = useState('');
     const [selectedTime, setSelectedTime] = useState('');
+    const [selectedChair, setSelectedChair] = useState('')
 
-    const reservationDateHandler = (e) => {
-        setSelectedDate(e.target.value);
-    }
-
-    const userTableHandler = (e) => {
-        setUserName(e.target.value)
-    }
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-
-        Axios.post('http://localhost:3001/register', {
-            name: userName,
-            date: selectedDate,
-        }).then((response) => {
-            console.log('submited');
-        })
-
-    }
+    const [selectedTimeEnd, setSelectedTimeEnd] = useState('');
+    const [userData, setUserData] = useState('')
 
     const time = [
         { value: '11:00', label: '11:00' },
@@ -53,13 +36,56 @@ const Tables = () => {
         { value: 8, label: 8 },
     ]
 
+    const reservationDateHandler = (e) => {
+        setSelectedDate(e.target.value);
+    }
+
+    const userChairHandler = (input) => {
+        setSelectedChair(input.value)
+    }
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        Axios.post("http://localhost:8080/api/reservation", {
+            dineinDate: selectedDate,
+            dineinTime: selectedTime,
+            dineinTimeEnd: selectedTimeEnd,
+        }).then((response) => {
+
+            setUserData(response.data[0].dineinTime);
+        });
+        console.log(selectedDate, selectedTime, selectedChair, selectedTimeEnd)
+    }
+
+
+
     const userTimeHandler = (input) => {
         setSelectedTime(input.value);
+        const time = input.value;
+
+        const [hours, min] = time.split(':');
+        const convertToInt = +hours;
+        const result = `${convertToInt + 2}:${min}`;
+
+        setSelectedTimeEnd(result);
+
+        // let time = input.value
+        // const [h, m] = time.split(':');
+        // let totalSec = (+h) * 60 * 60 + (+m) * 60;
+        // console.log(totalSec);
+        // totalSec += 120 * 60;
+
+        // console.log(totalSec);
+
+        // let result = `${Math.floor((totalSec / 3600)) > 24 ? '0' + (Math.floor((totalSec / 3600)) - 24) : Math.floor((totalSec / 3600))
+        //     }:${(totalSec % 3600) / 60 > 9 ? (totalSec % 3600) / 60 : (totalSec % 3600) / 60 + '0'
+        //     }`
+        // console.log(result)
     }
 
     return (
         <div>
-            <form action="">
+            <form onSubmit={submitHandler}>
                 <label htmlFor="reservationDate">Date</label>
                 <input type="date" onChange={reservationDateHandler} />
 
@@ -67,7 +93,16 @@ const Tables = () => {
                     options={time}
                     onChange={userTimeHandler}
                 />
+
+                <Select
+                    options={chair}
+                    onChange={userChairHandler}
+                />
+
+                <button>ddd</button>
             </form>
+
+            <h2>{userData}</h2>
         </div>
     )
 };

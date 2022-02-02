@@ -35,9 +35,13 @@ app.use(
 
 const db = mysql.createConnection({
   host: process.env.HOST,
-  user: process.env.USER,
+  // user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
+  // host: 'localhost',
+  user: 'sqluser',
+  // password: 'password',
+  // database: 'userData'
 });
 
 app.post("/api/user/register", (req, res) => {
@@ -74,10 +78,16 @@ app.get("/api/user/logout", (req, res) => {
   });
 });
 
-app.get("/api/reservation", (req, res) => {
+app.post("/api/reservation", (req, res) => {
+
   const dineinDate = req.body.dineinDate;
   const dineinTime = req.body.dineinTime;
   const dineinTimeEnd = req.body.dineinTimeEnd;
+
+  // console.log(dineinDate);
+  // console.log(dineinTime);
+  // console.log(dineinTimeEnd);
+
 
   db.query(
     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime <= ?);",
@@ -87,6 +97,7 @@ app.get("/api/reservation", (req, res) => {
         res.send(err);
       } else {
         res.send(result);
+        console.log(result);
       }
     }
   );
