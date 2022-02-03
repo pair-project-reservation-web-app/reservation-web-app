@@ -84,10 +84,6 @@ app.post("/api/reservation", (req, res) => {
   const dineinTime = req.body.dineinTime;
   const dineinTimeEnd = req.body.dineinTimeEnd;
 
-  // console.log(dineinDate);
-  // console.log(dineinTime);
-  // console.log(dineinTimeEnd);
-
 
   db.query(
     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime <= ?);",
@@ -103,18 +99,6 @@ app.post("/api/reservation", (req, res) => {
   );
 });
 
-/*
-app.post('/api/reservation', (req,res)=>{
-  const userId = req.body.userId;
-  const tableId = req.body.tableId;
-  const dineinDate = req.body.dineinDate;
-  const dineinTime = req.body.dineinTime;
-
-  db.query(
-    ''
-  )
-})
-*/
 
 app.post("/api/user/login", (req, res) => {
   const username = req.body.username;
