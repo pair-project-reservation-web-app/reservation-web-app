@@ -8,8 +8,17 @@ const Tables = () => {
   const [selectedChair, setSelectedChair] = useState("");
 
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
-  const [userData, setUserData] = useState("");
-
+  const [userData, setUserData] = useState([]);
+  const tables = [
+    { name: "table1", id: 0 },
+    { name: "table2", id: 1 },
+    { name: "table3", id: 2 },
+    { name: "table4", id: 3 },
+    { name: "table5", id: 4 },
+    { name: "table6", id: 5 },
+    { name: "table6", id: 6 },
+    { name: "table6", id: 7 },
+  ];
   const time = [
     { value: "11:00", label: "11:00" },
     { value: "11:30", label: "11:30" },
@@ -51,10 +60,12 @@ const Tables = () => {
       dineinTime: selectedTime,
       dineinTimeEnd: selectedTimeEnd,
     }).then((response) => {
-      setUserData(response.data[0].dineinTime);
+      console.log(response.data);
+      setUserData(response.data);
     });
-    console.log(selectedDate, selectedTime, selectedChair, selectedTimeEnd);
+    // console.log(selectedDate, selectedTime, selectedChair, selectedTimeEnd)
   };
+  // console.log(userData);
 
   const userTimeHandler = (input) => {
     setSelectedTime(input.value);
@@ -80,6 +91,10 @@ const Tables = () => {
     // console.log(result)
   };
 
+  const filterTables = (table, userData) => {
+    return userData.some((item) => item.tableId === table.id);
+  };
+
   return (
     <div>
       <form onSubmit={submitHandler}>
@@ -89,11 +104,19 @@ const Tables = () => {
         <Select options={time} onChange={userTimeHandler} />
 
         <Select options={chair} onChange={userChairHandler} />
-
-        <button>ddd</button>
+        <button>Submit</button>
       </form>
 
-      <h2>{userData}</h2>
+      <div className="table-container">
+        {tables.map((table, index) => (
+          <div
+            className={filterTables(table, userData) ? "unavailable" : "table"}
+            key={index}
+          >
+            <h3>{table.name}</h3>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
