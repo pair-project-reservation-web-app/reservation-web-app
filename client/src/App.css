@@ -1,0 +1,17 @@
+.table-container {
+  display: flex;
+}
+
+.table {
+  width: 100px;
+  height: 100px;
+  background-color: lightcoral;
+  margin-left: 1rem;
+}
+
+.unavailable {
+  background-color: red;
+  width: 100px;
+  height: 100px;
+  margin-left: 1rem;
+}
