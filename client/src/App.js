@@ -3,6 +3,7 @@ import Tables from "./components/reservation/Tables";
 import Axios from "axios";
 import "./App.css";
 import Reservation from "./components/reservation/reservation";
+import UserResStatus from './components/reservation/UserResStatus';
 
 function App() {
   const [usernameReg, setUsernameReg] = useState("");
@@ -14,6 +15,7 @@ function App() {
   const [userpassword, setUserpassword] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("");
+  const [userId, setUserId] = useState(null)
 
   Axios.defaults.withCredentials = true;
   /*
@@ -38,10 +40,12 @@ function App() {
       username: username,
       password: userpassword,
     }).then((response) => {
+      console.log(response)
       if (response.data.message) {
         setLoginStatus(response.data.message);
+        console.log(loginStatus)
       } else {
-        setLoginStatus(response.data);
+        setLoginStatus(response.data.user);
       }
     });
   };
@@ -61,12 +65,16 @@ function App() {
     Axios.get("http://localhost:8080/").then((response) => {
       if (response.data.loggedIn === true) {
         setLoginStatus(response.data.user);
-        console.log(response.data.user);
+
+        ////// grab the current login userId for searching reservation under this userId
+        setUserId(response.data.userId);
       } else {
         console.log("no logged in");
       }
     });
-  }, []);
+
+
+  }, [userId]);
 
   return (
     <div className="App">
@@ -126,8 +134,17 @@ function App() {
 
       <h1>{loginStatus}</h1>
 
-      <Tables />
-      <Reservation />
+      {loginStatus && <Reservation />}
+
+      {loginStatus && <Tables />}
+
+      {
+        loginStatus && userId &&
+        <UserResStatus
+          userId={userId}
+        />
+      }
+
     </div>
   );
 }

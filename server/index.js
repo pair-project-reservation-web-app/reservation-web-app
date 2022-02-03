@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+// cookie ??
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
@@ -16,6 +17,7 @@ app.use(
   cors({
     origin: ["http://localhost:3000"],
     credentials: true,
+    // ????
   })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,9 +37,10 @@ app.use(
 
 const db = mysql.createConnection({
   host: process.env.HOST,
-  user: process.env.USER,
+  // user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
+  user: 'sqluser'
 });
 
 app.post("/api/user/register", (req, res) => {
@@ -62,7 +65,7 @@ app.post("/api/user/register", (req, res) => {
 
 app.get("/", (req, res) => {
   if (req.session.user) {
-    res.send({ loggedIn: true, user: req.session.user });
+    res.send({ loggedIn: true, user: req.session.user, userId: req.session.userId });
   } else {
     res.send({ loggedIn: false });
   }
@@ -113,6 +116,24 @@ app.post("/api/reservation-table", (req, res) => {
   console.log(userId, tableId, dineinDate, dineinTime);
 });
 
+////// reservation cancle   (get or post?) //////
+
+app.post("/api/reservation-cancel", (req, res) => {
+  const userId = req.body.userId
+
+  db.query(
+    "SELECT * FROM reservations WHERE userId = ?",
+    userId,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  )
+})
+
 app.post("/api/user/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -129,7 +150,8 @@ app.post("/api/user/login", (req, res) => {
           if (response) {
             req.session.user = result[0].userName;
             req.session.userId = result[0].userId;
-            res.send(req.session.user);
+            ///////////////// to get user-info //////////////////////////////
+            res.send(req.session);
           } else {
             res.send({ message: "Wrong username or password" });
           }
