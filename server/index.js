@@ -62,7 +62,6 @@ app.post("/api/user/register", (req, res) => {
 
 app.get("/", (req, res) => {
   if (req.session.user) {
-    console.log(req.session);
     res.send({ loggedIn: true, user: req.session.user });
   } else {
     res.send({ loggedIn: false });
@@ -81,7 +80,7 @@ app.post("/api/reservation", (req, res) => {
   const dineinTimeEnd = req.body.dineinTimeEnd;
 
   db.query(
-    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime <= ?);",
+    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime < ?);",
     [dineinDate, dineinTime, dineinTimeEnd],
     (err, result) => {
       if (err) {
