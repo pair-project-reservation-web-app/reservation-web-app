@@ -9,18 +9,20 @@ const UserResStatus = ({ userId }) => {
     const [currentStatus, setCurrentStatus] = useState([]);
 
     useEffect(() => {
-        Axios.post("http://localhost:8080/api/reservation-cancel", { userId: userId }).then((response) => {
+        Axios.post("http://localhost:8080/api/reservation-status", { userId: userId }).then((response) => {
             console.log(response.data);
             setCurrentStatus(response.data)
-            // const { dineinTime, dineinDate, tableId } = response.data;
-            // console.log(dineinTime);
-            // setTime(dineinTime);
-            // setTable(tableId);
-            // setDate(dineinDate)
         });
 
         console.log(currentStatus)
-    }, [userId])
+    }, [userId]);
+
+    const deleteReservation = (reservationId) => {
+        Axios.post("http://localhost:8080/api/reservation-cancel", { reservationId: reservationId }).then((response) => {
+
+            console.log(response);
+        });
+    }
 
     return <div>
 
@@ -31,11 +33,10 @@ const UserResStatus = ({ userId }) => {
                 <h3>Date : {item.dineinDate}</h3>
                 <h3>Time : {item.dineinTime}</h3>
                 <h3>Table: {item.tableId}</h3>
+
+                <button onClick={deleteReservation.bind(null, item.Id)}>Cancel</button>
             </div>
         ))}
-        {/* <h3>{date}</h3>
-        <h3>{time}</h3>
-        <h3>{table}</h3> */}
 
     </div>
 }

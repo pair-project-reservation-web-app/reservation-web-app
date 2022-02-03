@@ -116,9 +116,9 @@ app.post("/api/reservation-table", (req, res) => {
   console.log(userId, tableId, dineinDate, dineinTime);
 });
 
-////// reservation cancle   (get or post?) //////
+////// current user reservation status   (get or post?) //////
 
-app.post("/api/reservation-cancel", (req, res) => {
+app.post("/api/reservation-status", (req, res) => {
   const userId = req.body.userId
 
   db.query(
@@ -132,7 +132,27 @@ app.post("/api/reservation-cancel", (req, res) => {
       }
     }
   )
-})
+});
+
+/////// reservation cancel /////////////
+
+app.post("/api/reservation-cancel", (req, res) => {
+  const reservationId = req.body.reservationId;
+
+  db.query(
+    "DELETE FROM reservations WHERE Id = ?;",
+    reservationId,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  )
+});
+
+
 
 app.post("/api/user/login", (req, res) => {
   const username = req.body.username;
