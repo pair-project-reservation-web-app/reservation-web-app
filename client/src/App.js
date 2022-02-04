@@ -15,7 +15,7 @@ function App() {
   const [userpassword, setUserpassword] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("");
-  const [userId, setUserId] = useState(null)
+  const [userId, setUserId] = useState(null);
 
   Axios.defaults.withCredentials = true;
   /*
@@ -66,7 +66,7 @@ function App() {
       if (response.data.loggedIn === true) {
         setLoginStatus(response.data.user);
 
-        ////// grab the current login userId for searching reservation under this userId
+        ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {
         console.log("no logged in");

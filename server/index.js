@@ -118,8 +118,8 @@ app.post("/api/reservation-table", (req, res) => {
 
 ////// current user reservation status   (get or post?) //////
 
-app.post("/api/reservation-status", (req, res) => {
-  const userId = req.body.userId
+app.get("/api/reservation-status/:userId", (req, res) => {
+  const userId = req.params.userId
 
   db.query(
     "SELECT * FROM reservations WHERE userId = ?",
@@ -136,8 +136,8 @@ app.post("/api/reservation-status", (req, res) => {
 
 /////// reservation cancel /////////////
 
-app.post("/api/reservation-cancel", (req, res) => {
-  const reservationId = req.body.reservationId;
+app.delete("/api/reservation-cancel/:reservationId", (req, res) => {
+  const reservationId = req.params.reservationId;
 
   db.query(
     "DELETE FROM reservations WHERE Id = ?;",
@@ -151,8 +151,6 @@ app.post("/api/reservation-cancel", (req, res) => {
     }
   )
 });
-
-
 
 app.post("/api/user/login", (req, res) => {
   const username = req.body.username;
