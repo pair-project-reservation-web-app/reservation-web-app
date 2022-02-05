@@ -3,6 +3,7 @@ import Tables from "./components/reservation/Tables";
 import Axios from "axios";
 import "./App.css";
 import Reservation from "./components/reservation/reservation";
+import UserResStatus from './components/reservation/UserResStatus';
 import Review from "./components/review/Review";
 import Reviews from "./components/review/Reviews";
 
@@ -41,11 +42,13 @@ function App() {
       username: username,
       password: userpassword,
     }).then((response) => {
+      console.log(response)
       if (response.data.message) {
         setLoginStatus(response.data.message);
+        console.log(loginStatus)
       } else {
         setLoginStatus(response.data.user);
-        setUserId(response.data.userId);
+        setUserId(response.data.userId)
       }
     });
   };
@@ -54,6 +57,8 @@ function App() {
   */
   const logout = () => {
     Axios.get("http://localhost:8080/api/user/logout").then((response) => {
+      setUserId(null);
+      setLoginStatus('')
       window.location.reload();
     });
   };
@@ -65,12 +70,16 @@ function App() {
     Axios.get("http://localhost:8080/").then((response) => {
       if (response.data.loggedIn === true) {
         setLoginStatus(response.data.user);
+        console.log(response.data)
+        ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {
         console.log("no logged in");
       }
     });
-  }, []);
+
+
+  }, [userId]);
 
   return (
     <div className="App">
@@ -134,6 +143,9 @@ function App() {
       <Reservation />
       <Review />
       <Reviews userId={userId} />
+      <UserResStatus
+        userId={userId}
+      />
     </div>
   );
 }

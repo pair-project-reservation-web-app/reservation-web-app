@@ -15,3 +15,7 @@
   height: 100px;
   margin-left: 1rem;
 }
+
+.box {
+  border: 1px solid red;
+}

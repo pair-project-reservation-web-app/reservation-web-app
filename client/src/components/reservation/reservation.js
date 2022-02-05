@@ -57,6 +57,7 @@ const Reservation = () => {
       dineinDate: selectedDate,
       dineinTime: selectedTime,
     }).then((response) => {
+      console.log(response.data);
       setUserData(response.data);
     });
   };

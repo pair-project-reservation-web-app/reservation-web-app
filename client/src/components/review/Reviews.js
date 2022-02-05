@@ -75,7 +75,7 @@ const Reviews = (props) => {
               data-key={content.id}
               disabled={props.userId === content.userID ? false : true}
               onClick={deleteClickHandler}
-            >
+            >{console.log(props.userId === content.userID ? false : true)}
               delete
             </button>
           </div>
