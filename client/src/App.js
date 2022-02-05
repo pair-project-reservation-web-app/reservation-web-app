@@ -47,7 +47,6 @@ function App() {
         setLoginStatus(response.data.message);
         console.log(loginStatus)
       } else {
-        console.log(response.data)
         setLoginStatus(response.data.user);
         setUserId(response.data.userId)
       }
@@ -58,6 +57,8 @@ function App() {
   */
   const logout = () => {
     Axios.get("http://localhost:8080/api/user/logout").then((response) => {
+      setUserId(null);
+      setLoginStatus('')
       window.location.reload();
     });
   };
