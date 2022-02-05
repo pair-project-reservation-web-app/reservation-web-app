@@ -62,7 +62,11 @@ app.post("/api/user/register", (req, res) => {
 
 app.get("/", (req, res) => {
   if (req.session.user) {
-    res.send({ loggedIn: true, user: req.session.user });
+    res.send({
+      loggedIn: true,
+      user: req.session.user,
+      userId: req.session.userId,
+    });
   } else {
     res.send({ loggedIn: false });
   }
@@ -129,7 +133,7 @@ app.post("/api/user/login", (req, res) => {
           if (response) {
             req.session.user = result[0].userName;
             req.session.userId = result[0].userId;
-            res.send(req.session.user);
+            res.send(req.session);
           } else {
             res.send({ message: "Wrong username or password" });
           }
@@ -139,6 +143,68 @@ app.post("/api/user/login", (req, res) => {
       }
     }
   );
+});
+
+app.post("/api/review", (req, res) => {
+  const userId = req.session.userId;
+  const rating = +req.body.rating;
+  const text = req.body.text;
+  const likes = 0;
+
+  db.query(
+    "INSERT INTO review (userId, rating, reviewText, likes) VALUES(?,?,?,?)",
+    [userId, rating, text, likes],
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/api/reviews", (req, res) => {
+  const order = req.query.order;
+  const orderBy = req.query.orderBy;
+
+  db.query(
+    `SELECT review.id, review.likes, review.rating, review.reviewText, users.userName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId ORDER BY review.${orderBy} ${order}`,
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/api/reviews/:id", (req, res) => {
+  const userId = req.params.id;
+
+  db.query(
+    `SELECT review.id, review.likes, review.rating, review.reviewText, users.userName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId WHERE users.userId = ${userId} ORDER BY projectsm.review.rating DESC`,
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/api/reviews/:id", (req, res) => {
+  const reviewId = req.params.id;
+
+  db.query("DELETE FROM review WHERE id = ?;", reviewId, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 try {

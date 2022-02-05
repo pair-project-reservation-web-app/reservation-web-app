@@ -3,6 +3,8 @@ import Tables from "./components/reservation/Tables";
 import Axios from "axios";
 import "./App.css";
 import Reservation from "./components/reservation/reservation";
+import Review from "./components/review/Review";
+import Reviews from "./components/review/Reviews";
 
 function App() {
   const [usernameReg, setUsernameReg] = useState("");
@@ -14,6 +16,7 @@ function App() {
   const [userpassword, setUserpassword] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("");
+  const [userId, setUserId] = useState(null);
 
   Axios.defaults.withCredentials = true;
   /*
@@ -41,7 +44,8 @@ function App() {
       if (response.data.message) {
         setLoginStatus(response.data.message);
       } else {
-        setLoginStatus(response.data);
+        setLoginStatus(response.data.user);
+        setUserId(response.data.userId);
       }
     });
   };
@@ -61,7 +65,7 @@ function App() {
     Axios.get("http://localhost:8080/").then((response) => {
       if (response.data.loggedIn === true) {
         setLoginStatus(response.data.user);
-        console.log(response.data.user);
+        setUserId(response.data.userId);
       } else {
         console.log("no logged in");
       }
@@ -128,6 +132,8 @@ function App() {
 
       <Tables />
       <Reservation />
+      <Review />
+      <Reviews userId={userId} />
     </div>
   );
 }
