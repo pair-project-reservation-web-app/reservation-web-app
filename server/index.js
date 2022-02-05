@@ -62,7 +62,11 @@ app.post("/api/user/register", (req, res) => {
 
 app.get("/", (req, res) => {
   if (req.session.user) {
-    res.send({ loggedIn: true, user: req.session.user });
+    res.send({
+      loggedIn: true,
+      user: req.session.user,
+      userId: req.session.userId,
+    });
   } else {
     res.send({ loggedIn: false });
   }
@@ -129,7 +133,7 @@ app.post("/api/user/login", (req, res) => {
           if (response) {
             req.session.user = result[0].userName;
             req.session.userId = result[0].userId;
-            res.send(req.session.user);
+            res.send(req.session);
           } else {
             res.send({ message: "Wrong username or password" });
           }
@@ -189,6 +193,18 @@ app.get("/api/reviews/:id", (req, res) => {
       }
     }
   );
+});
+
+app.delete("/api/reviews/:id", (req, res) => {
+  const reviewId = req.params.id;
+
+  db.query("DELETE FROM review WHERE id = ?;", reviewId, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 try {
