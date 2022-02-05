@@ -4,6 +4,8 @@ import Axios from "axios";
 import "./App.css";
 import Reservation from "./components/reservation/reservation";
 import UserResStatus from './components/reservation/UserResStatus';
+import Review from "./components/review/Review";
+import Reviews from "./components/review/Reviews";
 
 function App() {
   const [usernameReg, setUsernameReg] = useState("");
@@ -136,17 +138,13 @@ function App() {
 
       <h1>{loginStatus}</h1>
 
-      {loginStatus && <Reservation />}
-
-      {loginStatus && <Tables />}
-
-      {
-        loginStatus && userId &&
-        <UserResStatus
-          userId={userId}
-        />
-      }
-
+      <Tables />
+      <Reservation />
+      <Review />
+      <Reviews userId={userId} />
+      <UserResStatus
+        userId={userId}
+      />
     </div>
   );
 }
