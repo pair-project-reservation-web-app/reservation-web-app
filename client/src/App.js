@@ -45,7 +45,9 @@ function App() {
         setLoginStatus(response.data.message);
         console.log(loginStatus)
       } else {
+        console.log(response.data)
         setLoginStatus(response.data.user);
+        setUserId(response.data.userId)
       }
     });
   };
@@ -65,7 +67,7 @@ function App() {
     Axios.get("http://localhost:8080/").then((response) => {
       if (response.data.loggedIn === true) {
         setLoginStatus(response.data.user);
-
+        console.log(response.data)
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {

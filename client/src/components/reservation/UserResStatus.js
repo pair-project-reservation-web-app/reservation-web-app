@@ -7,6 +7,7 @@ const UserResStatus = ({ userId }) => {
 
     useEffect(() => {
         Axios.get(`http://localhost:8080/api/reservation-status/${userId}`).then((response) => {
+            console.log(response.data)
             setCurrentStatus(response.data)
         });
 
