@@ -48,7 +48,8 @@ function App() {
         console.log(loginStatus)
       } else {
         setLoginStatus(response.data.user);
-        setUserId(response.data.userId)
+        ////// grab the current login userId for searching reservation by this userId
+        setUserId(response.data.userId);
       }
     });
   };
