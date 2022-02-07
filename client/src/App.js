@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import Tables from "./components/reservation/Tables";
+import Tables from "./components/Reservation/Tables";
 import Axios from "axios";
 import "./App.css";
-import Reservation from "./components/reservation/reservation";
-import UserResStatus from "./components/reservation/UserResStatus";
-import Review from "./components/review/Review";
-import Reviews from "./components/review/Reviews";
+import Reservation from "./components/Reservation/Reservation";
+import UserResStatus from "./components/Reservation/UserResStatus";
+import Review from "./components/Review/Review";
+import Reviews from "./components/Review/Reviews";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import Logout from "./components/Login/Logout";

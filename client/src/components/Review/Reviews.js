@@ -5,7 +5,6 @@ const Reviews = (props) => {
   const [userReviews, setUserReviews] = useState([]);
   const [order, setOrder] = useState("DESC");
   const [orderBy, setOrderBy] = useState("rating");
-  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     Axios.get(
