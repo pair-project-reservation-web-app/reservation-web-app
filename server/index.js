@@ -37,10 +37,9 @@ app.use(
 
 const db = mysql.createConnection({
   host: process.env.HOST,
-  // user: process.env.USER,
+  user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
-  user: 'sqluser'
 });
 
 //============
@@ -161,7 +160,7 @@ app.post("/api/reservation-table", (req, res) => {
 });
 
 app.get("/api/reservation-status/:userId", (req, res) => {
-  const userId = req.params.userId
+  const userId = req.params.userId;
 
   db.query(
     "SELECT * FROM reservations WHERE userId = ?",
@@ -173,7 +172,7 @@ app.get("/api/reservation-status/:userId", (req, res) => {
         res.send(result);
       }
     }
-  )
+  );
 });
 
 app.delete("/api/reservation-cancel/:reservationId", (req, res) => {
@@ -189,7 +188,7 @@ app.delete("/api/reservation-cancel/:reservationId", (req, res) => {
         res.send(result);
       }
     }
-  )
+  );
 });
 
 //============
