@@ -5,7 +5,6 @@ const Reviews = (props) => {
   const [userReviews, setUserReviews] = useState([]);
   const [order, setOrder] = useState("DESC");
   const [orderBy, setOrderBy] = useState("rating");
-  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     Axios.get(
@@ -13,7 +12,7 @@ const Reviews = (props) => {
     ).then((res) => {
       if (res.data) {
         setUserReviews(res.data);
-        console.log(res.data);
+        //console.log(res.data);
       }
     });
   }, [order, orderBy]);
@@ -54,7 +53,7 @@ const Reviews = (props) => {
     const reviewId = e.target.getAttribute("data-key");
     Axios.delete(`http://localhost:8080/api/reviews/${reviewId}`).then(
       (response) => {
-        console.log(response);
+        //console.log(response);
       }
     );
   };
@@ -75,7 +74,7 @@ const Reviews = (props) => {
               data-key={content.id}
               disabled={props.userId === content.userID ? false : true}
               onClick={deleteClickHandler}
-            >{console.log(props.userId === content.userID ? false : true)}
+            >
               delete
             </button>
           </div>

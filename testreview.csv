@@ -1,0 +1,11 @@
+id,userId,rating,reviewText,likes
+1,1,5,"rating upload test text, rating 5 will be uploaded",10
+2,1,4,"rating upload test text, rating 4 will be uploaded",9
+3,1,3,"rating 3 stars will be uploaded with text content",8
+4,1,2,"rating 2 stars will be uploaded with text content",7
+5,1,1,"rating 1 stars will be uploaded with text content",6
+6,2,1,"SM rating upload test text, rating 1 is uploaded",5
+7,2,2,"SM rating upload test text, rating 2 is uploaded",4
+8,2,3,"SM rating upload test text, rating 3 is uploaded",3
+9,2,4,"SM rating upload test text, rating 4 is uploaded",2
+10,2,5,"SM rating upload test text, rating 5 is uploaded",1
