@@ -37,7 +37,8 @@ app.use(
 
 const db = mysql.createConnection({
   host: process.env.HOST,
-  user: process.env.USER,
+  // user: process.env.USER,
+  user: 'sqluser',
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 });
@@ -126,7 +127,7 @@ app.post("/api/reservation", (req, res) => {
   const dineinTimeEnd = req.body.dineinTimeEnd;
 
   db.query(
-    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime < ?);",
+    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
     [dineinDate, dineinTime, dineinTimeEnd],
     (err, result) => {
       if (err) {

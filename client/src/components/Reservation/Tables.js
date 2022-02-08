@@ -68,14 +68,16 @@ const Tables = () => {
   // console.log(userData);
 
   const userTimeHandler = (input) => {
-    setSelectedTime(input.value);
     const time = input.value;
 
     const [hours, min] = time.split(":");
     const convertToInt = +hours;
-    const result = `${convertToInt + 2}:${min}`;
+    const dineinAfter = `${convertToInt + 2}:${min}`;
+    const dineinBefore = `${convertToInt - 2}:${min}`;
 
-    setSelectedTimeEnd(result);
+
+    setSelectedTime(dineinBefore);
+    setSelectedTimeEnd(dineinAfter);
 
     // let time = input.value
     // const [h, m] = time.split(':');

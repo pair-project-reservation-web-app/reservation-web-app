@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import Tables from "./components/Reservation/Tables";
 import Axios from "axios";
-import "./App.css";
+import Header from './components/Layout/Hedaer';
+import Footer from './components/Layout/Footer';
+import Tables from "./components/Reservation/Tables";
 import Reservation from "./components/Reservation/Reservation";
 import UserResStatus from "./components/Reservation/UserResStatus";
 import Review from "./components/Review/Review";
@@ -9,6 +10,7 @@ import Reviews from "./components/Review/Reviews";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import Logout from "./components/Login/Logout";
+import "./App.css";
 
 function App() {
   const [loginStatus, setLoginStatus] = useState("");
@@ -23,7 +25,7 @@ function App() {
   /*
   compare input username and password to database, set login status as username if matched
   */
-  const userStatus = (status, id) => {
+  const userStatusHandler = (status, id) => {
     setLoginStatus(status);
     setUserId(id);
   };
@@ -49,18 +51,21 @@ function App() {
 
   return (
     <div className="App">
-      <Register />
-      <Login onLogin={userStatus} />
-      <Logout onLogout={userStatus} />
-      <h1>
-        NAME: {loginStatus.length > 0 ? loginStatus : "Please Log in"}{" "}
-        {userId ? `ID: ${userId}` : " "}
-      </h1>
-      <Tables />
-      <Reservation />
-      <Review />
-      <Reviews userId={userId} />
-      <UserResStatus userId={userId} />
+      <Header userId={userId}>
+        {/* {!userId && <Register />} */}
+      </Header>
+      <main>
+
+        {!userId && <Login onLogin={userStatusHandler} />}
+        {userId && <Logout onLogout={userStatusHandler} />}
+        {userId && <Tables />}
+        {userId && <Reservation />}
+        {userId && <Review />}
+        {/* <Reviews userId={userId} />
+        <UserResStatus userId={userId} /> */}
+      </main>
+
+      <Footer />
     </div>
   );
 }
