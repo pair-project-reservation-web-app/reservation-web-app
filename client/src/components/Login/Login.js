@@ -1,4 +1,4 @@
-import { useState, useRef, Fragment, useReducer } from "react";
+import { Fragment, useReducer } from "react";
 import styles from './Login.module.css';
 import Axios from "axios";
 import Input from '../UI/Input/Input';
@@ -43,12 +43,10 @@ const Login = (props) => {
     });
 
   const userEmailHandler = (e) => {
-    console.log(loginStatus);
     dispatchLogin({ type: 'USER_EMAIL', value: e.target.value });
   }
 
   const userPasswordHandler = (e) => {
-    console.log(loginStatus)
     dispatchLogin({ type: 'USER_PASSWORD', value: e.target.value })
   }
 
@@ -96,6 +94,7 @@ const Login = (props) => {
         />
 
         <button type="submit"> Login </button>
+        <button>Register</button>
       </form>
     </Fragment>
   );

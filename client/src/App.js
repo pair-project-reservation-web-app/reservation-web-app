@@ -10,10 +10,12 @@ import Reviews from "./components/Review/Reviews";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import Logout from "./components/Login/Logout";
+
+import AuthContext from './store/auth-context';
 import "./App.css";
 
 function App() {
-  const [loginStatus, setLoginStatus] = useState("");
+  const [loginStatus, setLoginStatus] = useState(false);
   const [userId, setUserId] = useState(null);
 
   Axios.defaults.withCredentials = true;
@@ -51,6 +53,9 @@ function App() {
 
   return (
     <div className="App">
+      {/* <AuthContext.Provider value={{
+        isLoggedIn: loginStatus
+      }}> */}
       <Header userId={userId}>
         {/* {!userId && <Register />} */}
       </Header>
@@ -66,6 +71,7 @@ function App() {
       </main>
 
       <Footer />
+      {/* </AuthContext.Provider> */}
     </div>
   );
 }
