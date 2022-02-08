@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
+import { useContext } from 'react';
+import AuthContext from '../../store/auth-context';
 
 const Reviews = (props) => {
   const [userReviews, setUserReviews] = useState([]);
   const [order, setOrder] = useState("DESC");
   const [orderBy, setOrderBy] = useState("rating");
+
+  const ctx = useContext(AuthContext);
+  console.log(ctx)
+
 
   useEffect(() => {
     Axios.get(
@@ -72,7 +78,7 @@ const Reviews = (props) => {
             <h3 onClick={likesClickHander}>Likes: {content.likes}</h3>
             <button
               data-key={content.id}
-              disabled={props.userId === content.userID ? false : true}
+              disabled={ctx.userId === content.userID ? false : true}
               onClick={deleteClickHandler}
             >
               delete

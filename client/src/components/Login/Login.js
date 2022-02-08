@@ -1,4 +1,5 @@
 import { Fragment, useReducer } from "react";
+import { Link, useNavigate } from 'react-router-dom'
 import styles from './Login.module.css';
 import Axios from "axios";
 import Input from '../UI/Input/Input';
@@ -33,6 +34,8 @@ const loginReducer = (state, action) => {
 
 
 const Login = (props) => {
+  let navigate = useNavigate();
+
 
   const [loginStatus, dispatchLogin] = useReducer(loginReducer,
     {
@@ -67,7 +70,10 @@ const Login = (props) => {
         */
       } else {
         //valid
-        props.onLogin(response.data.user, response.data.userId);
+        console.log(response.data.userId)
+        // props.onLogin(response.data.user, response.data.userId);
+        props.onLogin(true, response.data.userId);
+        navigate('/');
       }
     });
   };
@@ -94,7 +100,7 @@ const Login = (props) => {
         />
 
         <button type="submit"> Login </button>
-        <button>Register</button>
+        <Link to="/register">Register</Link>
       </form>
     </Fragment>
   );

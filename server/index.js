@@ -131,6 +131,7 @@ app.post("/api/reservation", (req, res) => {
     [dineinDate, dineinTime, dineinTimeEnd],
     (err, result) => {
       if (err) {
+        console.log(err);
         res.send(err);
       } else {
         res.send(result);

@@ -60,12 +60,18 @@ const Tables = () => {
       dineinTime: selectedTime,
       dineinTimeEnd: selectedTimeEnd,
     }).then((response) => {
-      console.log(response.data);
-      setUserData(response.data);
+      // error handling
+      if (response.data.code) {
+        console.log(response.data.code)
+      } else {
+        console.log(response.data);
+        setUserData(response.data);
+      }
+
     });
-    // console.log(selectedDate, selectedTime, selectedChair, selectedTimeEnd)
+
   };
-  // console.log(userData);
+
 
   const userTimeHandler = (input) => {
     const time = input.value;
