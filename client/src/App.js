@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+
 import Axios from "axios";
 import Header from './components/Layout/Hedaer';
 import Footer from './components/Layout/Footer';
@@ -13,6 +15,8 @@ import Logout from "./components/Login/Logout";
 
 import AuthContext from './store/auth-context';
 import "./App.css";
+import PrivateRoute from './route/PrivateRoute';
+import PublicRoute from './route/PublicRoute';
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -31,9 +35,6 @@ function App() {
     setLoginStatus(status);
     setUserId(id);
   };
-  /*
-  user logout, delete user session
-  */
 
   /*
   checking a user session exist to keep the user logged in when the web page is reloaded
@@ -53,25 +54,27 @@ function App() {
 
   return (
     <div className="App">
-      {/* <AuthContext.Provider value={{
-        isLoggedIn: loginStatus
-      }}> */}
-      <Header userId={userId}>
-        {/* {!userId && <Register />} */}
-      </Header>
-      <main>
+      <AuthContext.Provider value={{
+        isLoggedIn: loginStatus,
+        userId: userId
+      }}>
 
-        {!userId && <Login onLogin={userStatusHandler} />}
-        {userId && <Logout onLogout={userStatusHandler} />}
-        {userId && <Tables />}
-        {userId && <Reservation />}
-        {userId && <Review />}
-        {/* <Reviews userId={userId} />
-        <UserResStatus userId={userId} /> */}
-      </main>
+        <Router>
+          <Header onLogout={userStatusHandler} />
+          <main>
+            {!loginStatus ? <PrivateRoute userStatusHandler={userStatusHandler} />
+              : <PublicRoute userStatusHandler={userStatusHandler} />}
+            <Routes>
 
-      <Footer />
-      {/* </AuthContext.Provider> */}
+            </Routes>
+
+          </main>
+
+          <Footer />
+
+        </Router>
+      </AuthContext.Provider>
+
     </div>
   );
 }
