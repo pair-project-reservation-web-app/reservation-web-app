@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import Tables from "./components/Reservation/Tables";
 import Axios from "axios";
-import "./App.css";
+import Header from './components/Layout/Hedaer';
+import Footer from './components/Layout/Footer';
+import Tables from "./components/Reservation/Tables";
 import Reservation from "./components/Reservation/Reservation";
 import UserResStatus from "./components/Reservation/UserResStatus";
 import Review from "./components/Review/Review";
@@ -10,8 +11,11 @@ import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import Logout from "./components/Login/Logout";
 
+import AuthContext from './store/auth-context';
+import "./App.css";
+
 function App() {
-  const [loginStatus, setLoginStatus] = useState("");
+  const [loginStatus, setLoginStatus] = useState(false);
   const [userId, setUserId] = useState(null);
 
   Axios.defaults.withCredentials = true;
@@ -19,11 +23,11 @@ function App() {
   user register function. passing username, password, contact number and user full name
   to register api from input field and get response from register api
    */
-  const register = () => {};
+  const register = () => { };
   /*
   compare input username and password to database, set login status as username if matched
   */
-  const userStatus = (status, id) => {
+  const userStatusHandler = (status, id) => {
     setLoginStatus(status);
     setUserId(id);
   };
@@ -49,18 +53,25 @@ function App() {
 
   return (
     <div className="App">
-      <Register />
-      <Login onLogin={userStatus} />
-      <Logout onLogout={userStatus} />
-      <h1>
-        NAME: {loginStatus.length > 0 ? loginStatus : "Please Log in"}{" "}
-        {userId ? `ID: ${userId}` : " "}
-      </h1>
-      <Tables />
-      <Reservation />
-      <Review />
-      <Reviews userId={userId} />
-      <UserResStatus userId={userId} />
+      {/* <AuthContext.Provider value={{
+        isLoggedIn: loginStatus
+      }}> */}
+      <Header userId={userId}>
+        {/* {!userId && <Register />} */}
+      </Header>
+      <main>
+
+        {!userId && <Login onLogin={userStatusHandler} />}
+        {userId && <Logout onLogout={userStatusHandler} />}
+        {userId && <Tables />}
+        {userId && <Reservation />}
+        {userId && <Review />}
+        {/* <Reviews userId={userId} />
+        <UserResStatus userId={userId} /> */}
+      </main>
+
+      <Footer />
+      {/* </AuthContext.Provider> */}
     </div>
   );
 }

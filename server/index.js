@@ -2,7 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-// cookie ??
+
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: ["http://localhost:3000"],
     credentials: true,
-    // ????
+
   })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,10 +37,15 @@ app.use(
 
 const db = mysql.createConnection({
   host: process.env.HOST,
-  user: process.env.USER,
+  // user: process.env.USER,
+  user: 'sqluser',
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 });
+
+//============
+// Resgister
+//============
 
 app.post("/api/user/register", (req, res) => {
   const username = req.body.username;
@@ -74,11 +79,47 @@ app.get("/", (req, res) => {
   }
 });
 
+
+//===============
+// Login, Logout
+//===============
+app.post("/api/user/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  db.query(
+    "SELECT * FROM users WHERE userName = ?",
+    username,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      if (result.length > 0) {
+        bcrypt.compare(password, result[0].userPassword, (err, response) => {
+          if (response) {
+            req.session.user = result[0].userName;
+            req.session.userId = result[0].userId;
+            ///////////////// to get user-info //////////////////////////////
+            res.send(req.session);
+          } else {
+            res.send({ message: "Wrong username or password" });
+          }
+        });
+      } else {
+        res.send({ message: "User does not exist" });
+      }
+    }
+  );
+});
+
 app.get("/api/user/logout", (req, res) => {
   req.session.destroy(() => {
     res.redirect("/");
   });
 });
+//============
+// Reservation
+//============
 
 app.post("/api/reservation", (req, res) => {
   const dineinDate = req.body.dineinDate;
@@ -86,7 +127,7 @@ app.post("/api/reservation", (req, res) => {
   const dineinTimeEnd = req.body.dineinTimeEnd;
 
   db.query(
-    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime < ?);",
+    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
     [dineinDate, dineinTime, dineinTimeEnd],
     (err, result) => {
       if (err) {
@@ -119,8 +160,6 @@ app.post("/api/reservation-table", (req, res) => {
   console.log(userId, tableId, dineinDate, dineinTime);
 });
 
-////// current user reservation status   (get or post?) //////
-
 app.get("/api/reservation-status/:userId", (req, res) => {
   const userId = req.params.userId;
 
@@ -136,8 +175,6 @@ app.get("/api/reservation-status/:userId", (req, res) => {
     }
   );
 });
-
-/////// reservation cancel /////////////
 
 app.delete("/api/reservation-cancel/:reservationId", (req, res) => {
   const reservationId = req.params.reservationId;
@@ -155,34 +192,9 @@ app.delete("/api/reservation-cancel/:reservationId", (req, res) => {
   );
 });
 
-app.post("/api/user/login", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  db.query(
-    "SELECT * FROM users WHERE userName = ?",
-    username,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      }
-      if (result.length > 0) {
-        bcrypt.compare(password, result[0].userPassword, (err, response) => {
-          if (response) {
-            req.session.user = result[0].userName;
-            req.session.userId = result[0].userId;
-            ///////////////// to get user-info //////////////////////////////
-            res.send(req.session);
-          } else {
-            res.send({ message: "Wrong username or password" });
-          }
-        });
-      } else {
-        res.send({ message: "User does not exist" });
-      }
-    }
-  );
-});
+//============
+// Reviews
+//============
 
 app.post("/api/review", (req, res) => {
   const userId = req.session.userId;
