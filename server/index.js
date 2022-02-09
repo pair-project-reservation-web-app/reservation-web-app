@@ -17,7 +17,6 @@ app.use(
   cors({
     origin: ["http://localhost:3000"],
     credentials: true,
-
   })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,8 +36,8 @@ app.use(
 
 const db = mysql.createConnection({
   host: process.env.HOST,
-  // user: process.env.USER,
-  user: 'sqluser',
+  user: process.env.USER,
+  // user: 'sqluser',
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 });
@@ -78,7 +77,6 @@ app.get("/", (req, res) => {
     res.send({ loggedIn: false });
   }
 });
-
 
 //===============
 // Login, Logout
