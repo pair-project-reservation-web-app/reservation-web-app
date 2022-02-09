@@ -14,9 +14,9 @@ import Register from "./components/Login/Register";
 import Logout from "./components/Login/Logout";
 
 import AuthContext from './store/auth-context';
-import "./App.css";
 import PrivateRoute from './route/PrivateRoute';
 import PublicRoute from './route/PublicRoute';
+import "./App.css";
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -64,10 +64,6 @@ function App() {
           <main>
             {!loginStatus ? <PrivateRoute userStatusHandler={userStatusHandler} />
               : <PublicRoute userStatusHandler={userStatusHandler} />}
-            <Routes>
-
-            </Routes>
-
           </main>
 
           <Footer />
