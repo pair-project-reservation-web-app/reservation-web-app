@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Axios from "axios";
-import Header from './components/Layout/Hedaer';
-import Footer from './components/Layout/Footer';
+import Header from "./components/Layout/Hedaer";
+import Footer from "./components/Layout/Footer";
 import Tables from "./components/Reservation/Tables";
 import Reservation from "./components/Reservation/Reservation";
 import UserResStatus from "./components/Reservation/UserResStatus";
@@ -13,10 +13,10 @@ import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import Logout from "./components/Login/Logout";
 
-import AuthContext from './store/auth-context';
+import AuthContext from "./store/auth-context";
 import "./App.css";
-import PrivateRoute from './route/PrivateRoute';
-import PublicRoute from './route/PublicRoute';
+import PrivateRoute from "./route/PrivateRoute";
+import PublicRoute from "./route/PublicRoute";
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -27,7 +27,7 @@ function App() {
   user register function. passing username, password, contact number and user full name
   to register api from input field and get response from register api
    */
-  const register = () => { };
+  const register = () => {};
   /*
   compare input username and password to database, set login status as username if matched
   */
@@ -54,27 +54,51 @@ function App() {
 
   return (
     <div className="App">
-      <AuthContext.Provider value={{
-        isLoggedIn: loginStatus,
-        userId: userId
-      }}>
-
+      <AuthContext.Provider
+        value={{
+          isLoggedIn: loginStatus,
+          userId: userId,
+        }}
+      >
         <Router>
           <Header onLogout={userStatusHandler} />
           <main>
-            {!loginStatus ? <PrivateRoute userStatusHandler={userStatusHandler} />
-              : <PublicRoute userStatusHandler={userStatusHandler} />}
+            {/* {!loginStatus ? (
+              <PrivateRoute userStatusHandler={userStatusHandler} />
+            ) : (
+              <PublicRoute userStatusHandler={userStatusHandler} />
+            )} */}
             <Routes>
+              <Route
+                path="/login"
+                element={<Login onLogin={userStatusHandler} />}
+              />
+              <Route path="/register" element={<Register />} />
 
+              <Route
+                path="/"
+                element={
+                  <div>
+                    {loginStatus ? (
+                      <>
+                        <UserResStatus />
+                        <Review />
+                        <Reservation />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                    <Tables />
+                    <Reviews />
+                  </div>
+                }
+              />
             </Routes>
-
           </main>
 
           <Footer />
-
         </Router>
       </AuthContext.Provider>
-
     </div>
   );
 }
