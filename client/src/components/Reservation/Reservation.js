@@ -5,7 +5,8 @@ import Axios from "axios";
 const Reservation = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedTable, setSelectedTable] = useState("");
+  const [selectedTable, setSelectedTable] = useState('');
+  const [selectedPartySize, setSelectedPartySize] = useState("");
   const [userData, setUserData] = useState("");
 
   const time = [
@@ -42,6 +43,13 @@ const Reservation = () => {
     { value: 11, label: 11 },
   ];
 
+  const partySize = [
+    { value: 2, label: 2 },
+    { value: 4, label: 4 },
+    { value: 6, label: 6 },
+    { value: 8, label: 8 },
+  ];
+
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
   };
@@ -50,20 +58,15 @@ const Reservation = () => {
     setSelectedTable(input.value);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    Axios.post("http://localhost:8080/api/reservation-table", {
-      tableId: selectedTable,
-      dineinDate: selectedDate,
-      dineinTime: selectedTime,
-    }).then((response) => {
-      console.log(response.data);
-      setUserData(response.data);
-    });
+  const userPartySizeHandler = (input) => {
+    console.log(input)
+    setSelectedPartySize(input.value);
+    console.log(selectedPartySize)
   };
 
   const userTimeHandler = (input) => {
     setSelectedTime(input.value);
+
     // let time = input.value
     // const [h, m] = time.split(':');
     // let totalSec = (+h) * 60 * 60 + (+m) * 60;
@@ -78,6 +81,19 @@ const Reservation = () => {
     // console.log(result)
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    Axios.post("http://localhost:8080/api/reservation-table", {
+      tableId: selectedTable,
+      partySize: selectedPartySize,
+      dineinDate: selectedDate,
+      dineinTime: selectedTime,
+    }).then((response) => {
+      console.log(response.data);
+      setUserData(response.data);
+    });
+  };
+
   return (
     <div>
       <h1>Add Reservation</h1>
@@ -87,7 +103,10 @@ const Reservation = () => {
 
         <Select options={time} onChange={userTimeHandler} />
 
-        <Select options={table} onChange={userTableHandler} />
+        <Select options={partySize} onChange={userPartySizeHandler} />
+
+        <Select options={table} onChange={userTableHandler}></Select>
+
 
         <button>ddd</button>
       </form>

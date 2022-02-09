@@ -9,7 +9,6 @@ const Reviews = (props) => {
   const [orderBy, setOrderBy] = useState("rating");
 
   const ctx = useContext(AuthContext);
-  console.log(ctx)
 
 
   useEffect(() => {

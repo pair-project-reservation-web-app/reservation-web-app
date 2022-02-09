@@ -31,7 +31,7 @@ const UserResStatus = () => {
       <h2>Current Reservation Status</h2>
 
       {currentStatus.map((item) => (
-        <div className="box">
+        <div className="box" key={item.tableId}>
           <h3>Date : {item.dineinDate}</h3>
           <h3>Time : {item.dineinTime}</h3>
           <h3>Table: {item.tableId}</h3>

@@ -1,23 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Select from "react-select";
 import Axios from "axios";
+import styles from './Tables.module.css'
 
 const Tables = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedChair, setSelectedChair] = useState("");
+  const [selectedPartySize, setSelectedPartySize] = useState("");
 
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
   const [userData, setUserData] = useState([]);
   const tables = [
-    { name: "table1", id: 0 },
-    { name: "table2", id: 1 },
-    { name: "table3", id: 2 },
-    { name: "table4", id: 3 },
-    { name: "table5", id: 4 },
-    { name: "table6", id: 5 },
-    { name: "table6", id: 6 },
-    { name: "table6", id: 7 },
+    { name: "table1", id: 1, partySize: 2 },
+    { name: "table2", id: 2, partySize: 2 },
+    { name: "table3", id: 3, partySize: 2 },
+    { name: "table4", id: 4, partySize: 4 },
+    { name: "table5", id: 5, partySize: 4 },
+    { name: "table6", id: 6, partySize: 4 },
+    { name: "table7", id: 7, partySize: 4 },
+    { name: "table8", id: 8, partySize: 4 },
+    { name: "table9", id: 9, partySize: 6 },
+    { name: "table10", id: 10, partySize: 6 },
+    { name: "table11", id: 11, partySize: 6 },
+    { name: "table12", id: 12, partySize: 6 },
+    { name: "table13", id: 13, partySize: 8 },
+    { name: "table14", id: 13, partySize: 8 },
+    { name: "table15", id: 13, partySize: 8 },
   ];
   const time = [
     { value: "11:00", label: "11:00" },
@@ -39,39 +47,33 @@ const Tables = () => {
     { value: "19:00", label: "19:00" },
   ];
 
-  const chair = [
+  useEffect(() => {
+    Axios.get(`http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTime}&timeEnd=${selectedTimeEnd}`).then(
+      (response) => {
+        console.log(selectedTimeEnd)
+        console.log(response.data)
+        setUserData(response.data);
+      }
+    );
+
+    // console.log('updated')
+  }, [selectedDate, selectedTime, selectedTimeEnd]);
+
+  const partySize = [
     { value: 2, label: 2 },
     { value: 4, label: 4 },
+    { value: 6, label: 6 },
     { value: 8, label: 8 },
   ];
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
-  };
-
-  const userChairHandler = (input) => {
-    setSelectedChair(input.value);
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    Axios.post("http://localhost:8080/api/reservation", {
-      dineinDate: selectedDate,
-      dineinTime: selectedTime,
-      dineinTimeEnd: selectedTimeEnd,
-    }).then((response) => {
-      // error handling
-      if (response.data.code) {
-        console.log(response.data.code)
-      } else {
-        console.log(response.data);
-        setUserData(response.data);
-      }
-
-    });
 
   };
 
+  const userPartySizeHandler = (input) => {
+    setSelectedPartySize(input.value);
+  };
 
   const userTimeHandler = (input) => {
     const time = input.value;
@@ -99,8 +101,36 @@ const Tables = () => {
     // console.log(result)
   };
 
-  const filterTables = (table, userData) => {
-    return userData.some((item) => item.tableId === table.id);
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    // Axios.post("http://localhost:8080/api/reservation", {
+    //   dineinDate: selectedDate,
+    //   dineinTime: selectedTime,
+    //   dineinTimeEnd: selectedTimeEnd,
+    //   partySize: selectedPartySize
+    // }).then((response) => {
+    //   // error handling
+    //   if (response.data.code) {
+    //     console.log(response.data.code)
+    //   } else {
+    //     console.log(response.data);
+    //     setUserData(response.data);
+    //   }
+
+    // });
+
+  };
+
+  const filterTables = (table, userData, selectedPartySize) => {
+    // console.log(userData)
+    if (userData.length > 0) {
+      return userData.some((item) => item.tableId === table.id || table.partySize !== selectedPartySize
+      )
+    } else {
+      // console.log('no user data')
+      return table.partySize !== selectedPartySize
+    }
   };
 
   return (
@@ -111,14 +141,14 @@ const Tables = () => {
 
         <Select options={time} onChange={userTimeHandler} />
 
-        <Select options={chair} onChange={userChairHandler} />
+        <Select options={partySize} onChange={userPartySizeHandler} />
         <button>Submit</button>
       </form>
 
-      <div className="table-container">
+      <div className={styles['table-container']}>
         {tables.map((table, index) => (
           <div
-            className={filterTables(table, userData) ? "unavailable" : "table"}
+            className={filterTables(table, userData, selectedPartySize) ? "unavailable" : "table"}
             key={index}
           >
             <h3>{table.name}</h3>

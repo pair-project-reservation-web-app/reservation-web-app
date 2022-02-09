@@ -15,8 +15,8 @@ import Logout from "./components/Login/Logout";
 
 import AuthContext from "./store/auth-context";
 import "./App.css";
-import PrivateRoute from "./route/PrivateRoute";
-import PublicRoute from "./route/PublicRoute";
+// import PrivateRoute from "./route/PrivateRoute";
+// import PublicRoute from "./route/PublicRoute";
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -42,7 +42,6 @@ function App() {
   useEffect(() => {
     Axios.get("http://localhost:8080/").then((response) => {
       if (response.data.loggedIn === true) {
-        console.log(response.data);
         setLoginStatus(response.data.user);
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
@@ -63,31 +62,21 @@ function App() {
         <Router>
           <Header onLogout={userStatusHandler} />
           <main>
-            {/* {!loginStatus ? (
-              <PrivateRoute userStatusHandler={userStatusHandler} />
-            ) : (
-              <PublicRoute userStatusHandler={userStatusHandler} />
-            )} */}
             <Routes>
-              <Route
-                path="/login"
-                element={<Login onLogin={userStatusHandler} />}
-              />
+              <Route path="/login" element={<Login onLogin={userStatusHandler} />} />
               <Route path="/register" element={<Register />} />
-
               <Route
                 path="/"
                 element={
                   <div>
-                    {loginStatus ? (
+                    {loginStatus && (
                       <>
                         <UserResStatus />
                         <Review />
                         <Reservation />
                       </>
-                    ) : (
-                      <></>
                     )}
+
                     <Tables />
                     <Reviews />
                   </div>

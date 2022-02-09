@@ -1,0 +1,10 @@
+.table-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 70%;
+  border: 1px solid red;
+}
+
+.table-container div {
+  margin: 5px;
+}
