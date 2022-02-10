@@ -42,6 +42,7 @@ function App() {
   useEffect(() => {
     Axios.get("http://localhost:8080/").then((response) => {
       if (response.data.loggedIn === true) {
+        //console.log(response.data);
         setLoginStatus(response.data.user);
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
