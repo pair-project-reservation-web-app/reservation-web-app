@@ -36,8 +36,8 @@ app.use(
 
 const db = mysql.createConnection({
   host: process.env.HOST,
-  // user: process.env.USER,
-  user: 'sqluser',
+  user: process.env.USER,
+  // user: 'sqluser',
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 });
@@ -144,11 +144,9 @@ app.get("/api/current-reservation-status", (req, res) => {
   const dineinDate = req.query.date;
   const dineinTime = req.query.time;
   const dineinTimeEnd = req.query.timeEnd;
-  console.log('date', dineinDate)
-  console.log('time', dineinTime)
-  console.log('timeEnd', dineinTimeEnd)
-
-
+  console.log("date", dineinDate);
+  console.log("time", dineinTime);
+  console.log("timeEnd", dineinTimeEnd);
 
   db.query(
     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
@@ -158,13 +156,12 @@ app.get("/api/current-reservation-status", (req, res) => {
         console.log(err);
         res.send(err);
       } else {
-        console.log(result)
+        console.log(result);
         res.send(result);
       }
     }
-  )
-})
-
+  );
+});
 
 app.post("/api/reservation-table", (req, res) => {
   const userId = req.session.userId;
@@ -180,7 +177,9 @@ app.post("/api/reservation-table", (req, res) => {
       if (err) {
         res.send(err);
       } else {
-        res.send(`Reservation has been set on ${dineinDate} at ${dineinTime} table #${tableId}`);
+        res.send(
+          `Reservation has been set on ${dineinDate} at ${dineinTime} table #${tableId}`
+        );
       }
     }
   );
