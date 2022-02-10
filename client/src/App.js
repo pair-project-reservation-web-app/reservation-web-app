@@ -5,18 +5,17 @@ import Axios from "axios";
 import Header from "./components/Layout/Hedaer";
 import Footer from "./components/Layout/Footer";
 import Tables from "./components/Reservation/Tables";
-import Reservation from "./components/Reservation/Reservation";
+
 import UserResStatus from "./components/Reservation/UserResStatus";
 import Review from "./components/Review/Review";
 import Reviews from "./components/Review/Reviews";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
-import Logout from "./components/Login/Logout";
+
 
 import AuthContext from "./store/auth-context";
 import "./App.css";
-// import PrivateRoute from "./route/PrivateRoute";
-// import PublicRoute from "./route/PublicRoute";
+
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -67,9 +66,6 @@ function App() {
               <Route path="/login" element={<Login onLogin={userStatusHandler} />} />
               <Route path="/register" element={<Register />} />
 
-              {/* need to be re-direction by clicking the button where placed inside of table(showing currently available tables) component*/}
-              <Route path="/booking-table" element={<Reservation />} />
-
               <Route
                 path="/"
                 element={
@@ -79,7 +75,6 @@ function App() {
                       <>
                         <UserResStatus />
                         <Review />
-                        {/* <Reservation /> */}
                       </>
                     )}
                     <Reviews />

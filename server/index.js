@@ -119,26 +119,6 @@ app.get("/api/user/logout", (req, res) => {
 // Reservation
 //============
 // checking available tables by date, time and party.
-// app.post("/api/reservation", (req, res) => {
-//   const dineinDate = req.body.dineinDate;
-//   const dineinTime = req.body.dineinTime;
-//   const dineinTimeEnd = req.body.dineinTimeEnd;
-//   // const partySize = req.body.partySize;
-
-//   db.query(
-//     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
-//     [dineinDate, dineinTime, dineinTimeEnd],
-//     (err, result) => {
-//       if (err) {
-//         console.log(err);
-//         res.send(err);
-//       } else {
-//         console.log(result)
-//         res.send(result);
-//       }
-//     }
-//   );
-// });
 
 app.get("/api/current-reservation-status", (req, res) => {
   const dineinDate = req.query.date;
