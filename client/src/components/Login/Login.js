@@ -8,18 +8,16 @@ const loginReducer = (state, action) => {
 
   if (action.type === 'USER_EMAIL') {
     return {
+      ...state,
       email: action.value,
-      password: state.password,
-      emailIsValid: action.value.includes('@'),
-      passwordIsValid: state.passwordIsValid
+      emailIsValid: action.value.includes('@')
     }
   }
 
   if (action.type === 'USER_PASSWORD') {
     return {
-      email: state.email,
+      ...state,
       password: action.value,
-      emailIsValid: state.emailIsValid,
       passwordIsValid: action.value.trim().length > 6,
     }
   }

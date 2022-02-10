@@ -65,20 +65,24 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login onLogin={userStatusHandler} />} />
               <Route path="/register" element={<Register />} />
+
+              {/* need to be re-direction by clicking the button where placed inside of table(showing currently available tables) component*/}
+              <Route path="/booking-table" element={<Reservation />} />
+
               <Route
                 path="/"
                 element={
                   <div>
+                    <Tables />
                     {loginStatus && (
                       <>
                         <UserResStatus />
                         <Review />
-                        <Reservation />
+                        {/* <Reservation /> */}
                       </>
                     )}
-
-                    <Tables />
                     <Reviews />
+
                   </div>
                 }
               />

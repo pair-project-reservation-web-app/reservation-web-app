@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
 import Select from "react-select";
 import Axios from "axios";
 import styles from './Tables.module.css'
@@ -24,8 +25,8 @@ const Tables = () => {
     { name: "table11", id: 11, partySize: 6 },
     { name: "table12", id: 12, partySize: 6 },
     { name: "table13", id: 13, partySize: 8 },
-    { name: "table14", id: 13, partySize: 8 },
-    { name: "table15", id: 13, partySize: 8 },
+    { name: "table14", id: 14, partySize: 8 },
+    { name: "table15", id: 15, partySize: 8 },
   ];
   const time = [
     { value: "11:00", label: "11:00" },
@@ -50,8 +51,8 @@ const Tables = () => {
   useEffect(() => {
     Axios.get(`http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTime}&timeEnd=${selectedTimeEnd}`).then(
       (response) => {
-        console.log(selectedTimeEnd)
-        console.log(response.data)
+        // need to add error handle or initial value for api call
+        // console.log(response.data)
         setUserData(response.data);
       }
     );
@@ -125,10 +126,18 @@ const Tables = () => {
   const filterTables = (table, userData, selectedPartySize) => {
     // console.log(userData)
     if (userData.length > 0) {
+
+      if (selectedPartySize === '') {
+        return userData.some((item) => item.tableId === table.id)
+      }
+
       return userData.some((item) => item.tableId === table.id || table.partySize !== selectedPartySize
       )
     } else {
       // console.log('no user data')
+      if (selectedPartySize === '') {
+        return false
+      }
       return table.partySize !== selectedPartySize
     }
   };
@@ -142,7 +151,7 @@ const Tables = () => {
         <Select options={time} onChange={userTimeHandler} />
 
         <Select options={partySize} onChange={userPartySizeHandler} />
-        <button>Submit</button>
+        {/* <button>Submit</button> */}
       </form>
 
       <div className={styles['table-container']}>
@@ -152,6 +161,13 @@ const Tables = () => {
             key={index}
           >
             <h3>{table.name}</h3>
+            <h3>{table.partySize}</h3>
+            <Link to="/booking-table" state={{
+              userDate: selectedDate,
+              userTime: selectedTime,
+              userTable: table.id,
+            }}>book</Link>
+            <button>check available time?</button>
           </div>
         ))}
       </div>

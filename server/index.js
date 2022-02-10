@@ -119,26 +119,26 @@ app.get("/api/user/logout", (req, res) => {
 // Reservation
 //============
 // checking available tables by date, time and party.
-app.post("/api/reservation", (req, res) => {
-  const dineinDate = req.body.dineinDate;
-  const dineinTime = req.body.dineinTime;
-  const dineinTimeEnd = req.body.dineinTimeEnd;
-  // const partySize = req.body.partySize;
+// app.post("/api/reservation", (req, res) => {
+//   const dineinDate = req.body.dineinDate;
+//   const dineinTime = req.body.dineinTime;
+//   const dineinTimeEnd = req.body.dineinTimeEnd;
+//   // const partySize = req.body.partySize;
 
-  db.query(
-    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
-    [dineinDate, dineinTime, dineinTimeEnd],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.send(err);
-      } else {
-        console.log(result)
-        res.send(result);
-      }
-    }
-  );
-});
+//   db.query(
+//     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
+//     [dineinDate, dineinTime, dineinTimeEnd],
+//     (err, result) => {
+//       if (err) {
+//         console.log(err);
+//         res.send(err);
+//       } else {
+//         console.log(result)
+//         res.send(result);
+//       }
+//     }
+//   );
+// });
 
 app.get("/api/current-reservation-status", (req, res) => {
   const dineinDate = req.query.date;
@@ -165,21 +165,6 @@ app.get("/api/current-reservation-status", (req, res) => {
   )
 })
 
-// app.get("/api/reviews", (req, res) => {
-//   const order = req.query.order;
-//   const orderBy = req.query.orderBy;
-
-//   db.query(
-//     `SELECT review.id, review.likes, review.rating, review.reviewText, users.userName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId ORDER BY review.${orderBy} ${order}`,
-//     (err, result) => {
-//       if (err) {
-//         res.send(err);
-//       } else {
-//         res.send(result);
-//       }
-//     }
-//   );
-// });
 
 app.post("/api/reservation-table", (req, res) => {
   const userId = req.session.userId;

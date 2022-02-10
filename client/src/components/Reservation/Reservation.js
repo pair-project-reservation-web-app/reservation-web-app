@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
 import Select from "react-select";
 import Axios from "axios";
 
 const Reservation = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedTable, setSelectedTable] = useState('');
+  const [selectedTable, setSelectedTable] = useState(6);
   const [selectedPartySize, setSelectedPartySize] = useState("");
   const [userData, setUserData] = useState("");
+
+  // grab data about the options selected by the user
+  const location = useLocation();
+  const { userDate, userTable, userTime } = location.state;
+
+
 
   const time = [
     { value: "11:00", label: "11:00" },
@@ -41,6 +48,11 @@ const Reservation = () => {
     { value: 9, label: 9 },
     { value: 10, label: 10 },
     { value: 11, label: 11 },
+    { value: 12, label: 12 },
+    { value: 13, label: 13 },
+    { value: 14, label: 14 },
+    { value: 15, label: 15 },
+
   ];
 
   const partySize = [
@@ -49,6 +61,9 @@ const Reservation = () => {
     { value: 6, label: 6 },
     { value: 8, label: 8 },
   ];
+
+  const index = table.findIndex((item) => item.value === userTable);
+
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
@@ -59,9 +74,7 @@ const Reservation = () => {
   };
 
   const userPartySizeHandler = (input) => {
-    console.log(input)
     setSelectedPartySize(input.value);
-    console.log(selectedPartySize)
   };
 
   const userTimeHandler = (input) => {
@@ -105,7 +118,7 @@ const Reservation = () => {
 
         <Select options={partySize} onChange={userPartySizeHandler} />
 
-        <Select options={table} onChange={userTableHandler}></Select>
+        <Select options={table} defaultValue={table[index]} onChange={userTableHandler}></Select>
 
 
         <button>ddd</button>
