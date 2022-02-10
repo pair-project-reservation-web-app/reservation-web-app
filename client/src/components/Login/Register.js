@@ -135,6 +135,9 @@ const Register = () => {
           onChange={usernameHandler}
           isValid={registerStatus.usernameValid}
         />
+        {registerStatus.usernameValid === false && (
+          <p className="warning">Please enter an Email address</p>
+        )}
         <Input
           type="password"
           label="password"
@@ -143,6 +146,9 @@ const Register = () => {
           onChange={passwordHandler}
           isValid={registerStatus.passwordValid}
         />
+        {registerStatus.passwordValid === false && (
+          <p className="warning">A password length must be over 6characters</p>
+        )}
         <Input
           type="password"
           label="Confirm password"
@@ -151,6 +157,9 @@ const Register = () => {
           onChange={confirmPasswordHandler}
           isValid={registerStatus.password2Valid}
         />
+        {registerStatus.password2Valid === false && (
+          <p className="warning">A confirm-password doesn't match</p>
+        )}
         <Input
           type="text"
           label="Contact number"
@@ -160,6 +169,9 @@ const Register = () => {
           isValid={registerStatus.contactValid}
           maxLength="11"
         />
+        {registerStatus.contactValid === false && (
+          <p className="warning">A contact number must be over 10 digits</p>
+        )}
         <Input
           type="text"
           label="Full name"
@@ -168,6 +180,9 @@ const Register = () => {
           onChange={fullnameHandler}
           isValid={registerStatus.fullnameValid}
         />
+        {registerStatus.fullnameValid === false && (
+          <p className="warning">Full name must be over two letters</p>
+        )}
         {/* <label>Username</label>
         <input type="text" ref={usernameReg} />
         <label>Password</label>

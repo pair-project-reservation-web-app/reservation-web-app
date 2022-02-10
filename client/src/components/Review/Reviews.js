@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Axios from "axios";
-import { useContext } from 'react';
-import AuthContext from '../../store/auth-context';
+import AuthContext from "../../store/auth-context";
 
-const Reviews = (props) => {
+const Reviews = () => {
   const [userReviews, setUserReviews] = useState([]);
   const [order, setOrder] = useState("DESC");
   const [orderBy, setOrderBy] = useState("rating");
-
+  //const [userLikes, setlikes] = useState([]);
   const ctx = useContext(AuthContext);
-  console.log(ctx)
-
 
   useEffect(() => {
     Axios.get(
@@ -18,12 +15,14 @@ const Reviews = (props) => {
     ).then((res) => {
       if (res.data) {
         setUserReviews(res.data);
+
         //console.log(res.data);
       }
     });
   }, [order, orderBy]);
 
   const starClickHandler = (e) => {
+    e.preventDefault();
     if (orderBy === "likes") {
       setOrderBy("rating");
     } else {
@@ -35,6 +34,7 @@ const Reviews = (props) => {
     }
   };
   const likesClickHander = (e) => {
+    e.preventDefault();
     if (orderBy === "rating") {
       setOrderBy("likes");
     } else {
@@ -54,6 +54,26 @@ const Reviews = (props) => {
     });
   };
 
+  const userLikeClickHandler = (e) => {
+    e.preventDefault();
+    const userId = ctx.userId;
+    const reviewId = e.target.getAttribute("data-key");
+    let likes = JSON.parse(e.target.getAttribute("data-key2"));
+    //console.log(userLikes);
+    if (!likes.some((el) => el === userId)) {
+      likes.push(userId);
+    } else if (likes.some((el) => el === userId)) {
+      const index = likes.indexOf(userId);
+      likes.splice(index, 1);
+    }
+
+    Axios.put("http://localhost:8080/api/reviews/like", {
+      array: JSON.stringify(likes),
+      id: reviewId,
+    }).then((response) => {
+      console.log(response);
+    });
+  };
   const deleteClickHandler = (e) => {
     console.log(e.target.getAttribute("data-key"));
     const reviewId = e.target.getAttribute("data-key");
@@ -68,14 +88,22 @@ const Reviews = (props) => {
     return (
       <div>
         <h1>Reviews</h1>
+        <button onClick={starClickHandler}>star</button>
+        <button onClick={likesClickHander}>like</button>
         {userReviews.map((content, index) => (
           <div key={index}>
             <h3 data-key={content.userID} onClick={userClickHandler}>
-              User Name: {content.userName}
+              User Name: {content.userFullName}
             </h3>
             <h3>Review: {content.reviewText}</h3>
-            <h3 onClick={starClickHandler}>Stars: {content.rating}</h3>
-            <h3 onClick={likesClickHander}>Likes: {content.likes}</h3>
+            <h3>Stars: {content.rating}</h3>
+            <h3
+              data-key={content.id}
+              data-key2={content.likes}
+              onClick={userLikeClickHandler}
+            >
+              Likes: {JSON.parse(content.likes).length}
+            </h3>
             <button
               data-key={content.id}
               disabled={ctx.userId === content.userID ? false : true}

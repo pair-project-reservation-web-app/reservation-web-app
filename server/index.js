@@ -199,7 +199,7 @@ app.post("/api/review", (req, res) => {
   const userId = req.session.userId;
   const rating = +req.body.rating;
   const text = req.body.text;
-  const likes = 0;
+  const likes = JSON.stringify([]);
 
   db.query(
     "INSERT INTO review (userId, rating, reviewText, likes) VALUES(?,?,?,?)",
@@ -219,7 +219,7 @@ app.get("/api/reviews", (req, res) => {
   const orderBy = req.query.orderBy;
 
   db.query(
-    `SELECT review.id, review.likes, review.rating, review.reviewText, users.userName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId ORDER BY review.${orderBy} ${order}`,
+    `SELECT review.id, review.likes, review.rating, review.reviewText, users.userFullName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId ORDER BY review.${orderBy} ${order}`,
     (err, result) => {
       if (err) {
         res.send(err);
@@ -230,11 +230,26 @@ app.get("/api/reviews", (req, res) => {
   );
 });
 
+app.put("/api/reviews/like", (req, res) => {
+  const array = req.body.array;
+  const id = req.body.id;
+  db.query(
+    `UPDATE review SET likes = ? WHERE (id = ?)`,
+    [array, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+      }
+    }
+  );
+});
+
 app.get("/api/reviews/:id", (req, res) => {
   const userId = req.params.id;
 
   db.query(
-    `SELECT review.id, review.likes, review.rating, review.reviewText, users.userName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId WHERE users.userId = ${userId} ORDER BY projectsm.review.rating DESC`,
+    `SELECT review.id, review.likes, review.rating, review.reviewText, users.userFullName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId WHERE users.userId = ${userId} ORDER BY projectsm.review.rating DESC`,
     (err, result) => {
       if (err) {
         res.send(err);
