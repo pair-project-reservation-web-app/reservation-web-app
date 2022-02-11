@@ -144,9 +144,9 @@ app.get("/api/current-reservation-status", (req, res) => {
   const dineinDate = req.query.date;
   const dineinTime = req.query.time;
   const dineinTimeEnd = req.query.timeEnd;
-  console.log("date", dineinDate);
-  console.log("time", dineinTime);
-  console.log("timeEnd", dineinTimeEnd);
+  // console.log("date", dineinDate);
+  // console.log("time", dineinTime);
+  // console.log("timeEnd", dineinTimeEnd);
 
   db.query(
     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
@@ -184,7 +184,7 @@ app.post("/api/reservation-table", (req, res) => {
     }
   );
 
-  console.log(userId, tableId, dineinDate, dineinTime);
+  //console.log(userId, tableId, dineinDate, dineinTime);
 });
 
 app.get("/api/reservation-status/:userId", (req, res) => {
@@ -234,9 +234,14 @@ app.post("/api/review", (req, res) => {
     [userId, rating, text, likes],
     (err, result) => {
       if (err) {
-        res.send(err);
+        if (err.errno === 1048) {
+          res.send("Please Login");
+        } else {
+          res.send("Please rate the Restaurant");
+        }
       } else {
-        res.send(result);
+        console.log(result);
+        res.send("Review updated successfully");
       }
     }
   );
@@ -295,7 +300,7 @@ app.delete("/api/reviews/:id", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.send(result);
+      res.send("Review deleted successfully");
     }
   });
 });
