@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
+import { useState, useEffect, Fragment } from "react";
+import { Link } from "react-router-dom";
 import Select from "react-select";
 import Axios from "axios";
-import styles from './Tables.module.css'
+import styles from "./Tables.module.css";
+
+import Modal from "../Layout/Modal";
 
 const Tables = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -11,6 +13,15 @@ const Tables = () => {
 
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
   const [userData, setUserData] = useState([]);
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [modalDisplay, setModalDisplay] = useState(false);
+
+  const displayHandler = (e) => {
+    e.preventDefault();
+    setModalDisplay(false);
+  };
+
   const tables = [
     { name: "table1", id: 1, partySize: 2 },
     { name: "table2", id: 2, partySize: 2 },
@@ -49,13 +60,20 @@ const Tables = () => {
   ];
 
   useEffect(() => {
-    Axios.get(`http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTime}&timeEnd=${selectedTimeEnd}`).then(
-      (response) => {
+    if (selectedTime !== "" && selectedTimeEnd !== "") {
+      console.log("in");
+      Axios.get(
+        `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTime}&timeEnd=${selectedTimeEnd}`
+      ).then((response) => {
         // need to add error handle or initial value for api call
-        // console.log(response.data)
-        setUserData(response.data);
-      }
-    );
+        if (typeof response.data === "string") {
+          setErrorMessage(response.data);
+          setModalDisplay(true);
+        } else {
+          setUserData(response.data);
+        }
+      });
+    }
 
     // console.log('updated')
   }, [selectedDate, selectedTime, selectedTimeEnd]);
@@ -69,7 +87,6 @@ const Tables = () => {
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
-
   };
 
   const userPartySizeHandler = (input) => {
@@ -83,7 +100,6 @@ const Tables = () => {
     const convertToInt = +hours;
     const dineinAfter = `${convertToInt + 2}:${min}`;
     const dineinBefore = `${convertToInt - 2}:${min}`;
-
 
     setSelectedTime(dineinBefore);
     setSelectedTimeEnd(dineinAfter);
@@ -120,58 +136,74 @@ const Tables = () => {
     //   }
 
     // });
-
   };
 
   const filterTables = (table, userData, selectedPartySize) => {
-    // console.log(userData)
+    //console.log(userData);
     if (userData.length > 0) {
-
-      if (selectedPartySize === '') {
-        return userData.some((item) => item.tableId === table.id)
+      if (selectedPartySize === "") {
+        return userData.some((item) => item.tableId === table.id);
       }
 
-      return userData.some((item) => item.tableId === table.id || table.partySize !== selectedPartySize
-      )
+      return userData.some(
+        (item) =>
+          item.tableId === table.id || table.partySize !== selectedPartySize
+      );
     } else {
       // console.log('no user data')
-      if (selectedPartySize === '') {
-        return false
+      if (selectedPartySize === "") {
+        return false;
       }
-      return table.partySize !== selectedPartySize
+      return table.partySize !== selectedPartySize;
     }
   };
 
   return (
-    <div>
-      <form onSubmit={submitHandler}>
-        <label htmlFor="reservationDate">Date</label>
-        <input type="date" onChange={reservationDateHandler} />
+    <Fragment>
+      <div>
+        <form onSubmit={submitHandler}>
+          <label htmlFor="reservationDate">Date</label>
+          <input type="date" onChange={reservationDateHandler} />
 
-        <Select options={time} onChange={userTimeHandler} />
+          <Select options={time} onChange={userTimeHandler} />
 
-        <Select options={partySize} onChange={userPartySizeHandler} />
-        {/* <button>Submit</button> */}
-      </form>
+          <Select options={partySize} onChange={userPartySizeHandler} />
+          {/* <button>Submit</button> */}
+        </form>
 
-      <div className={styles['table-container']}>
-        {tables.map((table, index) => (
-          <div
-            className={filterTables(table, userData, selectedPartySize) ? "unavailable" : "table"}
-            key={index}
-          >
-            <h3>{table.name}</h3>
-            <h3>{table.partySize}</h3>
-            <Link to="/booking-table" state={{
-              userDate: selectedDate,
-              userTime: selectedTime,
-              userTable: table.id,
-            }}>book</Link>
-            <button>check available time?</button>
-          </div>
-        ))}
+        <div className={styles["table-container"]}>
+          {tables.map((table, index) => (
+            <div
+              className={
+                filterTables(table, userData, selectedPartySize)
+                  ? "unavailable"
+                  : "table"
+              }
+              key={index}
+            >
+              <h3>{table.name}</h3>
+              <h3>{table.partySize}</h3>
+              <Link
+                to="/booking-table"
+                state={{
+                  userDate: selectedDate,
+                  userTime: selectedTime,
+                  userTable: table.id,
+                }}
+              >
+                book
+              </Link>
+              <button>check available time?</button>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      <Modal
+        display={modalDisplay}
+        displayHandler={displayHandler}
+        message={errorMessage}
+      />
+    </Fragment>
   );
 };
 
