@@ -57,10 +57,11 @@ function App() {
         value={{
           isLoggedIn: loginStatus,
           userId: userId,
+          userStatusHandler: userStatusHandler
         }}
       >
         <Router>
-          <Header onLogout={userStatusHandler} />
+          <Header />
           <main>
             <Routes>
               <Route path="/login" element={<Login onLogin={userStatusHandler} />} />

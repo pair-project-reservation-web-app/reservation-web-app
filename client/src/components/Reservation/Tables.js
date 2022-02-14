@@ -68,15 +68,19 @@ const Tables = () => {
 
   const bookingTable = (tableId, partySize, dineinDate, dineinTime) => {
 
-    Axios.post("http://localhost:8080/api/reservation-table", {
-      tableId,
-      partySize,
-      dineinDate,
-      dineinTime
-    }).then((res) => {
-      console.log(res.data)
-    })
+    if (partySize !== selectedPartySize) {
+      console.log(' wrong info')
+    } else {
 
+      Axios.post("http://localhost:8080/api/reservation-table", {
+        tableId,
+        partySize,
+        dineinDate,
+        dineinTime
+      }).then((res) => {
+        console.log(res.data)
+      })
+    }
   }
 
   const reservationDateHandler = (e) => {
@@ -155,7 +159,8 @@ const Tables = () => {
   };
 
   return (
-    <div>
+    <div className='wrapper'>
+      {/* form need to refactor this part (break apart from Table components? )  */}
       <form>
         <label htmlFor="reservationDate">Date</label>
         <input type="date" onChange={reservationDateHandler} />
@@ -169,13 +174,16 @@ const Tables = () => {
       <div className={styles['table-container']}>
         {tables.map((table, index) => (
           <div
-            className={filterTables(table, userData, selectedPartySize) ? "unavailable" : "table"}
+            className={`
+              ${styles.table}
+              ${filterTables(table, userData, selectedPartySize) ? styles.unavailable : ""}
+            `}
             key={index}
           >
             <h3>{table.name}</h3>
             <h3>{table.partySize}</h3>
 
-            <button onClick={bookingTable.bind(null, table.id, selectedPartySize, selectedDate, selectedTime)}>book</button>
+            <button onClick={bookingTable.bind(null, table.id, table.partySize, selectedDate, selectedTime)}>book</button>
             <button>check available time?</button>
           </div>
         ))}

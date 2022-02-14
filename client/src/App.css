@@ -231,23 +231,6 @@ p {
 }
 
 /* need to delete after create css moudles for every components */
-.table-container {
-  display: flex;
-}
-
-.table {
-  width: 150px;
-  height: 150px;
-  background-color: lightgreen;
-  margin-left: 1rem;
-}
-
-.unavailable {
-  background-color: lightcoral;
-  width: 150px;
-  height: 150px;
-  margin-left: 1rem;
-}
 
 .box {
   border: 1px solid red;
