@@ -153,6 +153,7 @@ app.get("/api/current-reservation-status", (req, res) => {
     [dineinDate, dineinTime, dineinTimeEnd],
     (err, result) => {
       if (err) {
+        console.log(err);
         res.send("Failed to bring the tables");
       } else {
         res.send(result);
