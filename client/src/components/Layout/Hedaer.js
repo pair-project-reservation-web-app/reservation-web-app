@@ -7,10 +7,7 @@ const Header = (props) => {
             <div className={styles.logo}>
                 Logo
             </div>
-
-            <Nav />
-            {/* {props.children} */}
-            {/* <Nav/> */}
+            <Nav onLogout={props.onLogout} />
         </header>
     )
 };

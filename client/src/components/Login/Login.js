@@ -1,108 +1,120 @@
-import { Fragment, useReducer } from "react";
-import styles from './Login.module.css';
+import { Fragment, useReducer, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./Login.module.css";
 import Axios from "axios";
-import Input from '../UI/Input/Input';
+import Input from "../UI/Input/Input";
+import Modal from "../Layout/Modal";
 
 const loginReducer = (state, action) => {
-
-  if (action.type === 'USER_EMAIL') {
+  if (action.type === "USER_EMAIL") {
     return {
+      ...state,
       email: action.value,
-      password: state.password,
-      emailIsValid: action.value.includes('@'),
-      passwordIsValid: state.passwordIsValid
-    }
+      emailIsValid: action.value.includes("@"),
+    };
   }
 
-  if (action.type === 'USER_PASSWORD') {
+  if (action.type === "USER_PASSWORD") {
     return {
-      email: state.email,
+      ...state,
       password: action.value,
-      emailIsValid: state.emailIsValid,
       passwordIsValid: action.value.trim().length > 6,
-    }
+    };
   }
 
   return {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     emailIsValid: false,
-    passwordIsValid: false
-  }
-}
-
+    passwordIsValid: false,
+  };
+};
 
 const Login = (props) => {
+  let navigate = useNavigate();
 
-  const [loginStatus, dispatchLogin] = useReducer(loginReducer,
-    {
-      email: '',
-      password: '',
-      emailIsValid: null,
-      passwordIsValid: null
-    });
+  const [loginStatus, dispatchLogin] = useReducer(loginReducer, {
+    email: "",
+    password: "",
+    emailIsValid: null,
+    passwordIsValid: null,
+  });
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [modalDisplay, setModalDisplay] = useState(false);
+
+  const displayHandler = (e) => {
+    e.preventDefault();
+    setModalDisplay(false);
+  };
   const userEmailHandler = (e) => {
-    dispatchLogin({ type: 'USER_EMAIL', value: e.target.value });
-  }
+    dispatchLogin({ type: "USER_EMAIL", value: e.target.value });
+  };
 
   const userPasswordHandler = (e) => {
-    dispatchLogin({ type: 'USER_PASSWORD', value: e.target.value })
-  }
-
+    dispatchLogin({ type: "USER_PASSWORD", value: e.target.value });
+  };
 
   const loginHandler = (e) => {
     e.preventDefault();
     Axios.post("http://localhost:8080/api/user/login", {
       username: loginStatus.email,
-      password: loginStatus.password
+      password: loginStatus.password,
     }).then((response) => {
       console.log(response);
       if (response.data.message) {
         //invalid
-        console.log(response.data.message);
+
+        setErrorMessage(response.data.message);
+        setModalDisplay(true);
         /*
         error handler needed here
         add a handler later
         */
       } else {
         //valid
-        props.onLogin(response.data.user, response.data.userId);
+        console.log(response.data.userId);
+        // props.onLogin(response.data.user, response.data.userId);
+        props.onLogin(true, response.data.userId);
+        navigate("/");
       }
     });
   };
 
   return (
     <Fragment>
-      <form className={styles['login-form']} onSubmit={loginHandler}>
+      <form className={styles["login-form"]} onSubmit={loginHandler}>
         <h1>Login</h1>
         <Input
-          type='email'
-          label='email'
-          placeholder='Email'
+          type="email"
+          label="email"
+          placeholder="Email"
           onChange={userEmailHandler}
           value={loginStatus.email}
           isValid={loginStatus.emailIsValid}
         />
         <Input
-          type='password'
-          label='password'
-          placeholder='Password'
+          type="password"
+          label="password"
+          placeholder="Password"
           onChange={userPasswordHandler}
           value={loginStatus.password}
           isValid={loginStatus.passwordIsValid}
         />
 
         <button type="submit"> Login </button>
-        <button>Register</button>
+        <Link to="/register">Register</Link>
       </form>
+      <Modal
+        display={modalDisplay}
+        displayHandler={displayHandler}
+        message={errorMessage}
+      />
     </Fragment>
   );
 };
 
 export default Login;
-
-
 
 // const Login = (props) => {
 //   const username = useRef();
@@ -142,4 +154,3 @@ export default Login;
 // }
 
 // export default Login;
-

@@ -1,17 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
+import AuthContext from '../../store/auth-context';
 
-const UserResStatus = ({ userId }) => {
+
+const UserResStatus = () => {
+
+  const ctx = useContext(AuthContext);
+
   const [currentStatus, setCurrentStatus] = useState([]);
 
   useEffect(() => {
-    Axios.get(`http://localhost:8080/api/reservation-status/${userId}`).then(
+    Axios.get(`http://localhost:8080/api/reservation-status/${ctx.userId}`).then(
       (response) => {
         //console.log(response.data)
         setCurrentStatus(response.data);
       }
     );
-  }, [userId]);
+  }, [ctx.userId]);
 
   const deleteReservation = (reservationId) => {
     Axios.delete(
@@ -26,7 +31,7 @@ const UserResStatus = ({ userId }) => {
       <h2>Current Reservation Status</h2>
 
       {currentStatus.map((item) => (
-        <div className="box">
+        <div className="box" key={item.tableId}>
           <h3>Date : {item.dineinDate}</h3>
           <h3>Time : {item.dineinTime}</h3>
           <h3>Table: {item.tableId}</h3>

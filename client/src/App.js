@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Axios from "axios";
-import Header from './components/Layout/Hedaer';
-import Footer from './components/Layout/Footer';
+import Header from "./components/Layout/Hedaer";
+import Footer from "./components/Layout/Footer";
 import Tables from "./components/Reservation/Tables";
 import Reservation from "./components/Reservation/Reservation";
 import UserResStatus from "./components/Reservation/UserResStatus";
@@ -11,8 +13,10 @@ import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import Logout from "./components/Login/Logout";
 
-import AuthContext from './store/auth-context';
+import AuthContext from "./store/auth-context";
 import "./App.css";
+// import PrivateRoute from "./route/PrivateRoute";
+// import PublicRoute from "./route/PublicRoute";
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -31,9 +35,6 @@ function App() {
     setLoginStatus(status);
     setUserId(id);
   };
-  /*
-  user logout, delete user session
-  */
 
   /*
   checking a user session exist to keep the user logged in when the web page is reloaded
@@ -41,7 +42,7 @@ function App() {
   useEffect(() => {
     Axios.get("http://localhost:8080/").then((response) => {
       if (response.data.loggedIn === true) {
-        console.log(response.data);
+        //console.log(response.data);
         setLoginStatus(response.data.user);
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
@@ -53,25 +54,45 @@ function App() {
 
   return (
     <div className="App">
-      {/* <AuthContext.Provider value={{
-        isLoggedIn: loginStatus
-      }}> */}
-      <Header userId={userId}>
-        {/* {!userId && <Register />} */}
-      </Header>
-      <main>
+      <AuthContext.Provider
+        value={{
+          isLoggedIn: loginStatus,
+          userId: userId,
+        }}
+      >
+        <Router>
+          <Header onLogout={userStatusHandler} />
+          <main>
+            <Routes>
+              <Route path="/login" element={<Login onLogin={userStatusHandler} />} />
+              <Route path="/register" element={<Register />} />
 
-        {!userId && <Login onLogin={userStatusHandler} />}
-        {userId && <Logout onLogout={userStatusHandler} />}
-        {userId && <Tables />}
-        {userId && <Reservation />}
-        {userId && <Review />}
-        {/* <Reviews userId={userId} />
-        <UserResStatus userId={userId} /> */}
-      </main>
+              {/* need to be re-direction by clicking the button where placed inside of table(showing currently available tables) component*/}
+              <Route path="/booking-table" element={<Reservation />} />
 
-      <Footer />
-      {/* </AuthContext.Provider> */}
+              <Route
+                path="/"
+                element={
+                  <div>
+                    <Tables />
+                    {loginStatus && (
+                      <>
+                        <UserResStatus />
+                        <Review />
+                        {/* <Reservation /> */}
+                      </>
+                    )}
+                    <Reviews />
+
+                  </div>
+                }
+              />
+            </Routes>
+          </main>
+
+          <Footer />
+        </Router>
+      </AuthContext.Provider>
     </div>
   );
 }
