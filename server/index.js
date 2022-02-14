@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
@@ -35,11 +36,16 @@ app.use(
 
 const db = mysql.createConnection({
   host: process.env.HOST,
-  // user: process.env.USER,
+  user: process.env.USER,
+  // user: 'sqluser',
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   user: 'sqluser'
 });
+
+//============
+// Resgister
+//============
 
 app.post("/api/user/register", (req, res) => {
   const username = req.body.username;
@@ -63,57 +69,19 @@ app.post("/api/user/register", (req, res) => {
 
 app.get("/", (req, res) => {
   if (req.session.user) {
-    res.send({ loggedIn: true, user: req.session.user });
+    res.send({
+      loggedIn: true,
+      user: req.session.user,
+      userId: req.session.userId,
+    });
   } else {
     res.send({ loggedIn: false });
   }
 });
 
-app.get("/api/user/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.redirect("/");
-  });
-});
-
-app.post("/api/reservation", (req, res) => {
-  const dineinDate = req.body.dineinDate;
-  const dineinTime = req.body.dineinTime;
-  const dineinTimeEnd = req.body.dineinTimeEnd;
-
-  db.query(
-    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime >= ? AND dineinTime < ?);",
-    [dineinDate, dineinTime, dineinTimeEnd],
-    (err, result) => {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(result);
-      }
-    }
-  );
-});
-
-app.post("/api/reservation-table", (req, res) => {
-  const userId = req.session.userId;
-  const tableId = req.body.tableId;
-  const dineinDate = req.body.dineinDate;
-  const dineinTime = req.body.dineinTime;
-
-  db.query(
-    "INSERT INTO reservations (userId, tableId, dineinDate, dineinTime) VALUES(?,?,?,?)",
-    [userId, tableId, dineinDate, dineinTime],
-    (err, result) => {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(`Reservation has been set on ${dineinDate} at ${dineinTime}`);
-      }
-    }
-  );
-
-  console.log(userId, tableId, dineinDate, dineinTime);
-});
-
+//===============
+// Login, Logout
+//===============
 app.post("/api/user/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -130,7 +98,8 @@ app.post("/api/user/login", (req, res) => {
           if (response) {
             req.session.user = result[0].userName;
             req.session.userId = result[0].userId;
-            res.send(req.session.user);
+            ///////////////// to get user-info //////////////////////////////
+            res.send(req.session);
           } else {
             res.send({ message: "Wrong username or password" });
           }
@@ -140,6 +109,200 @@ app.post("/api/user/login", (req, res) => {
       }
     }
   );
+});
+
+app.get("/api/user/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
+});
+//============
+// Reservation
+//============
+// checking available tables by date, time and party.
+// app.post("/api/reservation", (req, res) => {
+//   const dineinDate = req.body.dineinDate;
+//   const dineinTime = req.body.dineinTime;
+//   const dineinTimeEnd = req.body.dineinTimeEnd;
+//   // const partySize = req.body.partySize;
+
+//   db.query(
+//     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
+//     [dineinDate, dineinTime, dineinTimeEnd],
+//     (err, result) => {
+//       if (err) {
+//         console.log(err);
+//         res.send(err);
+//       } else {
+//         console.log(result)
+//         res.send(result);
+//       }
+//     }
+//   );
+// });
+
+app.get("/api/current-reservation-status", (req, res) => {
+  const dineinDate = req.query.date;
+  const dineinTime = req.query.time;
+  const dineinTimeEnd = req.query.timeEnd;
+  // console.log("date", dineinDate);
+  // console.log("time", dineinTime);
+  // console.log("timeEnd", dineinTimeEnd);
+
+  db.query(
+    "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
+    [dineinDate, dineinTime, dineinTimeEnd],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send("Failed to bring the tables");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/api/reservation-table", (req, res) => {
+  const userId = req.session.userId;
+  const tableId = req.body.tableId;
+  const dineinDate = req.body.dineinDate;
+  const dineinTime = req.body.dineinTime;
+  const partySize = req.body.partySize;
+
+  db.query(
+    "INSERT INTO reservations (userId, tableId, dineinDate, dineinTime, partySize) VALUES(?,?,?,?,?)",
+    [userId, tableId, dineinDate, dineinTime, partySize],
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(
+          `Reservation has been set on ${dineinDate} at ${dineinTime} table #${tableId}`
+        );
+      }
+    }
+  );
+
+  //console.log(userId, tableId, dineinDate, dineinTime);
+});
+
+app.get("/api/reservation-status/:userId", (req, res) => {
+  const userId = req.params.userId;
+
+  db.query(
+    "SELECT * FROM reservations WHERE userId = ?",
+    userId,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/api/reservation-cancel/:reservationId", (req, res) => {
+  const reservationId = req.params.reservationId;
+
+  db.query(
+    "DELETE FROM reservations WHERE Id = ?;",
+    reservationId,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+//============
+// Reviews
+//============
+
+app.post("/api/review", (req, res) => {
+  const userId = req.session.userId;
+  const rating = +req.body.rating;
+  const text = req.body.text;
+  const likes = JSON.stringify([]);
+
+  db.query(
+    "INSERT INTO review (userId, rating, reviewText, likes) VALUES(?,?,?,?)",
+    [userId, rating, text, likes],
+    (err, result) => {
+      if (err) {
+        if (err.errno === 1048) {
+          res.send("Please Login");
+        } else {
+          res.send("Please rate the Restaurant");
+        }
+      } else {
+        console.log(result);
+        res.send("Review updated successfully");
+      }
+    }
+  );
+});
+
+app.get("/api/reviews", (req, res) => {
+  const order = req.query.order;
+  const orderBy = req.query.orderBy;
+
+  db.query(
+    `SELECT review.id, review.likes, review.rating, review.reviewText, users.userFullName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId ORDER BY review.${orderBy} ${order}`,
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.put("/api/reviews/like", (req, res) => {
+  const array = req.body.array;
+  const id = req.body.id;
+  db.query(
+    `UPDATE review SET likes = ? WHERE (id = ?)`,
+    [array, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+      }
+    }
+  );
+});
+
+app.get("/api/reviews/:id", (req, res) => {
+  const userId = req.params.id;
+
+  db.query(
+    `SELECT review.id, review.likes, review.rating, review.reviewText, users.userFullName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId WHERE users.userId = ${userId} ORDER BY projectsm.review.rating DESC`,
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/api/reviews/:id", (req, res) => {
+  const reviewId = req.params.id;
+
+  db.query("DELETE FROM review WHERE id = ?;", reviewId, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("Review deleted successfully");
+    }
+  });
 });
 
 try {

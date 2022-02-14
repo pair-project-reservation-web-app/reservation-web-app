@@ -1,24 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
 import Select from "react-select";
 import Axios from "axios";
 
-const Tables = () => {
+const Reservation = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedChair, setSelectedChair] = useState("");
+  const [selectedTable, setSelectedTable] = useState(6);
+  const [selectedPartySize, setSelectedPartySize] = useState("");
+  const [userData, setUserData] = useState("");
 
-  const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
-  const [userData, setUserData] = useState([]);
-  const tables = [
-    { name: "table1", id: 0 },
-    { name: "table2", id: 1 },
-    { name: "table3", id: 2 },
-    { name: "table4", id: 3 },
-    { name: "table5", id: 4 },
-    { name: "table6", id: 5 },
-    { name: "table6", id: 6 },
-    { name: "table6", id: 7 },
-  ];
+  // grab data about the options selected by the user
+  const location = useLocation();
+  const { userDate, userTable, userTime } = location.state;
+
+
+
   const time = [
     { value: "11:00", label: "11:00" },
     { value: "11:30", label: "11:30" },
@@ -39,43 +36,49 @@ const Tables = () => {
     { value: "19:00", label: "19:00" },
   ];
 
-  const chair = [
+  const table = [
+    { value: 1, label: 1 },
+    { value: 2, label: 2 },
+    { value: 3, label: 3 },
+    { value: 4, label: 4 },
+    { value: 5, label: 5 },
+    { value: 6, label: 6 },
+    { value: 7, label: 7 },
+    { value: 8, label: 8 },
+    { value: 9, label: 9 },
+    { value: 10, label: 10 },
+    { value: 11, label: 11 },
+    { value: 12, label: 12 },
+    { value: 13, label: 13 },
+    { value: 14, label: 14 },
+    { value: 15, label: 15 },
+
+  ];
+
+  const partySize = [
     { value: 2, label: 2 },
     { value: 4, label: 4 },
+    { value: 6, label: 6 },
     { value: 8, label: 8 },
   ];
+
+  const index = table.findIndex((item) => item.value === userTable);
+
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
   };
 
-  const userChairHandler = (input) => {
-    setSelectedChair(input.value);
+  const userTableHandler = (input) => {
+    setSelectedTable(input.value);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    Axios.post("http://localhost:8080/api/reservation", {
-      dineinDate: selectedDate,
-      dineinTime: selectedTime,
-      dineinTimeEnd: selectedTimeEnd,
-    }).then((response) => {
-      console.log(response.data);
-      setUserData(response.data);
-    });
-    // console.log(selectedDate, selectedTime, selectedChair, selectedTimeEnd)
+  const userPartySizeHandler = (input) => {
+    setSelectedPartySize(input.value);
   };
-  // console.log(userData);
 
   const userTimeHandler = (input) => {
     setSelectedTime(input.value);
-    const time = input.value;
-
-    const [hours, min] = time.split(":");
-    const convertToInt = +hours;
-    const result = `${convertToInt + 2}:${min}`;
-
-    setSelectedTimeEnd(result);
 
     // let time = input.value
     // const [h, m] = time.split(':');
@@ -91,34 +94,39 @@ const Tables = () => {
     // console.log(result)
   };
 
-  const filterTables = (table, userData) => {
-    return userData.some((item) => item.tableId === table.id);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    Axios.post("http://localhost:8080/api/reservation-table", {
+      tableId: selectedTable,
+      partySize: selectedPartySize,
+      dineinDate: selectedDate,
+      dineinTime: selectedTime,
+    }).then((response) => {
+      console.log(response.data);
+      setUserData(response.data);
+    });
   };
 
   return (
     <div>
+      <h1>Add Reservation</h1>
       <form onSubmit={submitHandler}>
         <label htmlFor="reservationDate">Date</label>
         <input type="date" onChange={reservationDateHandler} />
 
         <Select options={time} onChange={userTimeHandler} />
 
-        <Select options={chair} onChange={userChairHandler} />
-        <button>Submit</button>
+        <Select options={partySize} onChange={userPartySizeHandler} />
+
+        <Select options={table} defaultValue={table[index]} onChange={userTableHandler}></Select>
+
+
+        <button>ddd</button>
       </form>
 
-      <div className="table-container">
-        {tables.map((table, index) => (
-          <div
-            className={filterTables(table, userData) ? "unavailable" : "table"}
-            key={index}
-          >
-            <h3>{table.name}</h3>
-          </div>
-        ))}
-      </div>
+      <h2>{userData}</h2>
     </div>
   );
 };
 
-export default Tables;
+export default Reservation;

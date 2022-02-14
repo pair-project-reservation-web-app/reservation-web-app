@@ -3,15 +3,19 @@
 }
 
 .table {
-  width: 100px;
-  height: 100px;
-  background-color: lightcoral;
+  width: 150px;
+  height: 150px;
+  background-color: lightgreen;
   margin-left: 1rem;
 }
 
 .unavailable {
-  background-color: red;
-  width: 100px;
-  height: 100px;
+  background-color: lightcoral;
+  width: 150px;
+  height: 150px;
   margin-left: 1rem;
+}
+
+.box {
+  border: 1px solid red;
 }

@@ -1,0 +1,13 @@
+/* need to be changed */
+
+nav ul {
+  /* width: 100%; */
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid red;
+}
+
+ul li {
+  width: 100px;
+}
