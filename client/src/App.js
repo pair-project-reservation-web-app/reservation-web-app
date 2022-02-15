@@ -11,6 +11,7 @@ import Review from "./components/Review/Review";
 import Reviews from "./components/Review/Reviews";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
+import NotFound from "./route/NotFound";
 import Logout from "./components/Login/Logout";
 
 import AuthContext from "./store/auth-context";
@@ -27,7 +28,7 @@ function App() {
   user register function. passing username, password, contact number and user full name
   to register api from input field and get response from register api
    */
-  const register = () => { };
+  const register = () => {};
   /*
   compare input username and password to database, set login status as username if matched
   */
@@ -64,12 +65,7 @@ function App() {
           <Header onLogout={userStatusHandler} />
           <main>
             <Routes>
-              <Route path="/login" element={<Login onLogin={userStatusHandler} />} />
-              <Route path="/register" element={<Register />} />
-
-              {/* need to be re-direction by clicking the button where placed inside of table(showing currently available tables) component*/}
-              <Route path="/booking-table" element={<Reservation />} />
-
+              <Route path="*" element={<NotFound />} />
               <Route
                 path="/"
                 element={
@@ -83,10 +79,17 @@ function App() {
                       </>
                     )}
                     <Reviews />
-
                   </div>
                 }
               />
+              <Route
+                path="/login"
+                element={<Login onLogin={userStatusHandler} />}
+              />
+              <Route path="/register" element={<Register />} />
+
+              {/* need to be re-direction by clicking the button where placed inside of table(showing currently available tables) component*/}
+              <Route path="/booking-table" element={<Reservation />} />
             </Routes>
           </main>
 

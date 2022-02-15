@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import Axios from "axios";
 import Input from "../UI/Input/Input";
-import Modal from "../Layout/Modal";
+import Modal from "../UI/Modal";
 
 const loginReducer = (state, action) => {
   if (action.type === "USER_EMAIL") {
@@ -61,8 +61,8 @@ const Login = (props) => {
       username: loginStatus.email,
       password: loginStatus.password,
     }).then((response) => {
-      console.log(response);
-      if (response.data.message) {
+      console.log("res", response);
+      if (!response.data.status) {
         //invalid
 
         setErrorMessage(response.data.message);
@@ -73,9 +73,9 @@ const Login = (props) => {
         */
       } else {
         //valid
-        console.log(response.data.userId);
+        console.log(response.data.message.userId);
         // props.onLogin(response.data.user, response.data.userId);
-        props.onLogin(true, response.data.userId);
+        props.onLogin(true, response.data.message.userId);
         navigate("/");
       }
     });

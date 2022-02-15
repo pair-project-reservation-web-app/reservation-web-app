@@ -69,6 +69,19 @@ const Register = () => {
     contactValid: null,
     fullnameValid: null,
   });
+  const [buttonDisable, setButtonDisable] = useState(false);
+
+  useEffect(() => {
+    if (
+      registerStatus.usernameValid &&
+      registerStatus.passwordValid &&
+      registerStatus.password2Valid &&
+      registerStatus.contactValid &&
+      registerStatus.fullnameValid
+    ) {
+      setButtonDisable(true);
+    }
+  }, [registerStatus]);
 
   const usernameHandler = (e) => {
     dispatchRegister({ type: "username", value: e.target.value });
@@ -98,30 +111,25 @@ const Register = () => {
 
   const registerHandler = (e) => {
     e.preventDefault();
-    if (
-      registerStatus.usernameValid &&
-      registerStatus.passwordValid &&
-      registerStatus.password2Valid &&
-      registerStatus.contactValid &&
-      registerStatus.fullnameValid
-    ) {
-      Axios.post("http://localhost:8080/api/user/register", {
-        username: registerStatus.username,
-        password: registerStatus.password,
-        contact: registerStatus.contact,
-        fullname: registerStatus.fullname,
-      }).then((response) => {
-        console.log(response.data.sqlMessage);
+
+    Axios.post("http://localhost:8080/api/user/register", {
+      username: registerStatus.username,
+      password: registerStatus.password,
+      contact: registerStatus.contact,
+      fullname: registerStatus.fullname,
+    }).then((response) => {
+      if (!response.data.status) {
+        console.log(response.data.message);
+      } else {
+        console.log(response.data.message);
         navigate("/login");
-      });
-    } else {
-      console.log("INPUT VALUES INVALID");
-    }
-    // const username = usernameReg.current.value;
-    // const password = passwordReg.current.value;
-    // const contact = contactReg.current.value;
-    // const fullname = userFullnameReg.current.value;
+      }
+    });
   };
+  // const username = usernameReg.current.value;
+  // const password = passwordReg.current.value;
+  // const contact = contactReg.current.value;
+  // const fullname = userFullnameReg.current.value;
 
   return (
     <Fragment>
@@ -191,7 +199,10 @@ const Register = () => {
         <input type="number" ref={contactReg} />
         <label>Full name</label>
         <input type="text" ref={userFullnameReg} /> */}
-        <button type="submit"> Register </button>
+        <button type="submit" disabled={!buttonDisable}>
+          {" "}
+          Register{" "}
+        </button>
       </form>
     </Fragment>
   );

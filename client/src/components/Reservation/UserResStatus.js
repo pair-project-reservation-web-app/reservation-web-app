@@ -1,28 +1,34 @@
 import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
-import AuthContext from '../../store/auth-context';
-
+import AuthContext from "../../store/auth-context";
 
 const UserResStatus = () => {
-
   const ctx = useContext(AuthContext);
 
   const [currentStatus, setCurrentStatus] = useState([]);
 
   useEffect(() => {
-    Axios.get(`http://localhost:8080/api/reservation-status/${ctx.userId}`).then(
-      (response) => {
-        //console.log(response.data)
-        setCurrentStatus(response.data);
+    Axios.get(
+      `http://localhost:8080/api/reservation-status/${ctx.userId}`
+    ).then((response) => {
+      //console.log(response.data)
+      if (!response.data.status) {
+        console.log(response.data.message);
+      } else {
+        setCurrentStatus(response.data.message);
       }
-    );
+    });
   }, [ctx.userId]);
 
   const deleteReservation = (reservationId) => {
     Axios.delete(
       `http://localhost:8080/api/reservation-cancel/${reservationId}`
     ).then((response) => {
-      console.log(response);
+      if (!response.data.status) {
+        console.log(response.data.message);
+      } else {
+        console.log(response.data.message);
+      }
     });
   };
 

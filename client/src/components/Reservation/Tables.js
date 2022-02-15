@@ -4,7 +4,7 @@ import Select from "react-select";
 import Axios from "axios";
 import styles from "./Tables.module.css";
 
-import Modal from "../Layout/Modal";
+import Modal from "../UI/Modal";
 
 const Tables = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -66,11 +66,11 @@ const Tables = () => {
         `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTime}&timeEnd=${selectedTimeEnd}`
       ).then((response) => {
         // need to add error handle or initial value for api call
-        if (typeof response.data === "string") {
-          setErrorMessage(response.data);
+        if (!response.data.status) {
+          setErrorMessage(response.data.message);
           setModalDisplay(true);
         } else {
-          setUserData(response.data);
+          setUserData(response.data.message);
         }
       });
     }
