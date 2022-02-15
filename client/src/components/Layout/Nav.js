@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Logout from '../Login/Logout';
 import AuthContext from '../../store/auth-context';
 import styles from './Nav.module.css';
-const Nav = (props) => {
+const Nav = () => {
 
     const ctx = useContext(AuthContext);
 
@@ -15,7 +15,7 @@ const Nav = (props) => {
                 </li>
                 <li>
                     {/* <Link to="/login" >Login</Link> */}
-                    {!ctx.isLoggedIn ? <Link to="/login">Login</Link> : <Logout onLogout={props.onLogout} />}
+                    {!ctx.isLoggedIn ? <Link to="/login">Login</Link> : <Logout onLogout={ctx.userStatusHandler} />}
                 </li>
             </ul>
         </nav>

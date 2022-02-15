@@ -1,10 +1,31 @@
 .table-container {
   display: flex;
   flex-wrap: wrap;
-  width: 70%;
+  width: 100%;
+  margin-top: 2rem;
+  padding: 2rem;
   border: 1px solid red;
+}
+
+/* form need to refactor this part (break apart from Table components? ) */
+form {
+  margin-top: 2rem;
 }
 
 .table-container div {
   margin: 5px;
+}
+
+.table {
+  width: 150px;
+  height: 150px;
+  background-color: lightgreen;
+  margin-left: 1rem;
+}
+
+.unavailable {
+  background-color: lightcoral;
+  width: 150px;
+  height: 150px;
+  margin-left: 1rem;
 }

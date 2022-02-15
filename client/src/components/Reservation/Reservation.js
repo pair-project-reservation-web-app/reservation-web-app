@@ -11,8 +11,8 @@ const Reservation = () => {
   const [userData, setUserData] = useState("");
 
   // grab data about the options selected by the user
-  const location = useLocation();
-  const { userDate, userTable, userTime } = location.state;
+  // const location = useLocation();
+  // const { userDate, userTable, userTime } = location.state;
 
   const time = [
     { value: "11:00", label: "11:00" },
@@ -58,8 +58,6 @@ const Reservation = () => {
     { value: 6, label: 6 },
     { value: 8, label: 8 },
   ];
-
-  const index = table.findIndex((item) => item.value === userTable);
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
@@ -117,11 +115,7 @@ const Reservation = () => {
 
         <Select options={partySize} onChange={userPartySizeHandler} />
 
-        <Select
-          options={table}
-          defaultValue={table[index]}
-          onChange={userTableHandler}
-        ></Select>
+        <Select options={table} onChange={userTableHandler}></Select>
 
         <button>ddd</button>
       </form>
