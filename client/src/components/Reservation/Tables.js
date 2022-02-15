@@ -183,6 +183,7 @@ const Tables = () => {
             <h3>{table.name}</h3>
             <h3>{table.partySize}</h3>
 
+            {/* need to be shown the confirm modal page when user click the book button */}
             <button onClick={bookingTable.bind(null, table.id, table.partySize, selectedDate, selectedTime)}>book</button>
             <button>check available time?</button>
           </div>
