@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, Fragment } from "react";
 import Axios from "axios";
 import AuthContext from "../../store/auth-context";
-import Modal from "../Layout/Modal";
+import Modal from "../UI/Modal";
 
 const Reviews = () => {
   const [userReviews, setUserReviews] = useState([]);
@@ -22,10 +22,11 @@ const Reviews = () => {
     Axios.get(
       `http://localhost:8080/api/reviews/?order=${order}&orderBy=${orderBy}`
     ).then((res) => {
-      if (res.data) {
-        setUserReviews(res.data);
-
+      if (!res.data.status) {
+        console.log(res.data.message);
         //console.log(res.data);
+      } else {
+        setUserReviews(res.data.message);
       }
     });
   }, [order, orderBy]);
@@ -57,8 +58,10 @@ const Reviews = () => {
   const userClickHandler = (e) => {
     const id = +e.target.getAttribute("data-key");
     Axios.get(`http://localhost:8080/api/reviews/${id}`).then((res) => {
-      if (res.data) {
-        setUserReviews(res.data);
+      if (res.data.status) {
+        setUserReviews(res.data.message);
+      } else {
+        console.log(res.data.message);
       }
     });
   };
@@ -80,7 +83,7 @@ const Reviews = () => {
       array: JSON.stringify(likes),
       id: reviewId,
     }).then((response) => {
-      console.log(response);
+      console.log(response.data.message);
     });
   };
   const deleteClickHandler = (e) => {
@@ -89,7 +92,7 @@ const Reviews = () => {
     Axios.delete(`http://localhost:8080/api/reviews/${reviewId}`).then(
       (response) => {
         //console.log(response);
-        setErrorMessage(response.data);
+        setErrorMessage(response.data.message);
         setModalDisplay(true);
       }
     );

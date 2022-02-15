@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import Axios from "axios";
 
@@ -11,10 +11,8 @@ const Reservation = () => {
   const [userData, setUserData] = useState("");
 
   // grab data about the options selected by the user
-  const location = useLocation();
-  const { userDate, userTable, userTime } = location.state;
-
-
+  // const location = useLocation();
+  // const { userDate, userTable, userTime } = location.state;
 
   const time = [
     { value: "11:00", label: "11:00" },
@@ -52,7 +50,6 @@ const Reservation = () => {
     { value: 13, label: 13 },
     { value: 14, label: 14 },
     { value: 15, label: 15 },
-
   ];
 
   const partySize = [
@@ -61,9 +58,6 @@ const Reservation = () => {
     { value: 6, label: 6 },
     { value: 8, label: 8 },
   ];
-
-  const index = table.findIndex((item) => item.value === userTable);
-
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
@@ -102,8 +96,11 @@ const Reservation = () => {
       dineinDate: selectedDate,
       dineinTime: selectedTime,
     }).then((response) => {
-      console.log(response.data);
-      setUserData(response.data);
+      if (!response.data.status) {
+        console.log(response.data.message);
+      } else {
+        setUserData(response.data.message);
+      }
     });
   };
 
@@ -118,8 +115,7 @@ const Reservation = () => {
 
         <Select options={partySize} onChange={userPartySizeHandler} />
 
-        <Select options={table} defaultValue={table[index]} onChange={userTableHandler}></Select>
-
+        <Select options={table} onChange={userTableHandler}></Select>
 
         <button>ddd</button>
       </form>

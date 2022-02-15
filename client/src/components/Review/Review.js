@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import Select from "react-select";
 import Axios from "axios";
-import Modal from "../Layout/Modal";
+import Modal from "../UI/Modal";
 
 const Review = () => {
   const [userRating, setUserRating] = useState();
@@ -36,9 +36,14 @@ const Review = () => {
       rating: userRating,
       text: userText,
     }).then((response) => {
-      console.log(response.data);
-      setErrorMessage(response.data);
-      setModalDisplay(true);
+      if (response.data.status) {
+        console.log(response.data.message);
+        setErrorMessage(response.data.message);
+        setModalDisplay(true);
+      } else {
+        setErrorMessage(response.data.message);
+        setModalDisplay(true);
+      }
     });
   };
 
