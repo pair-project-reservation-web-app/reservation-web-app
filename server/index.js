@@ -128,7 +128,7 @@ app.get("/api/current-reservation-status", (req, res) => {
   const dineinDate = req.query.date;
   const dineinTime = req.query.time;
   const dineinTimeEnd = req.query.timeEnd;
-  // console.log("date", dineinDate);
+  //console.log("date", dineinDate);
   // console.log("time", dineinTime);
   // console.log("timeEnd", dineinTimeEnd);
 

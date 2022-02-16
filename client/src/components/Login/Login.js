@@ -1,9 +1,10 @@
-import { Fragment, useReducer, useState } from "react";
+import { Fragment, useReducer, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import Axios from "axios";
 import Input from "../UI/Input/Input";
 import Modal from "../UI/Modal";
+import AuthContext from "../../store/auth-context";
 
 const loginReducer = (state, action) => {
   if (action.type === "USER_EMAIL") {
@@ -40,13 +41,8 @@ const Login = (props) => {
     passwordIsValid: null,
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalDisplay, setModalDisplay] = useState(false);
+  const ctx = useContext(AuthContext);
 
-  const displayHandler = (e) => {
-    e.preventDefault();
-    setModalDisplay(false);
-  };
   const userEmailHandler = (e) => {
     dispatchLogin({ type: "USER_EMAIL", value: e.target.value });
   };
@@ -61,19 +57,15 @@ const Login = (props) => {
       username: loginStatus.email,
       password: loginStatus.password,
     }).then((response) => {
-      console.log("res", response);
       if (!response.data.status) {
         //invalid
-
-        setErrorMessage(response.data.message);
-        setModalDisplay(true);
+        ctx.setModalHandler(response.data.message);
         /*
         error handler needed here
         add a handler later
         */
       } else {
         //valid
-        console.log(response.data.message.userId);
         // props.onLogin(response.data.user, response.data.userId);
         props.onLogin(true, response.data.message.userId);
         navigate("/");
@@ -105,11 +97,6 @@ const Login = (props) => {
         <button type="submit"> Login </button>
         <Link to="/register">Register</Link>
       </form>
-      <Modal
-        display={modalDisplay}
-        displayHandler={displayHandler}
-        message={errorMessage}
-      />
     </Fragment>
   );
 };

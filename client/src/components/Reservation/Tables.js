@@ -1,25 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Select from "react-select";
 import Axios from "axios";
+import AuthContext from "../../store/auth-context";
 import styles from "./Tables.module.css";
 
-import Modal from "../UI/Modal";
-
 const Tables = () => {
-  const [selectedDate, setSelectedDate] = useState("");
+  // today.getFullYear() +
+  // "-" +
+  // parseInt(today.getMonth() + 1) +
+  // "-" +
+  // today.getDate()
+  const today = new Date().toISOString().split("T")[0];
+
+  const [selectedDate, setSelectedDate] = useState(today);
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedPartySize, setSelectedPartySize] = useState("");
   const [selectedTimeBefore, setSelectedTimeBefore] = useState("");
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
   const [userData, setUserData] = useState([]);
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalDisplay, setModalDisplay] = useState(false);
-
-  const displayHandler = (e) => {
-    e.preventDefault();
-    setModalDisplay(false);
-  };
+  const ctx = useContext(AuthContext);
 
   const tables = [
     { name: "table1", id: 1, partySize: 2 },
@@ -72,8 +72,8 @@ const Tables = () => {
       ).then((response) => {
         // need to add error handle or initial value for api call
         if (!response.data.status) {
-          setErrorMessage(response.data.message);
-          setModalDisplay(true);
+          //console.log(today);
+          ctx.setModalHandler(response.data.message);
         } else {
           setUserData(response.data.message);
         }
@@ -94,7 +94,11 @@ const Tables = () => {
         dineinDate,
         dineinTime,
       }).then((res) => {
-        console.log(res.data);
+        if (!res.data.status) {
+          ctx.setModalHandler(res.data.message);
+        } else {
+          ctx.setModalHandler("Booked!");
+        }
       });
     }
   };
@@ -179,7 +183,11 @@ const Tables = () => {
       {/* form need to refactor this part (break apart from Table components? )  */}
       <form>
         <label htmlFor="reservationDate">Date</label>
-        <input type="date" onChange={reservationDateHandler} />
+        <input
+          type="date"
+          defaultValue={today}
+          onChange={reservationDateHandler}
+        />
 
         <Select options={time} onChange={userTimeHandler} />
 
@@ -219,11 +227,6 @@ const Tables = () => {
           </div>
         ))}
       </div>
-      <Modal
-        display={modalDisplay}
-        displayHandler={displayHandler}
-        message={errorMessage}
-      />
     </div>
   );
 };

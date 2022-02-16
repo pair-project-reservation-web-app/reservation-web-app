@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import Axios from "axios";
+import AuthContext from "../../store/auth-context";
 
 const Reservation = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -10,6 +11,7 @@ const Reservation = () => {
   const [selectedPartySize, setSelectedPartySize] = useState("");
   const [userData, setUserData] = useState("");
 
+  const ctx = useContext(AuthContext);
   // grab data about the options selected by the user
   // const location = useLocation();
   // const { userDate, userTable, userTime } = location.state;
@@ -97,7 +99,7 @@ const Reservation = () => {
       dineinTime: selectedTime,
     }).then((response) => {
       if (!response.data.status) {
-        console.log(response.data.message);
+        ctx.setModalHandler(response.data.message);
       } else {
         setUserData(response.data.message);
       }

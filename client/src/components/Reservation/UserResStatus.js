@@ -13,7 +13,7 @@ const UserResStatus = () => {
     ).then((response) => {
       //console.log(response.data)
       if (!response.data.status) {
-        console.log(response.data.message);
+        ctx.setModalHandler(response.data.message);
       } else {
         setCurrentStatus(response.data.message);
       }
@@ -25,9 +25,9 @@ const UserResStatus = () => {
       `http://localhost:8080/api/reservation-cancel/${reservationId}`
     ).then((response) => {
       if (!response.data.status) {
-        console.log(response.data.message);
+        ctx.setModalHandler(response.data.message);
       } else {
-        console.log(response.data.message);
+        ctx.setModalHandler("Reservation canceled");
       }
     });
   };
