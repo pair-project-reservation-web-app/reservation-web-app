@@ -1,0 +1,13 @@
+.table {
+  width: 150px;
+  height: 150px;
+  background-color: lightgreen;
+  margin: 1rem;
+}
+
+.unavailable {
+  background-color: lightcoral;
+  width: 150px;
+  height: 150px;
+  margin-left: 1rem;
+}

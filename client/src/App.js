@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Axios from "axios";
@@ -70,7 +70,7 @@ function App() {
               <Route
                 path="/"
                 element={
-                  <div>
+                  <React.Fragment>
                     <Tables />
                     {loginStatus && (
                       <>
@@ -80,7 +80,7 @@ function App() {
                     )}
                     <Reviews />
 
-                  </div>
+                  </React.Fragment>
                 }
               />
             </Routes>

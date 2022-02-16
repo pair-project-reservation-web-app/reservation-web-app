@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import styles from './Reservation.module.css';
+import styles from './ReservationModal.module.css';
 
 const Backdrop = (props) => {
   return (
