@@ -158,7 +158,6 @@ app.post("/api/reservation-table", (req, res) => {
     [userId, tableId, dineinDate, dineinTime, partySize],
     (err, result) => {
       if (err) {
-        console.log('error same value');
         res.send(err);
       } else {
         res.send(`Reservation has been set on ${dineinDate} at ${dineinTime} table #${tableId}`);
