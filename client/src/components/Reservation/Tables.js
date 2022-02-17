@@ -2,10 +2,10 @@ import { useState, useEffect, useContext } from "react";
 import Select from "react-select";
 import TableIcon from "../UI/TableIcon/TableIcon";
 import Axios from "axios";
-import Reservation from './ReservationModal';
+import ReservationModal from "./ReservationModal";
 import AuthContext from "../../store/auth-context";
 // import Table from './Table';
-import styles from './Tables.module.css';
+import styles from "./Tables.module.css";
 
 const Tables = () => {
   // today.getFullYear() +
@@ -69,27 +69,22 @@ const Tables = () => {
     { value: 4, label: 4 },
     { value: 6, label: 6 },
     { value: 8, label: 8 },
-
   ];
 
-  useEffect(
-    () => {
-      Axios.get(
-        `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`
-      ).then((response) => {
-        // need to add error handle or initial value for api call
-        if (!response.data.status) {
-          ctx.setModalHandler(response.data.message);
-        } else {
-
-          setReservationList(response.data.message);
-        }
+  useEffect(() => {
+    Axios.get(
+      `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`
+    ).then((response) => {
+      // need to add error handle or initial value for api call
+      if (!response.data.status) {
+        ctx.setModalHandler(response.data.message);
+      } else {
+        setReservationList(response.data.message);
       }
-      );
-    }, [selectedDate, selectedTimeBefore, selectedTimeEnd, bookingModal, ctx]);
+    });
+  }, [selectedDate, selectedTimeBefore, selectedTimeEnd, bookingModal, ctx]);
 
   const bookingTable = (tableId, partySize, dineinDate, dineinTime) => {
-
     // if (partySize !== selectedPartySize) {
     //   console.log(' wrong info')
     // } else {
@@ -100,21 +95,18 @@ const Tables = () => {
       tableId,
       partySize,
       dineinDate,
-      dineinTime
+      dineinTime,
     }).then((res) => {
-
       if (!res.data.status) {
         ctx.setModalHandler(res.data.message);
       } else {
-
         // ??
         ctx.setModalHandler("Booked!");
 
-        setBookingModal(false)
+        setBookingModal(false);
       }
-    })
-  }
-
+    });
+  };
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
@@ -152,16 +144,17 @@ const Tables = () => {
 
   const filterTables = (table, reservationList, selectedPartySize) => {
     if (reservationList.length > 0) {
-
-      if (selectedPartySize === '') {
-        return reservationList.some((item) => item.tableId === table.id)
+      if (selectedPartySize === "") {
+        return reservationList.some((item) => item.tableId === table.id);
       }
 
-      return reservationList.some((item) => item.tableId === table.id || table.partySize !== selectedPartySize
-      )
+      return reservationList.some(
+        (item) =>
+          item.tableId === table.id || table.partySize !== selectedPartySize
+      );
     } else {
-      if (selectedPartySize === '') {
-        return false
+      if (selectedPartySize === "") {
+        return false;
       }
       return table.partySize !== selectedPartySize;
     }
@@ -173,27 +166,30 @@ const Tables = () => {
       tableName: table.name,
       partySize: table.partySize,
       date,
-      time
-    }
+      time,
+    };
     console.log(table);
     setModalData(userData);
     setBookingModal(true);
-  }
+  };
 
   return (
     <>
-      <div className='wrapper'>
+      <div className="wrapper">
         {/* form need to refactor (break apart from Table components? )  */}
         <form>
           {/* Do we need submit button? */}
           <label htmlFor="reservationDate">Date</label>
-          <input type="date" defaultValue={today} onChange={reservationDateHandler} />
+          <input
+            type="date"
+            defaultValue={today}
+            onChange={reservationDateHandler}
+          />
           <Select options={time} onChange={userTimeHandler} />
           <Select options={partySize} onChange={userPartySizeHandler} />
         </form>
 
-        <ul className={styles['table-container']}>
-
+        <ul className={styles["table-container"]}>
           {/* {tables.map(table => <Table
             key={table.id}
             table={table}
@@ -205,9 +201,14 @@ const Tables = () => {
           />)} */}
 
           {tables.map((table, index) => (
-            <li className={`
+            <li
+              className={`
               ${styles.table}
-              ${filterTables(table, reservationList, selectedPartySize) ? styles.unavailable : ""}
+              ${
+                filterTables(table, reservationList, selectedPartySize)
+                  ? styles.unavailable
+                  : ""
+              }
             `}
               key={index}
             >
@@ -216,24 +217,44 @@ const Tables = () => {
 
               {<TableIcon customers={table.partySize} />}
 
-
               {!filterTables(table, reservationList, selectedPartySize) &&
                 selectedDate &&
-                selectedTime && <button onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>book</button>}
-              {filterTables(table, reservationList, selectedPartySize) && <button>check available time?</button>}
+                selectedTime && (
+                  <button
+                    onClick={modalHandler.bind(
+                      null,
+                      table,
+                      selectedDate,
+                      selectedTime
+                    )}
+                  >
+                    book
+                  </button>
+                )}
+              {filterTables(table, reservationList, selectedPartySize) && (
+                <button>check available time?</button>
+              )}
             </li>
           ))}
         </ul>
       </div>
 
-      {bookingModal && <Reservation
-        tableName={modalData.tableName}
-        date={modalData.date}
-        time={modalData.time}
-        size={modalData.partySize}
-        bookingTable={bookingTable.bind(null, modalData.id, modalData.partySize, modalData.date, modalData.time)}
-        modalHandler={setBookingModal}
-      />}
+      {bookingModal && (
+        <ReservationModal
+          tableName={modalData.tableName}
+          date={modalData.date}
+          time={modalData.time}
+          size={modalData.partySize}
+          bookingTable={bookingTable.bind(
+            null,
+            modalData.id,
+            modalData.partySize,
+            modalData.date,
+            modalData.time
+          )}
+          modalHandler={setBookingModal}
+        />
+      )}
     </>
   );
 };

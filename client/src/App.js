@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Axios from "axios";
@@ -13,7 +13,7 @@ import Reviews from "./components/Review/Reviews";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import NotFound from "./route/NotFound";
-import Reservation from "./components/Reservation/Reservation";
+//import Reservation from "./components/Reservation/Reservation";
 
 import AuthContext from "./store/auth-context";
 import "./App.css";
@@ -23,7 +23,6 @@ function App() {
   const [userId, setUserId] = useState(null);
 
   const [modalMessage, setModalMessage] = useState();
-  //const [modalDisplay, setModalDisplay] = useState(false);
 
   Axios.defaults.withCredentials = true;
   /*
@@ -46,7 +45,6 @@ function App() {
 
   const setModalHandler = (errorMessage) => {
     setModalMessage(errorMessage);
-    //setModalDisplay(true);
   };
 
   /*
@@ -72,9 +70,7 @@ function App() {
           isLoggedIn: loginStatus,
           userId,
           userStatusHandler,
-          modalMessage,
           setModalHandler,
-
         }}
       >
         <Router>
@@ -94,7 +90,6 @@ function App() {
                       </>
                     )}
                     <Reviews />
-
                   </React.Fragment>
                 }
               />
@@ -105,14 +100,10 @@ function App() {
               <Route path="/register" element={<Register />} />
 
               {/* need to be re-direction by clicking the button where placed inside of table(showing currently available tables) component*/}
-              <Route path="/booking-table" element={<Reservation />} />
+              {/* <Route path="/booking-table" element={<Reservation />} /> */}
             </Routes>
             {modalMessage && (
-              <Modal
-                //display={modalDisplay}
-                displayHandler={displayHandler}
-                message={modalMessage}
-              />
+              <Modal displayHandler={displayHandler} message={modalMessage} />
             )}
           </main>
 
