@@ -5,34 +5,48 @@ import Axios from "axios";
 import Header from "./components/Layout/Hedaer";
 import Footer from "./components/Layout/Footer";
 import Tables from "./components/Reservation/Tables";
+import Modal from "./components/UI/Modal";
 
 import UserResStatus from "./components/Reservation/UserResStatus";
 import Review from "./components/Review/Review";
 import Reviews from "./components/Review/Reviews";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
-
+import NotFound from "./route/NotFound";
+import Reservation from "./components/Reservation/Reservation";
 
 import AuthContext from "./store/auth-context";
 import "./App.css";
-
 
 function App() {
   const [loginStatus, setLoginStatus] = useState(false);
   const [userId, setUserId] = useState(null);
 
+  const [modalMessage, setModalMessage] = useState();
+  //const [modalDisplay, setModalDisplay] = useState(false);
+
   Axios.defaults.withCredentials = true;
   /*
   user register function. passing username, password, contact number and user full name
   to register api from input field and get response from register api
-   */
-  const register = () => { };
-  /*
-  compare input username and password to database, set login status as username if matched
   */
+  // const register = () => { };
+  /*
+ compare input username and password to database, set login status as username if matched
+ */
   const userStatusHandler = (status, id) => {
     setLoginStatus(status);
     setUserId(id);
+  };
+
+  const displayHandler = (e) => {
+    e.preventDefault();
+    setModalMessage(null);
+  };
+
+  const setModalHandler = (errorMessage) => {
+    setModalMessage(errorMessage);
+    //setModalDisplay(true);
   };
 
   /*
@@ -46,7 +60,7 @@ function App() {
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {
-        console.log("no logged in");
+        //console.log("no logged in");
       }
     });
   }, [userId, loginStatus]);
@@ -56,17 +70,18 @@ function App() {
       <AuthContext.Provider
         value={{
           isLoggedIn: loginStatus,
-          userId: userId,
-          userStatusHandler: userStatusHandler
+          userId,
+          userStatusHandler,
+          modalMessage,
+          setModalHandler,
+
         }}
       >
         <Router>
           <Header />
           <main>
             <Routes>
-              <Route path="/login" element={<Login onLogin={userStatusHandler} />} />
-              <Route path="/register" element={<Register />} />
-
+              <Route path="*" element={<NotFound />} />
               <Route
                 path="/"
                 element={
@@ -83,7 +98,22 @@ function App() {
                   </React.Fragment>
                 }
               />
+              <Route
+                path="/login"
+                element={<Login onLogin={userStatusHandler} />}
+              />
+              <Route path="/register" element={<Register />} />
+
+              {/* need to be re-direction by clicking the button where placed inside of table(showing currently available tables) component*/}
+              <Route path="/booking-table" element={<Reservation />} />
             </Routes>
+            {modalMessage && (
+              <Modal
+                //display={modalDisplay}
+                displayHandler={displayHandler}
+                message={modalMessage}
+              />
+            )}
           </main>
 
           <Footer />

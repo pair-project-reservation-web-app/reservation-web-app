@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 import Select from "react-select";
 import Axios from "axios";
+import AuthContext from "../../store/auth-context";
 
 const Review = () => {
   const [userRating, setUserRating] = useState();
   const [userText, setUserText] = useState("");
+
+  const ctx = useContext(AuthContext);
 
   const ratings = [
     { value: 1, label: 1 },
@@ -28,20 +31,26 @@ const Review = () => {
       rating: userRating,
       text: userText,
     }).then((response) => {
-      console.log(response.data);
+      if (response.data.status) {
+        ctx.setModalHandler(response.data.message);
+      } else {
+        ctx.setModalHandler(response.data.message);
+      }
     });
   };
 
   return (
-    <div>
-      <form onSubmit={submitHandler}>
-        <label>Rating starts</label>
-        <Select options={ratings} onChange={ratingHandler} />
-        <label>Comment</label>
-        <textarea onChange={textAreaHandler}></textarea>
-        <button>add</button>
-      </form>
-    </div>
+    <Fragment>
+      <div>
+        <form onSubmit={submitHandler}>
+          <label>Rating starts</label>
+          <Select options={ratings} onChange={ratingHandler} />
+          <label>Comment</label>
+          <textarea onChange={textAreaHandler}></textarea>
+          <button>add</button>
+        </form>
+      </div>
+    </Fragment>
   );
 };
 

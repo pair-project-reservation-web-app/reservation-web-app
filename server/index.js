@@ -60,7 +60,11 @@ app.post("/api/user/register", (req, res) => {
       "INSERT INTO users (userName, userPassword, userContact, userFullname) VALUES (?,?,?,?)",
       [username, hash, contact, fullname],
       (err, result) => {
-        res.send(err);
+        if (err) {
+          res.send({ status: false, message: err.sqlMessage });
+        } else {
+          res.send({ status: true, message: "Registered" });
+        }
       }
     );
   });
@@ -98,13 +102,13 @@ app.post("/api/user/login", (req, res) => {
             req.session.user = result[0].userName;
             req.session.userId = result[0].userId;
             ///////////////// to get user-info //////////////////////////////
-            res.send(req.session);
+            res.send({ status: true, message: req.session });
           } else {
-            res.send({ message: "Wrong username or password" });
+            res.send({ status: false, message: "Wrong username or password" });
           }
         });
       } else {
-        res.send({ message: "User does not exist" });
+        res.send({ status: false, message: "User does not exist" });
       }
     }
   );
@@ -124,27 +128,22 @@ app.get("/api/current-reservation-status", (req, res) => {
   const dineinDate = req.query.date;
   const dineinTime = req.query.time;
   const dineinTimeEnd = req.query.timeEnd;
-  console.log('date', dineinDate)
-  console.log('time', dineinTime)
-  console.log('timeEnd', dineinTimeEnd)
-
-
+  //console.log("date", dineinDate);
+  // console.log("time", dineinTime);
+  // console.log("timeEnd", dineinTimeEnd);
 
   db.query(
     "SELECT * FROM reservations WHERE dineinDate = ? AND (dineinTime > ? AND dineinTime < ?);",
     [dineinDate, dineinTime, dineinTimeEnd],
     (err, result) => {
       if (err) {
-        console.log(err);
-        res.send(err);
+        res.send({ status: false, message: "Failed to bring the tables" });
       } else {
-        console.log(result)
-        res.send(result);
+        res.send({ status: true, message: result });
       }
     }
-  )
-})
-
+  );
+});
 
 app.post("/api/reservation-table", (req, res) => {
   const userId = req.session.userId;
@@ -158,14 +157,17 @@ app.post("/api/reservation-table", (req, res) => {
     [userId, tableId, dineinDate, dineinTime, partySize],
     (err, result) => {
       if (err) {
-        res.send(err);
+        res.send({ status: false, message: err.sqlMessage });
       } else {
-        res.send(`Reservation has been set on ${dineinDate} at ${dineinTime} table #${tableId}`);
+        res.send({
+          status: true,
+          message: `Reservation has been set on ${dineinDate} at ${dineinTime} table #${tableId}`,
+        });
       }
     }
   );
 
-  console.log(userId, tableId, dineinDate, dineinTime);
+  //console.log(userId, tableId, dineinDate, dineinTime);
 });
 
 app.get("/api/reservation-status/:userId", (req, res) => {
@@ -176,9 +178,9 @@ app.get("/api/reservation-status/:userId", (req, res) => {
     userId,
     (err, result) => {
       if (err) {
-        console.log(err);
+        res.send({ status: false, message: err.sqlMessage });
       } else {
-        res.send(result);
+        res.send({ status: true, message: result });
       }
     }
   );
@@ -193,8 +195,9 @@ app.delete("/api/reservation-cancel/:reservationId", (req, res) => {
     (err, result) => {
       if (err) {
         console.log(err);
+        res.send({ status: false, message: err.sqlMessage });
       } else {
-        res.send(result);
+        res.send({ status: true, message: result });
       }
     }
   );
@@ -215,9 +218,13 @@ app.post("/api/review", (req, res) => {
     [userId, rating, text, likes],
     (err, result) => {
       if (err) {
-        res.send(err);
+        if (err.errno === 1048) {
+          res.send({ status: false, message: "Please Login" });
+        } else {
+          res.send({ status: false, message: "Please rate the Restaurant" });
+        }
       } else {
-        res.send(result);
+        res.send({ status: true, message: "Review updated successfully" });
       }
     }
   );
@@ -231,9 +238,9 @@ app.get("/api/reviews", (req, res) => {
     `SELECT review.id, review.likes, review.rating, review.reviewText, users.userFullName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId ORDER BY review.${orderBy} ${order}`,
     (err, result) => {
       if (err) {
-        res.send(err);
+        res.send({ status: false, message: err.sqlMessage });
       } else {
-        res.send(result);
+        res.send({ status: true, message: result });
       }
     }
   );
@@ -247,8 +254,9 @@ app.put("/api/reviews/like", (req, res) => {
     [array, id],
     (err, result) => {
       if (err) {
-        console.log(err);
+        res.send({ status: false, message: err.sqlMessage });
       } else {
+        res.send({ status: true, message: result });
       }
     }
   );
@@ -261,9 +269,9 @@ app.get("/api/reviews/:id", (req, res) => {
     `SELECT review.id, review.likes, review.rating, review.reviewText, users.userFullName, review.userID FROM review LEFT JOIN users ON review.userId = users.userId WHERE users.userId = ${userId} ORDER BY projectsm.review.rating DESC`,
     (err, result) => {
       if (err) {
-        res.send(err);
+        res.send({ status: false, message: err.sqlMessage });
       } else {
-        res.send(result);
+        res.send({ status: true, message: result });
       }
     }
   );
@@ -274,9 +282,9 @@ app.delete("/api/reviews/:id", (req, res) => {
 
   db.query("DELETE FROM review WHERE id = ?;", reviewId, (err, result) => {
     if (err) {
-      console.log(err);
+      res.send({ status: false, message: err.sqlMessage });
     } else {
-      res.send(result);
+      res.send({ status: true, message: "Review deleted successfully" });
     }
   });
 });

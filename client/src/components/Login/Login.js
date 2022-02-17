@@ -1,97 +1,94 @@
-import { Fragment, useReducer } from "react";
-import { Link, useNavigate } from 'react-router-dom'
-import styles from './Login.module.css';
+import { Fragment, useReducer, useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./Login.module.css";
 import Axios from "axios";
-import Input from '../UI/Input/Input';
+import Input from "../UI/Input/Input";
+import Modal from "../UI/Modal";
+import AuthContext from "../../store/auth-context";
 
 const loginReducer = (state, action) => {
-
-  if (action.type === 'USER_EMAIL') {
+  if (action.type === "USER_EMAIL") {
     return {
       ...state,
       email: action.value,
-      emailIsValid: action.value.includes('@')
-    }
+      emailIsValid: action.value.includes("@"),
+    };
   }
 
-  if (action.type === 'USER_PASSWORD') {
+  if (action.type === "USER_PASSWORD") {
     return {
       ...state,
       password: action.value,
       passwordIsValid: action.value.trim().length > 6,
-    }
+    };
   }
 
   return {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     emailIsValid: false,
-    passwordIsValid: false
-  }
-}
-
+    passwordIsValid: false,
+  };
+};
 
 const Login = (props) => {
   let navigate = useNavigate();
 
+  const [loginStatus, dispatchLogin] = useReducer(loginReducer, {
+    email: "",
+    password: "",
+    emailIsValid: null,
+    passwordIsValid: null,
+  });
 
-  const [loginStatus, dispatchLogin] = useReducer(loginReducer,
-    {
-      email: '',
-      password: '',
-      emailIsValid: null,
-      passwordIsValid: null
-    });
+  const ctx = useContext(AuthContext);
 
   const userEmailHandler = (e) => {
-    dispatchLogin({ type: 'USER_EMAIL', value: e.target.value });
-  }
+    dispatchLogin({ type: "USER_EMAIL", value: e.target.value });
+  };
 
   const userPasswordHandler = (e) => {
-    dispatchLogin({ type: 'USER_PASSWORD', value: e.target.value })
-  }
-
+    dispatchLogin({ type: "USER_PASSWORD", value: e.target.value });
+  };
 
   const loginHandler = (e) => {
     e.preventDefault();
     Axios.post("http://localhost:8080/api/user/login", {
       username: loginStatus.email,
-      password: loginStatus.password
+      password: loginStatus.password,
     }).then((response) => {
-      console.log(response);
-      if (response.data.message) {
+      if (!response.data.status) {
         //invalid
-        console.log(response.data.message);
+        ctx.setModalHandler(response.data.message);
         /*
         error handler needed here
         add a handler later
         */
       } else {
         //valid
-        console.log(response.data.userId)
         // props.onLogin(response.data.user, response.data.userId);
-        props.onLogin(true, response.data.userId);
-        navigate('/');
+        props.onLogin(true, response.data.message.userId);
+        navigate("/");
       }
     });
   };
 
   return (
     <Fragment>
-      <form className={styles['login-form']} onSubmit={loginHandler}>
+      <form className={styles["login-form"]} onSubmit={loginHandler}>
         <h1>Login</h1>
         <Input
-          type='email'
-          label='email'
-          placeholder='Email'
+          type="email"
+          label="email"
+          placeholder="Email"
           onChange={userEmailHandler}
           value={loginStatus.email}
           isValid={loginStatus.emailIsValid}
         />
         <Input
-          type='password'
-          label='password'
-          placeholder='Password'
+          type="password"
+          label="password"
+          placeholder="Password"
           onChange={userPasswordHandler}
           value={loginStatus.password}
           isValid={loginStatus.passwordIsValid}
@@ -105,8 +102,6 @@ const Login = (props) => {
 };
 
 export default Login;
-
-
 
 // const Login = (props) => {
 //   const username = useRef();
@@ -146,4 +141,3 @@ export default Login;
 // }
 
 // export default Login;
-
