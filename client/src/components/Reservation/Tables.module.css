@@ -1,6 +1,14 @@
-.table-container {
+/* .table-container {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+  margin-top: 2rem;
+  padding: 2rem;
+  border: 1px solid red;
+} */
+.table-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   width: 100%;
   margin-top: 2rem;
   padding: 2rem;
@@ -16,16 +24,19 @@ form {
   margin: 5px;
 }
 
-.table {
-  width: 150px;
-  height: 150px;
+/* .table {
   background-color: lightgreen;
   margin-left: 1rem;
+} */
+.table img {
+  filter: invert(99%) sepia(7%) saturate(5379%) hue-rotate(49deg)
+    brightness(96%) contrast(90%);
 }
-
-.unavailable {
+/* .unavailable {
   background-color: lightcoral;
-  width: 150px;
-  height: 150px;
   margin-left: 1rem;
+} */
+.unavailable img {
+  filter: invert(57%) sepia(52%) saturate(5931%) hue-rotate(329deg)
+    brightness(92%) contrast(98%);
 }

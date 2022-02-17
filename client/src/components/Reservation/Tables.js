@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import Select from "react-select";
+import TableIcon from "../UI/TableIcon/TableIcon";
 import Axios from "axios";
 import AuthContext from "../../store/auth-context";
 import styles from "./Tables.module.css";
@@ -25,16 +26,16 @@ const Tables = () => {
     { name: "table1", id: 1, partySize: 2 },
     { name: "table2", id: 2, partySize: 2 },
     { name: "table3", id: 3, partySize: 2 },
-    { name: "table4", id: 4, partySize: 4 },
+    { name: "table4", id: 4, partySize: 2 },
     { name: "table5", id: 5, partySize: 4 },
     { name: "table6", id: 6, partySize: 4 },
     { name: "table7", id: 7, partySize: 4 },
     { name: "table8", id: 8, partySize: 4 },
-    { name: "table9", id: 9, partySize: 6 },
-    { name: "table10", id: 10, partySize: 6 },
+    { name: "table9", id: 9, partySize: 4 },
+    { name: "table10", id: 10, partySize: 4 },
     { name: "table11", id: 11, partySize: 6 },
     { name: "table12", id: 12, partySize: 6 },
-    { name: "table13", id: 13, partySize: 8 },
+    { name: "table13", id: 13, partySize: 6 },
     { name: "table14", id: 14, partySize: 8 },
     { name: "table15", id: 15, partySize: 8 },
   ];
@@ -199,7 +200,7 @@ const Tables = () => {
         {tables.map((table, index) => (
           <div
             className={`
-              ${styles.table}
+              ${styles.table}               
               ${
                 filterTables(table, userData, selectedPartySize)
                   ? styles.unavailable
@@ -208,8 +209,7 @@ const Tables = () => {
             `}
             key={index}
           >
-            <h3>{table.name}</h3>
-            <h3>{table.partySize}</h3>
+            {<TableIcon customers={table.partySize} />}
 
             {/* need to be shown the confirm modal page when user click the book button */}
             <button
@@ -223,7 +223,7 @@ const Tables = () => {
             >
               book
             </button>
-            <button>check available time?</button>
+            {/* <button>check available time?</button> */}
           </div>
         ))}
       </div>
