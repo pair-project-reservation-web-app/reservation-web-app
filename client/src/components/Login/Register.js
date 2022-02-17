@@ -1,7 +1,15 @@
-import { useState, useRef, Fragment, useReducer, useEffect } from "react";
+import {
+  useState,
+  useContext,
+  Fragment,
+  useReducer,
+  useEffect,
+  createContext,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Input from "../UI/Input/Input";
+import AuthContext from "../../store/auth-context";
 
 const registerReducer = (state, action) => {
   if (action.type === "username") {
@@ -56,6 +64,7 @@ const registerReducer = (state, action) => {
 
 const Register = () => {
   let navigate = useNavigate();
+  const ctx = useContext(AuthContext);
 
   const [registerStatus, dispatchRegister] = useReducer(registerReducer, {
     username: "",
@@ -119,9 +128,9 @@ const Register = () => {
       fullname: registerStatus.fullname,
     }).then((response) => {
       if (!response.data.status) {
-        console.log(response.data.message);
+        ctx.setModalHandler(response.data.message);
       } else {
-        console.log(response.data.message);
+        ctx.setModalHandler(response.data.message);
         navigate("/login");
       }
     });

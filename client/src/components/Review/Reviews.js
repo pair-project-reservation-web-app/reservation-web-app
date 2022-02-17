@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext, Fragment } from "react";
 import Axios from "axios";
 import AuthContext from "../../store/auth-context";
-import Modal from "../UI/Modal";
 
 const Reviews = () => {
   const [userReviews, setUserReviews] = useState([]);
@@ -9,14 +8,6 @@ const Reviews = () => {
   const [orderBy, setOrderBy] = useState("rating");
 
   const ctx = useContext(AuthContext);
-
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalDisplay, setModalDisplay] = useState(false);
-
-  const displayHandler = (e) => {
-    e.preventDefault();
-    setModalDisplay(false);
-  };
 
   useEffect(() => {
     Axios.get(
@@ -29,7 +20,7 @@ const Reviews = () => {
         setUserReviews(res.data.message);
       }
     });
-  }, [order, orderBy]);
+  }, [order, orderBy, ctx]);
 
   const starClickHandler = (e) => {
     e.preventDefault();
@@ -83,7 +74,7 @@ const Reviews = () => {
       array: JSON.stringify(likes),
       id: reviewId,
     }).then((response) => {
-      console.log(response.data.message);
+      ctx.setModalHandler("Confirmed");
     });
   };
   const deleteClickHandler = (e) => {
@@ -92,8 +83,7 @@ const Reviews = () => {
     Axios.delete(`http://localhost:8080/api/reviews/${reviewId}`).then(
       (response) => {
         //console.log(response);
-        setErrorMessage(response.data.message);
-        setModalDisplay(true);
+        ctx.setModalHandler(response.data.message);
       }
     );
   };
@@ -129,11 +119,6 @@ const Reviews = () => {
             </div>
           ))}
         </div>
-        <Modal
-          display={modalDisplay}
-          displayHandler={displayHandler}
-          message={errorMessage}
-        />
       </Fragment>
     );
   } else {

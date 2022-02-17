@@ -1,18 +1,13 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 import Select from "react-select";
 import Axios from "axios";
-import Modal from "../UI/Modal";
+import AuthContext from "../../store/auth-context";
 
 const Review = () => {
   const [userRating, setUserRating] = useState();
   const [userText, setUserText] = useState("");
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const displayHandler = (e) => {
-    e.preventDefault();
-    setModalDisplay(false);
-  };
+  const ctx = useContext(AuthContext);
 
   const ratings = [
     { value: 1, label: 1 },
@@ -37,12 +32,9 @@ const Review = () => {
       text: userText,
     }).then((response) => {
       if (response.data.status) {
-        console.log(response.data.message);
-        setErrorMessage(response.data.message);
-        setModalDisplay(true);
+        ctx.setModalHandler(response.data.message);
       } else {
-        setErrorMessage(response.data.message);
-        setModalDisplay(true);
+        ctx.setModalHandler(response.data.message);
       }
     });
   };
@@ -58,11 +50,6 @@ const Review = () => {
           <button>add</button>
         </form>
       </div>
-      <Modal
-        display={modalDisplay}
-        displayHandler={displayHandler}
-        message={errorMessage}
-      />
     </Fragment>
   );
 };

@@ -1,40 +1,46 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Select from "react-select";
+import TableIcon from "../UI/TableIcon/TableIcon";
 import Axios from "axios";
-import styles from "./Tables.module.css";
-
-import Modal from "../UI/Modal";
+import Reservation from './ReservationModal';
+import AuthContext from "../../store/auth-context";
+// import Table from './Table';
+import styles from './Tables.module.css';
 
 const Tables = () => {
-  const [selectedDate, setSelectedDate] = useState("");
+  // today.getFullYear() +
+  // "-" +
+  // parseInt(today.getMonth() + 1) +
+  // "-" +
+  // today.getDate()
+  const today = new Date().toISOString().split("T")[0];
+
+  const [selectedDate, setSelectedDate] = useState(today);
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedPartySize, setSelectedPartySize] = useState("");
   const [selectedTimeBefore, setSelectedTimeBefore] = useState("");
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
-  const [userData, setUserData] = useState([]);
+  const [reservationList, setReservationList] = useState([]);
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalDisplay, setModalDisplay] = useState(false);
+  const [bookingModal, setBookingModal] = useState(false);
+  const [modalData, setModalData] = useState({});
 
-  const displayHandler = (e) => {
-    e.preventDefault();
-    setModalDisplay(false);
-  };
+  const ctx = useContext(AuthContext);
 
   const tables = [
     { name: "table1", id: 1, partySize: 2 },
     { name: "table2", id: 2, partySize: 2 },
     { name: "table3", id: 3, partySize: 2 },
-    { name: "table4", id: 4, partySize: 4 },
+    { name: "table4", id: 4, partySize: 2 },
     { name: "table5", id: 5, partySize: 4 },
     { name: "table6", id: 6, partySize: 4 },
     { name: "table7", id: 7, partySize: 4 },
     { name: "table8", id: 8, partySize: 4 },
-    { name: "table9", id: 9, partySize: 6 },
-    { name: "table10", id: 10, partySize: 6 },
+    { name: "table9", id: 9, partySize: 4 },
+    { name: "table10", id: 10, partySize: 4 },
     { name: "table11", id: 11, partySize: 6 },
     { name: "table12", id: 12, partySize: 6 },
-    { name: "table13", id: 13, partySize: 8 },
+    { name: "table13", id: 13, partySize: 6 },
     { name: "table14", id: 14, partySize: 8 },
     { name: "table15", id: 15, partySize: 8 },
   ];
@@ -63,6 +69,7 @@ const Tables = () => {
     { value: 4, label: 4 },
     { value: 6, label: 6 },
     { value: 8, label: 8 },
+
   ];
 
   useEffect(
@@ -72,32 +79,42 @@ const Tables = () => {
       ).then((response) => {
         // need to add error handle or initial value for api call
         if (!response.data.status) {
-          setErrorMessage(response.data.message);
-          setModalDisplay(true);
+          ctx.setModalHandler(response.data.message);
         } else {
-          setUserData(response.data.message);
-        }
-      });
-    },
 
-    // console.log('updated')
-    [selectedDate, selectedTimeBefore, selectedTimeEnd]
-  );
+          setReservationList(response.data.message);
+        }
+      }
+      );
+    }, [selectedDate, selectedTimeBefore, selectedTimeEnd, bookingModal, ctx]);
 
   const bookingTable = (tableId, partySize, dineinDate, dineinTime) => {
-    if (partySize !== selectedPartySize) {
-      console.log(" wrong info");
-    } else {
-      Axios.post("http://localhost:8080/api/reservation-table", {
-        tableId,
-        partySize,
-        dineinDate,
-        dineinTime,
-      }).then((res) => {
-        console.log(res.data);
-      });
-    }
-  };
+
+    // if (partySize !== selectedPartySize) {
+    //   console.log(' wrong info')
+    // } else {
+
+    // }
+
+    Axios.post("http://localhost:8080/api/reservation-table", {
+      tableId,
+      partySize,
+      dineinDate,
+      dineinTime
+    }).then((res) => {
+
+      if (!res.data.status) {
+        ctx.setModalHandler(res.data.message);
+      } else {
+
+        // ??
+        ctx.setModalHandler("Booked!");
+
+        setBookingModal(false)
+      }
+    })
+  }
+
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
@@ -133,98 +150,91 @@ const Tables = () => {
     // console.log(result)
   };
 
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
+  const filterTables = (table, reservationList, selectedPartySize) => {
+    if (reservationList.length > 0) {
 
-  //   Axios.post("http://localhost:8080/api/reservation", {
-  //     dineinDate: selectedDate,
-  //     dineinTime: selectedTime,
-  //     dineinTimeEnd: selectedTimeEnd,
-  //     partySize: selectedPartySize
-  //   }).then((response) => {
-  //     // error handling
-  //     if (response.data.code) {
-  //       console.log(response.data.code)
-  //     } else {
-  //       console.log(response.data);
-  //       setUserData(response.data);
-  //     }
-
-  //   });
-
-  // };
-
-  const filterTables = (table, userData, selectedPartySize) => {
-    //console.log(userData);
-    if (userData.length > 0) {
-      if (selectedPartySize === "") {
-        return userData.some((item) => item.tableId === table.id);
+      if (selectedPartySize === '') {
+        return reservationList.some((item) => item.tableId === table.id)
       }
 
-      return userData.some(
-        (item) =>
-          item.tableId === table.id || table.partySize !== selectedPartySize
-      );
+      return reservationList.some((item) => item.tableId === table.id || table.partySize !== selectedPartySize
+      )
     } else {
-      // console.log('no user data')
-      if (selectedPartySize === "") {
-        return false;
+      if (selectedPartySize === '') {
+        return false
       }
       return table.partySize !== selectedPartySize;
     }
   };
 
+  const modalHandler = (table, date, time) => {
+    const userData = {
+      id: table.id,
+      tableName: table.name,
+      partySize: table.partySize,
+      date,
+      time
+    }
+    console.log(table);
+    setModalData(userData);
+    setBookingModal(true);
+  }
+
   return (
-    <div className="wrapper">
-      {/* form need to refactor this part (break apart from Table components? )  */}
-      <form>
-        <label htmlFor="reservationDate">Date</label>
-        <input type="date" onChange={reservationDateHandler} />
+    <>
+      <div className='wrapper'>
+        {/* form need to refactor (break apart from Table components? )  */}
+        <form>
+          {/* Do we need submit button? */}
+          <label htmlFor="reservationDate">Date</label>
+          <input type="date" defaultValue={today} onChange={reservationDateHandler} />
+          <Select options={time} onChange={userTimeHandler} />
+          <Select options={partySize} onChange={userPartySizeHandler} />
+        </form>
 
-        <Select options={time} onChange={userTimeHandler} />
+        <ul className={styles['table-container']}>
 
-        <Select options={partySize} onChange={userPartySizeHandler} />
-        {/* <button>Submit</button> */}
-      </form>
+          {/* {tables.map(table => <Table
+            key={table.id}
+            table={table}
+            reservationList={reservationList}
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
+            modalHandler={modalHandler}
+            seletedPartySize={selectedPartySize}
+          />)} */}
 
-      <div className={styles["table-container"]}>
-        {tables.map((table, index) => (
-          <div
-            className={`
+          {tables.map((table, index) => (
+            <li className={`
               ${styles.table}
-              ${
-                filterTables(table, userData, selectedPartySize)
-                  ? styles.unavailable
-                  : ""
-              }
+              ${filterTables(table, reservationList, selectedPartySize) ? styles.unavailable : ""}
             `}
-            key={index}
-          >
-            <h3>{table.name}</h3>
-            <h3>{table.partySize}</h3>
-
-            {/* need to be shown the confirm modal page when user click the book button */}
-            <button
-              onClick={bookingTable.bind(
-                null,
-                table.id,
-                table.partySize,
-                selectedDate,
-                selectedTime
-              )}
+              key={index}
             >
-              book
-            </button>
-            <button>check available time?</button>
-          </div>
-        ))}
+              {/* <h3>{table.name}</h3>
+              <h3>{table.partySize}</h3> */}
+
+              {<TableIcon customers={table.partySize} />}
+
+
+              {!filterTables(table, reservationList, selectedPartySize) &&
+                selectedDate &&
+                selectedTime && <button onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>book</button>}
+              {filterTables(table, reservationList, selectedPartySize) && <button>check available time?</button>}
+            </li>
+          ))}
+        </ul>
       </div>
-      <Modal
-        display={modalDisplay}
-        displayHandler={displayHandler}
-        message={errorMessage}
-      />
-    </div>
+
+      {bookingModal && <Reservation
+        tableName={modalData.tableName}
+        date={modalData.date}
+        time={modalData.time}
+        size={modalData.partySize}
+        bookingTable={bookingTable.bind(null, modalData.id, modalData.partySize, modalData.date, modalData.time)}
+        modalHandler={setBookingModal}
+      />}
+    </>
   );
 };
 
