@@ -6,7 +6,6 @@ import styles from "./Nav.module.css";
 const Nav = () => {
   const ctx = useContext(AuthContext);
   let navigate = useNavigate();
-  const [isclicked, setIsClicked] = useState(false);
   const [current, setCurrent] = useState("Home");
 
   useEffect(() => {
@@ -23,18 +22,14 @@ const Nav = () => {
     } else {
       setCurrent("Home");
     }
-  }, [isclicked]);
-  const clickHandler = () => {
-    setIsClicked(!isclicked);
-  };
+  }, [window.location.href]);
+
   return (
     <nav>
-      {console.log(current)}
       <ul>
         <li>
           <Link
             className={styles[`${current === "Home" ? "active" : ""}`]}
-            onClick={clickHandler}
             to="/"
           >
             <ion-icon name="home"></ion-icon>
@@ -44,7 +39,6 @@ const Nav = () => {
         <li>
           <Link
             className={styles[`${current === "Review" ? "active" : ""}`]}
-            onClick={clickHandler}
             to="/reviews"
           >
             <ion-icon name="chatbox-ellipses"></ion-icon>
@@ -55,7 +49,6 @@ const Nav = () => {
           <li>
             <Link
               className={styles[`${current === "Reservation" ? "active" : ""}`]}
-              onClick={clickHandler}
               to="/my-reservation"
             >
               <ion-icon name="calendar-clear"></ion-icon>
@@ -68,7 +61,6 @@ const Nav = () => {
           {!ctx.isLoggedIn ? (
             <Link
               className={styles[`${current === "Login" ? "active" : ""}`]}
-              onClick={clickHandler}
               to="/login"
             >
               <ion-icon name="person"></ion-icon>
