@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import Select from "react-select";
 import TableIcon from "../UI/TableIcon/TableIcon";
 import Axios from "axios";
-import Reservation from './ReservationModal';
+import ReservationModal from './ReservationModal';
 import AuthContext from "../../store/auth-context";
 // import Table from './Table';
 import styles from './Tables.module.css';
@@ -89,11 +89,9 @@ const Tables = () => {
     }, [selectedDate, selectedTimeBefore, selectedTimeEnd, bookingModal, ctx]);
 
   const bookingTable = (tableId, partySize, dineinDate, dineinTime) => {
-
     // if (partySize !== selectedPartySize) {
     //   console.log(' wrong info')
     // } else {
-
     // }
 
     Axios.post("http://localhost:8080/api/reservation-table", {
@@ -180,15 +178,32 @@ const Tables = () => {
     setBookingModal(true);
   }
 
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: 'none',
+      // backgroundColor: 'red',
+      color: 'white'
+    })
+  }
+
+
+
   return (
     <>
       <div className='wrapper'>
         {/* form need to refactor (break apart from Table components? )  */}
-        <form>
+        <form className={styles['form-container']}>
           {/* Do we need submit button? */}
-          <label htmlFor="reservationDate">Date</label>
+          <label htmlFor="reservationDate" className={styles['sr-only']}>Date</label>
           <input type="date" defaultValue={today} onChange={reservationDateHandler} />
-          <Select options={time} onChange={userTimeHandler} />
+          <Select
+            options={time}
+            styles={customStyles}
+            className={styles.container}
+            // classNamePrefix={styles.container}
+            onChange={userTimeHandler} />
           <Select options={partySize} onChange={userPartySizeHandler} />
         </form>
 
@@ -203,30 +218,33 @@ const Tables = () => {
             modalHandler={modalHandler}
             seletedPartySize={selectedPartySize}
           />)} */}
+          <li className={styles['bar-table']}>Bar</li>
 
           {tables.map((table, index) => (
             <li className={`
               ${styles.table}
+              ${styles['table-' + table.id]}
               ${filterTables(table, reservationList, selectedPartySize) ? styles.unavailable : ""}
             `}
               key={index}
             >
-              {/* <h3>{table.name}</h3>
-              <h3>{table.partySize}</h3> */}
 
-              {<TableIcon customers={table.partySize} />}
+              <div className={`${styles.bar} ${filterTables(table, reservationList, selectedPartySize) ? styles.unavailable : ''}`}></div>
+              {/* <h2>{table.id}</h2> */}
+              <h3>size:{table.partySize}</h3>
 
+              {/* {<TableIcon customers={table.partySize} />} */}
 
               {!filterTables(table, reservationList, selectedPartySize) &&
                 selectedDate &&
-                selectedTime && <button onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>book</button>}
-              {filterTables(table, reservationList, selectedPartySize) && <button>check available time?</button>}
+                selectedTime && <button className={styles.bookingBtn} onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>book</button>}
+              {/* {filterTables(table, reservationList, selectedPartySize) && <button className={styles.checkBtn}>Available Time</button>} */}
             </li>
           ))}
         </ul>
-      </div>
+      </div >
 
-      {bookingModal && <Reservation
+      {bookingModal && <ReservationModal
         tableName={modalData.tableName}
         date={modalData.date}
         time={modalData.time}
