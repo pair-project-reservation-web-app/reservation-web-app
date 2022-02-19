@@ -1,21 +1,48 @@
 /* need to be changed */
+/*
+#FF7D31
+#FFA837
+#3E4249
+#EDF0F3
+*/
 
 nav ul {
-  /* width: 100%; */
-  list-style: none;
   display: flex;
-  justify-content: space-between;
-  border: 1px solid red;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 5rem;
+  align-items: center;
+  justify-content: space-around;
+  list-style: none;
+  background-color: #141414;
+  padding: 0 1rem;
 }
-
-ul li {
-  /* width: 100px; */
-  margin-left: 1rem;
-}
-
-a {
-  display: inline-block;
+li a {
   text-decoration: none;
-  color: black;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #7c8191;
+  width: 4rem;
+  /* background: linear-gradient(#ffa837, #ff7d31);
+  background-clip: text;
+  -webkit-text-fill-color: transparent; */
+}
+ion-icon {
+  font-size: 1.6rem;
+  margin-bottom: 0.3rem;
+}
+
+span {
+  display: inline-block;
+  text-align: center;
+}
+.active,
+li a:hover,
+li a:active,
+ion-icon:hover,
+ion-icon:active {
+  color: #ff7d31;
 }

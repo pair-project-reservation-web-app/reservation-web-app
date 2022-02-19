@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Axios from "axios";
@@ -83,14 +83,17 @@ function App() {
                 element={
                   <React.Fragment>
                     <Tables />
-                    {loginStatus && (
-                      <>
-                        <UserResStatus />
-                        <Review />
-                      </>
-                    )}
-                    <Reviews />
                   </React.Fragment>
+                }
+              />
+              <Route path="/my-reservation" element={<UserResStatus />} />
+              <Route
+                path="/reviews"
+                element={
+                  <Fragment>
+                    {loginStatus && <Review />}
+                    <Reviews />
+                  </Fragment>
                 }
               />
               <Route
