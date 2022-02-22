@@ -5,7 +5,7 @@ import Axios from "axios";
 import ReservationModal from './ReservationModal';
 import AuthContext from "../../store/auth-context";
 // import Table from './Table';
-import styles from './Tables.module.css';
+import styles from "./Tables.module.css";
 
 const Tables = () => {
   // today.getFullYear() +
@@ -69,24 +69,20 @@ const Tables = () => {
     { value: 4, label: 4 },
     { value: 6, label: 6 },
     { value: 8, label: 8 },
-
   ];
 
-  useEffect(
-    () => {
-      Axios.get(
-        `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`
-      ).then((response) => {
-        // need to add error handle or initial value for api call
-        if (!response.data.status) {
-          ctx.setModalHandler(response.data.message);
-        } else {
-
-          setReservationList(response.data.message);
-        }
+  useEffect(() => {
+    Axios.get(
+      `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`
+    ).then((response) => {
+      // need to add error handle or initial value for api call
+      if (!response.data.status) {
+        ctx.setModalHandler(response.data.message);
+      } else {
+        setReservationList(response.data.message);
       }
-      );
-    }, [selectedDate, selectedTimeBefore, selectedTimeEnd, bookingModal, ctx]);
+    });
+  }, [selectedDate, selectedTimeBefore, selectedTimeEnd, bookingModal, ctx]);
 
   const bookingTable = (tableId, partySize, dineinDate, dineinTime) => {
     // if (partySize !== selectedPartySize) {
@@ -98,21 +94,18 @@ const Tables = () => {
       tableId,
       partySize,
       dineinDate,
-      dineinTime
+      dineinTime,
     }).then((res) => {
-
       if (!res.data.status) {
         ctx.setModalHandler(res.data.message);
       } else {
-
         // ??
         ctx.setModalHandler("Booked!");
 
-        setBookingModal(false)
+        setBookingModal(false);
       }
-    })
-  }
-
+    });
+  };
 
   const reservationDateHandler = (e) => {
     setSelectedDate(e.target.value);
@@ -150,16 +143,17 @@ const Tables = () => {
 
   const filterTables = (table, reservationList, selectedPartySize) => {
     if (reservationList.length > 0) {
-
-      if (selectedPartySize === '') {
-        return reservationList.some((item) => item.tableId === table.id)
+      if (selectedPartySize === "") {
+        return reservationList.some((item) => item.tableId === table.id);
       }
 
-      return reservationList.some((item) => item.tableId === table.id || table.partySize !== selectedPartySize
-      )
+      return reservationList.some(
+        (item) =>
+          item.tableId === table.id || table.partySize !== selectedPartySize
+      );
     } else {
-      if (selectedPartySize === '') {
-        return false
+      if (selectedPartySize === "") {
+        return false;
       }
       return table.partySize !== selectedPartySize;
     }
@@ -171,12 +165,12 @@ const Tables = () => {
       tableName: table.name,
       partySize: table.partySize,
       date,
-      time
-    }
+      time,
+    };
     console.log(table);
     setModalData(userData);
     setBookingModal(true);
-  }
+  };
 
 
   const customStyles = {
@@ -192,7 +186,7 @@ const Tables = () => {
 
   return (
     <>
-      <div className='wrapper'>
+      <div className="wrapper">
         {/* form need to refactor (break apart from Table components? )  */}
         <form className={styles['form-container']}>
           {/* Do we need submit button? */}
@@ -207,8 +201,7 @@ const Tables = () => {
           <Select options={partySize} onChange={userPartySizeHandler} />
         </form>
 
-        <ul className={styles['table-container']}>
-
+        <ul className={styles["table-container"]}>
           {/* {tables.map(table => <Table
             key={table.id}
             table={table}
@@ -221,7 +214,8 @@ const Tables = () => {
           <li className={styles['bar-table']}>Bar</li>
 
           {tables.map((table, index) => (
-            <li className={`
+            <li
+              className={`
               ${styles.table}
               ${styles['table-' + table.id]}
               ${filterTables(table, reservationList, selectedPartySize) ? styles.unavailable : ""}

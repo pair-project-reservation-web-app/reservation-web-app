@@ -227,3 +227,7 @@ p {
 .box {
   border: 1px solid red;
 }
+
+main {
+  margin-bottom: 6rem;
+}

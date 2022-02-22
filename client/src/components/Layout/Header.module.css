@@ -1,12 +1,9 @@
 .header-container {
   /* height: 5vh; */
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid blue;
+  align-items: left;
 }
 
 .logo {
-  border: 1px solid red;
-  padding: 0 2rem;
+  width: 5rem;
 }

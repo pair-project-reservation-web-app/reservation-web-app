@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Axios from "axios";
@@ -22,7 +22,6 @@ function App() {
   const [userId, setUserId] = useState(null);
 
   const [modalMessage, setModalMessage] = useState();
-  //const [modalDisplay, setModalDisplay] = useState(false);
 
   Axios.defaults.withCredentials = true;
   /*
@@ -45,7 +44,6 @@ function App() {
 
   const setModalHandler = (errorMessage) => {
     setModalMessage(errorMessage);
-    //setModalDisplay(true);
   };
 
   /*
@@ -84,15 +82,17 @@ function App() {
                 element={
                   <React.Fragment>
                     <Tables />
-                    {loginStatus && (
-                      <>
-                        <UserResStatus />
-                        <Review />
-                      </>
-                    )}
-                    <Reviews />
-
                   </React.Fragment>
+                }
+              />
+              <Route path="/my-reservation" element={<UserResStatus />} />
+              <Route
+                path="/reviews"
+                element={
+                  <Fragment>
+                    {loginStatus && <Review />}
+                    <Reviews />
+                  </Fragment>
                 }
               />
               <Route
