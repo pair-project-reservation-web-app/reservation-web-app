@@ -41,7 +41,7 @@ const Review = () => {
 
   return (
     <Fragment>
-      <div>
+      <div className="wrapper">
         <form onSubmit={submitHandler}>
           <label>Rating starts</label>
           <Select options={ratings} onChange={ratingHandler} />
