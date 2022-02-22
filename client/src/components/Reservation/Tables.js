@@ -211,8 +211,9 @@ const Tables = () => {
             modalHandler={modalHandler}
             seletedPartySize={selectedPartySize}
           />)} */}
-          <li className={styles['bar-table']}>Bar</li>
-
+          <li className={styles['window']}><p>Window</p></li>
+          <li className={styles['entrance']}><p>Entrance</p></li>
+          <li className={styles['restrooms']}><p>Restrooms</p></li>
           {tables.map((table, index) => (
             <li
               className={`
@@ -222,18 +223,15 @@ const Tables = () => {
             `}
               key={index}
             >
-              <div className={styles['status-container']}>
-                {/* <div className={`${styles.bar} ${filterTables(table, reservationList, selectedPartySize) ? styles.unavailable : ''}`}></div> */}
-                {/* <h2>{table.id}</h2> */}
-                {/* <h3>size:{table.partySize}</h3> */}
-              </div>
+
+              <h3>{table.partySize}</h3>
 
               {/* {<TableIcon customers={table.partySize} />} */}
 
               {!filterTables(table, reservationList, selectedPartySize) &&
                 selectedDate &&
-                selectedTime && <button className={styles.bookingBtn} onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>12</button>}
-              {/* {filterTables(table, reservationList, selectedPartySize) && <button className={styles.checkBtn}>Available Time</button>} */}
+                selectedTime && <button className={styles.bookingBtn} onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>Book</button>}
+              {filterTables(table, reservationList, selectedPartySize) && <button className={styles.checkBtn}>Available Time</button>}
             </li>
           ))}
         </ul>

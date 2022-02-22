@@ -41,33 +41,21 @@ Table
   display: grid;
   padding: 1rem;
   grid-template-columns: repeat(6, 1fr);
-  /* background-image: radial-gradient(
-    circle,
-    #f56960,
-    #e66b63,
-    #d66c65,
-    #c76d66,
-    #b76d68
-  ); */
-  /* background-color: hsl(0, 0%, 8%); */
-  background-color: hsl(203, 33%, 20%);
-
   grid-template-areas:
     ". x x x x ."
     ". a b c d ."
-    "i o . l . ."
-    "k . f . h ."
-    "m e . g . ."
-    "j . n . . .";
+    "i h . l . z"
+    "k . f . . ."
+    "m e . g . y"
+    "j n n o o .";
   /* ". . . . . ."
     ". . . . . ."; */
-
   width: 100%;
   height: 100vh;
   margin-top: 2rem;
-
-  border: 1px solid red;
   gap: 0.5rem;
+  border-radius: 10px;
+  background-color: hsl(201, 61%, 11%);
 }
 
 .status-container h3 {
@@ -80,25 +68,70 @@ Table
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  /* padding: 1rem; */
-  /* border: 2px solid white; */
-  border-radius: 100px;
   max-width: 120px;
-  /* min-height: 120px; */
   width: 100%;
   height: 100px;
   justify-self: center;
   align-self: center;
 
-  background-color: hsl(205, 20%, 34%);
+  background-color: hsl(201, 40%, 21%);
   border: 1px solid hsl(156, 61%, 57%);
   box-shadow: 0 0 0.5em 0 hsl(156, 61%, 87%);
+  border-radius: 10px;
+  color: white;
 }
-.bar-table {
+.window {
   grid-area: x;
   border: 2px solid white;
+  border-radius: 10px;
+  text-align: center;
   color: white;
   width: 100%;
+  height: 40px;
+}
+.entrance,
+.restrooms {
+  border-right: 3px solid white;
+  color: white;
+  grid-area: y;
+  position: relative;
+  padding: 0;
+}
+
+.restrooms {
+  grid-area: z;
+}
+
+.entrance p,
+.restrooms p {
+  transform: rotate(90deg);
+  position: absolute;
+  right: -10px;
+  top: 55px;
+}
+
+.table.unavailable {
+  opacity: 0.5;
+  border-color: hsl(12, 64%, 59%);
+  box-shadow: 0 0 0.5em 0 hsl(12, 68%, 51%);
+}
+
+.bookingBtn,
+.checkBtn {
+  border-style: none;
+  padding: 0.2rem 0.5rem;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #ffa837;
+}
+
+.bookingBtn:hover,
+.bookingBtn:focus,
+.bookingBtn:active {
+  background-color: black;
+  color: white;
+  transition: 0.7s;
 }
 
 .table-1 {
@@ -146,68 +179,3 @@ Table
 .table-15 {
   grid-area: o;
 }
-
-/* .table .bar {
-  position: absolute;
-  top: 20px;
-  width: 100px;
-  height: 50px;
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  border: 5px solid hsl(156, 61%, 57%);
-
-  border-bottom: 0;
-  box-shadow: 0 0 0.4em 0 hsl(156, 61%, 87%);
-} */
-.table .bar {
-  width: 50px;
-  height: 5px;
-  background-color: hsl(156, 61%, 57%);
-  box-shadow: 0 0 0.5em 0 hsl(156, 61%, 87%);
-}
-
-/* .table .bar.unavailable {
-  background-color: hsl(12, 64%, 59%);
-} */
-.table.unavailable {
-  border-color: hsl(12, 64%, 59%);
-  opacity: 0.5;
-}
-
-.bookingBtn,
-.checkBtn {
-  border-style: none;
-  padding: 0.2rem 0.5rem;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: #ffa837;
-}
-
-.bookingBtn:hover,
-.bookingBtn:focus,
-.bookingBtn:active {
-  background-color: black;
-  color: white;
-  transition: 0.7s;
-}
-
-@keyframes progress {
-  0% {
-    width: 0;
-  }
-
-  100% {
-    width: 50px;
-  }
-}
-
-/* 
-.table img {
-  filter: invert(99%) sepia(7%) saturate(5379%) hue-rotate(49deg)
-    brightness(96%) contrast(90%);
-}
-
-.unavailable img {
-  filter: invert(57%) sepia(52%) saturate(5931%) hue-rotate(329deg)
-    brightness(92%) contrast(98%);
-} */
