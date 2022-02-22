@@ -9,8 +9,9 @@ const TableIcon = (props) => {
     const imgs = [];
     for (let index = 0; index < customers; index++) {
       imgs.push(
+
         <img
-          className={`${styles[`img-${index + 1}`]}`}
+          className={`${styles[`chair-${index + 1}`]}`}
           src={chairIcon}
           alt="Table-icon"
         />
@@ -20,7 +21,7 @@ const TableIcon = (props) => {
     switch (customers) {
       case 2:
         return (
-          <div className={`${styles.table} ${styles[`table-${customers}`]}`}>
+          <div className={`${styles['table-icon-container']} ${styles[`table-container-${customers}`]}`}>
             {imgs.map((img) => (
               <>{img}</>
             ))}
@@ -33,7 +34,7 @@ const TableIcon = (props) => {
         );
       case 4:
         return (
-          <div className={`${styles.table} ${styles[`table-${customers}`]}`}>
+          <div className={`${styles['table-icon-container']} ${styles[`table-container-${customers}`]}`}>
             {imgs.map((img) => (
               <>{img}</>
             ))}
@@ -46,7 +47,7 @@ const TableIcon = (props) => {
         );
       case 6:
         return (
-          <div className={`${styles.table} ${styles[`table-${customers}`]}`}>
+          <div className={`${styles['table-icon-container']} ${styles[`table-container-${customers}`]}`}>
             {imgs.map((img) => (
               <>{img}</>
             ))}
@@ -64,7 +65,7 @@ const TableIcon = (props) => {
         );
       case 8:
         return (
-          <div className={`${styles.table} ${styles[`table-${customers}`]}`}>
+          <div className={`${styles['table-icon-container']} ${styles[`table-container-${customers}`]}`}>
             {imgs.map((img) => (
               <>{img}</>
             ))}
