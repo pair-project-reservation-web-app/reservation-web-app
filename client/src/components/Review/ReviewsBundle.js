@@ -1,6 +1,8 @@
 import { useEffect, useState, Fragment, useContext } from "react";
 import AuthContext from "../../store/auth-context";
+import styles from "./ReviewsBundle.module.css";
 import Axios from "axios";
+import Stars from "../UI/Stars/Stars";
 
 const ReviewBundle = (props) => {
   const perPage = 8;
@@ -15,6 +17,10 @@ const ReviewBundle = (props) => {
   useEffect(() => {
     setFirstPageIndex((page - 1) * perPage);
     setLastPageIndex(page * perPage);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [page]);
 
   const leftClickHandler = (e) => {
@@ -30,8 +36,8 @@ const ReviewBundle = (props) => {
   };
 
   const deleteClickHandler = (e) => {
-    console.log(e.target.getAttribute("data-key"));
-    const reviewId = e.target.getAttribute("data-key");
+    console.log(e.target.parentElement.getAttribute("data-key"));
+    const reviewId = e.target.parentElement.getAttribute("data-key");
     Axios.delete(`http://localhost:8080/api/reviews/${reviewId}`).then(
       (response) => {
         //console.log(response);
@@ -42,54 +48,72 @@ const ReviewBundle = (props) => {
   const userLikeClickHandler = (e) => {
     e.preventDefault();
     const userId = ctx.userId;
-    const reviewId = e.target.getAttribute("data-key");
-    let likes = JSON.parse(e.target.getAttribute("data-key2"));
+    const reviewId = e.target.parentElement.getAttribute("data-key");
+    let likes = JSON.parse(e.target.parentElement.getAttribute("data-key2"));
     //console.log(userLikes);
-    if (!likes.some((el) => el === userId)) {
-      likes.push(userId);
-    } else if (likes.some((el) => el === userId)) {
-      const index = likes.indexOf(userId);
-      likes.splice(index, 1);
+    if (userId) {
+      if (!likes.some((el) => el === userId)) {
+        likes.push(userId);
+      } else if (likes.some((el) => el === userId)) {
+        const index = likes.indexOf(userId);
+        likes.splice(index, 1);
+      }
+      Axios.put("http://localhost:8080/api/reviews/like", {
+        array: JSON.stringify(likes),
+        id: reviewId,
+      }).then((response) => {
+        ctx.setModalHandler("Confirmed");
+      });
     }
-
-    Axios.put("http://localhost:8080/api/reviews/like", {
-      array: JSON.stringify(likes),
-      id: reviewId,
-    }).then((response) => {
-      ctx.setModalHandler("Confirmed");
-    });
   };
 
   return (
     <Fragment>
       {reviews.slice(firstPageIndex, lastPageIndex).map((content, index) => (
-        <div key={index}>
-          <h3 data-key={content.userID} onClick={props.userClickHandler}>
-            User Name: {content.userFullName}
-          </h3>
-          <h3>Review: {content.reviewText}</h3>
-          <h3>Stars: {content.rating}</h3>
-          <h3
-            data-key={content.id}
-            data-key2={content.likes}
-            onClick={userLikeClickHandler}
-          >
-            Likes: {JSON.parse(content.likes).length}
-          </h3>
-          <button
-            data-key={content.id}
-            disabled={ctx.userId === content.userID ? false : true}
-            onClick={deleteClickHandler}
-          >
-            delete
-          </button>
+        <div
+          className={`${styles.reviews} ${index % 2 && styles.right}`}
+          key={index}
+        >
+          {console.log(index % 2)}
+          <div className={styles["review-text"]}>
+            <h3 data-key={content.userID} onClick={props.userClickHandler}>
+              {content.userFullName}
+            </h3>
+            <h3 className={styles.comment}>{content.reviewText}</h3>
+          </div>
+          <div className={styles["reviews-val"]}>
+            <div>
+              <h3>
+                <Stars rating={content.rating} />
+              </h3>
+              <h3
+                className={styles.thumbs}
+                data-key={content.id}
+                data-key2={content.likes}
+                onClick={userLikeClickHandler}
+              >
+                <ion-icon className={styles.thumbs} name="thumbs-up"></ion-icon>{" "}
+                {JSON.parse(content.likes).length}
+              </h3>
+            </div>
+            <button
+              className={styles.delete}
+              data-key={content.id}
+              disabled={ctx.userId === content.userID ? false : true}
+              onClick={deleteClickHandler}
+            >
+              {ctx.userId === content.userID && (
+                <ion-icon name="close-circle"></ion-icon>
+              )}
+            </button>
+          </div>
         </div>
       ))}
-      <button onClick={leftClickHandler}>
+      <button className={styles.btn} onClick={leftClickHandler}>
         <ion-icon name="caret-back"></ion-icon>
       </button>
       <span>{page}</span>
-      <button onClick={rightClickHandler}>
+      <button className={styles.btn} onClick={rightClickHandler}>
         <ion-icon name="caret-forward"></ion-icon>
       </button>
     </Fragment>

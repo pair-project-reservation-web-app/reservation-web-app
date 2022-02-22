@@ -2,12 +2,13 @@ import { useEffect, useState, useContext, Fragment } from "react";
 import Axios from "axios";
 import AuthContext from "../../store/auth-context";
 import ReviewBundle from "./ReviewsBundle";
+import Stars from "../UI/Stars/Stars";
 
 const Reviews = () => {
   const [userReviews, setUserReviews] = useState([]);
   const [order, setOrder] = useState("DESC");
   const [orderBy, setOrderBy] = useState("rating");
-
+  const [avgRating, setAvgRating] = useState(null);
   const ctx = useContext(AuthContext);
 
   useEffect(() => {
@@ -22,6 +23,14 @@ const Reviews = () => {
       }
     });
   }, [order, orderBy, ctx]);
+
+  useEffect(() => {
+    let ratings = 0;
+    userReviews.forEach((element) => {
+      ratings += element.rating;
+    });
+    setAvgRating(ratings / userReviews.length);
+  }, [userReviews]);
 
   const starClickHandler = (e) => {
     e.preventDefault();
@@ -65,6 +74,9 @@ const Reviews = () => {
           <h1>Reviews</h1>
           <button onClick={starClickHandler}>star</button>
           <button onClick={likesClickHander}>like</button>
+          <div>
+            <Stars rating={avgRating} />
+          </div>
           <ReviewBundle
             reviews={userReviews}
             userClickHandler={userClickHandler}
