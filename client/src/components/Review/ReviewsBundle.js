@@ -5,8 +5,8 @@ import Axios from "axios";
 import Stars from "../UI/Stars/Stars";
 
 const ReviewBundle = (props) => {
-  const perPage = 8;
   const reviews = props.reviews;
+  const perPage = 8;
   const lastPage = Math.ceil(reviews.length / perPage);
   const [page, setPage] = useState(1);
   const [firstPageIndex, setFirstPageIndex] = useState(0);
