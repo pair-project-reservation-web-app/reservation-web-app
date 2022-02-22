@@ -49,31 +49,56 @@ Table
     #c76d66,
     #b76d68
   ); */
-  background-color: rgb(34, 55, 68);
+  /* background-color: hsl(0, 0%, 8%); */
+  background-color: hsl(203, 33%, 20%);
 
-  grid-auto-rows: minmax(100px, auto);
   grid-template-areas:
     ". x x x x ."
     ". a b c d ."
-    "i . . . . ."
-    ". . f . h ."
-    ". e . g . ."
-    "k . . . . j"
-    ". . . o . l"
-    "m . . . . n";
+    "i o . l . ."
+    "k . f . h ."
+    "m e . g . ."
+    "j . n . . .";
+  /* ". . . . . ."
+    ". . . . . ."; */
 
-  align-items: start;
   width: 100%;
+  height: 100vh;
   margin-top: 2rem;
 
   border: 1px solid red;
-  gap: 1rem;
+  gap: 0.5rem;
+}
+
+.status-container h3 {
+  margin-top: 0.5rem;
+}
+
+.table {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* padding: 1rem; */
+  /* border: 2px solid white; */
+  border-radius: 100px;
+  max-width: 120px;
+  /* min-height: 120px; */
+  width: 100%;
+  height: 100px;
+  justify-self: center;
+  align-self: center;
+
+  background-color: hsl(205, 20%, 34%);
+  border: 1px solid hsl(156, 61%, 57%);
+  box-shadow: 0 0 0.5em 0 hsl(156, 61%, 87%);
 }
 .bar-table {
   grid-area: x;
   border: 2px solid white;
   color: white;
-  width: 700px;
+  width: 100%;
 }
 
 .table-1 {
@@ -122,20 +147,6 @@ Table
   grid-area: o;
 }
 
-.table {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  /* border: 2px solid white; */
-  border-radius: 100px;
-  width: 150px;
-  height: 150px;
-  background-color: rgb(69, 89, 103);
-}
-
 /* .table .bar {
   position: absolute;
   top: 20px;
@@ -148,20 +159,24 @@ Table
   box-shadow: 0 0 0.4em 0 hsl(156, 61%, 87%);
 } */
 .table .bar {
-  width: 100px;
+  width: 50px;
   height: 5px;
   background-color: hsl(156, 61%, 57%);
   box-shadow: 0 0 0.5em 0 hsl(156, 61%, 87%);
 }
 
-.table .bar.unavailable {
-  border-color: #d96e52;
+/* .table .bar.unavailable {
+  background-color: hsl(12, 64%, 59%);
+} */
+.table.unavailable {
+  border-color: hsl(12, 64%, 59%);
+  opacity: 0.5;
 }
 
 .bookingBtn,
 .checkBtn {
   border-style: none;
-  padding: 0.5rem 1rem;
+  padding: 0.2rem 0.5rem;
   color: white;
   cursor: pointer;
   border-radius: 5px;

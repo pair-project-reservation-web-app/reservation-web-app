@@ -228,16 +228,17 @@ const Tables = () => {
             `}
               key={index}
             >
-
-              <div className={`${styles.bar} ${filterTables(table, reservationList, selectedPartySize) ? styles.unavailable : ''}`}></div>
-              {/* <h2>{table.id}</h2> */}
-              <h3>size:{table.partySize}</h3>
+              <div className={styles['status-container']}>
+                {/* <div className={`${styles.bar} ${filterTables(table, reservationList, selectedPartySize) ? styles.unavailable : ''}`}></div> */}
+                {/* <h2>{table.id}</h2> */}
+                {/* <h3>size:{table.partySize}</h3> */}
+              </div>
 
               {/* {<TableIcon customers={table.partySize} />} */}
 
               {!filterTables(table, reservationList, selectedPartySize) &&
                 selectedDate &&
-                selectedTime && <button className={styles.bookingBtn} onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>book</button>}
+                selectedTime && <button className={styles.bookingBtn} onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>12</button>}
               {/* {filterTables(table, reservationList, selectedPartySize) && <button className={styles.checkBtn}>Available Time</button>} */}
             </li>
           ))}
