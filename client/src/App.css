@@ -207,6 +207,10 @@ template {
   overflow: hidden;
 }
 
+html {
+  font-size: 125%;
+}
+
 h1,
 h2,
 h3,
@@ -218,7 +222,7 @@ p {
 
 .wrapper {
   max-width: 1400px;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -229,5 +233,11 @@ p {
 }
 
 main {
-  margin-bottom: 6rem;
+  margin-bottom: 5rem;
+}
+
+@media (min-width: 800px) {
+  .wrapper {
+    width: 800px;
+  }
 }
