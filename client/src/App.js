@@ -13,7 +13,6 @@ import Reviews from "./components/Review/Reviews";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import NotFound from "./route/NotFound";
-//import Reservation from "./components/Reservation/Reservation";
 
 import AuthContext from "./store/auth-context";
 import "./App.css";
@@ -31,7 +30,7 @@ function App() {
   */
   // const register = () => { };
   /*
- compare input username and password to database, set login status as username if matched
+  compare input username and password to database, set login status as username if matched
  */
   const userStatusHandler = (status, id) => {
     setLoginStatus(status);
@@ -103,10 +102,12 @@ function App() {
               <Route path="/register" element={<Register />} />
 
               {/* need to be re-direction by clicking the button where placed inside of table(showing currently available tables) component*/}
-              {/* <Route path="/booking-table" element={<Reservation />} /> */}
             </Routes>
             {modalMessage && (
-              <Modal displayHandler={displayHandler} message={modalMessage} />
+              <Modal
+                displayHandler={displayHandler}
+                message={modalMessage}
+              />
             )}
           </main>
 

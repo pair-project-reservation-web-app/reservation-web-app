@@ -1,7 +1,9 @@
-.input-container {
+.input-container input {
+  border-radius: 5px;
+  border-style: none;
+  padding-left: 5px;
   width: 100%;
 }
-
 .input-container.invalid input {
   border-color: red;
   background: #fbdada;
@@ -19,3 +21,9 @@
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
+
+/* @media (min-width: 1200px) {
+  .input-container input {
+    width: 70%;
+  }
+} */
