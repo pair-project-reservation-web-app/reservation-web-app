@@ -207,6 +207,10 @@ template {
   overflow: hidden;
 }
 
+html {
+  font-size: 125%;
+}
+
 h1,
 h2,
 h3,
@@ -228,6 +232,6 @@ p {
   border: 1px solid red;
 }
 
-main {
+/* main {
   margin-bottom: 6rem;
-}
+} */

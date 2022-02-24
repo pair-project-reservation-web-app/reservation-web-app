@@ -4,12 +4,12 @@ import {
   Fragment,
   useReducer,
   useEffect,
-  createContext,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Input from "../UI/Input/Input";
 import AuthContext from "../../store/auth-context";
+import styles from './Register.module.css';
 
 const registerReducer = (state, action) => {
   if (action.type === "username") {
@@ -141,8 +141,8 @@ const Register = () => {
   // const fullname = userFullnameReg.current.value;
 
   return (
-    <Fragment>
-      <form className="registration" onSubmit={registerHandler}>
+    <section className={styles['register-page']}>
+      <form className={styles['register-form']} onSubmit={registerHandler}>
         <h1>Registration</h1>
         <Input
           type="email"
@@ -213,7 +213,7 @@ const Register = () => {
           Register{" "}
         </button>
       </form>
-    </Fragment>
+    </section>
   );
 };
 

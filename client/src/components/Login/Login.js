@@ -74,7 +74,7 @@ const Login = (props) => {
   };
 
   return (
-    <Fragment>
+    <section className={styles['login-page']}>
       <form className={styles["login-form"]} onSubmit={loginHandler}>
         <h1>Login</h1>
         <Input
@@ -97,7 +97,7 @@ const Login = (props) => {
         <button type="submit"> Login </button>
         <Link to="/register">Register</Link>
       </form>
-    </Fragment>
+    </section>
   );
 };
 

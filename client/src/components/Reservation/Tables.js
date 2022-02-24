@@ -231,7 +231,7 @@ const Tables = () => {
               {!filterTables(table, reservationList, selectedPartySize) &&
                 selectedDate &&
                 selectedTime && <button className={styles.bookingBtn} onClick={modalHandler.bind(null, table, selectedDate, selectedTime)}>Book</button>}
-              {filterTables(table, reservationList, selectedPartySize) && <button className={styles.checkBtn}>Available Time</button>}
+              {/* {filterTables(table, reservationList, selectedPartySize) && <button className={styles.checkBtn}>Available Time</button>} */}
             </li>
           ))}
         </ul>
