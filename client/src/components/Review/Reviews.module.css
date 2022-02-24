@@ -1,0 +1,23 @@
+.avg-stars{
+    font-size: 1.3rem;
+}
+.reviews-btn{
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.7rem;
+    margin: 0.5rem 0 0.5rem 0;
+}
+.reviews-btn button {
+    background: none;
+    border: solid 1px #141414;
+    border-radius: 0.3rem;
+    padding: 0.3rem 1rem 0.3rem 1rem;
+    cursor: pointer;
+}
+.reviews-btn button:hover{
+    color: #ff7d31;
+    border: solid 1px #ff7d31;
+}
+.title {
+    margin-bottom: 0.5rem;
+}

@@ -5,8 +5,8 @@ import Axios from "axios";
 import Stars from "../UI/Stars/Stars";
 
 const ReviewBundle = (props) => {
-  const reviews = props.reviews;
   const perPage = 8;
+  const reviews = props.reviews;
   const lastPage = Math.ceil(reviews.length / perPage);
   const [page, setPage] = useState(1);
   const [firstPageIndex, setFirstPageIndex] = useState(0);
@@ -36,7 +36,6 @@ const ReviewBundle = (props) => {
   };
 
   const deleteClickHandler = (e) => {
-    console.log(e.target.parentElement.getAttribute("data-key"));
     const reviewId = e.target.parentElement.getAttribute("data-key");
     Axios.delete(`http://localhost:8080/api/reviews/${reviewId}`).then(
       (response) => {
@@ -74,7 +73,6 @@ const ReviewBundle = (props) => {
           className={`${styles.reviews} ${index % 2 && styles.right}`}
           key={index}
         >
-          {console.log(index % 2)}
           <div className={styles["review-text"]}>
             <h3 data-key={content.userID} onClick={props.userClickHandler}>
               {content.userFullName}
@@ -109,6 +107,7 @@ const ReviewBundle = (props) => {
           </div>
         </div>
       ))}
+      <div className={styles["review-btn"]}>
       <button className={styles.btn} onClick={leftClickHandler}>
         <ion-icon name="caret-back"></ion-icon>
       </button>
@@ -116,6 +115,7 @@ const ReviewBundle = (props) => {
       <button className={styles.btn} onClick={rightClickHandler}>
         <ion-icon name="caret-forward"></ion-icon>
       </button>
+      </div>
     </Fragment>
   );
 };

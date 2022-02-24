@@ -7,3 +7,7 @@
 .logo {
   width: 5rem;
 }
+
+.logo:hover {
+  color: #ff7d31;
+}

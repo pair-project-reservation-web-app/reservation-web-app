@@ -5,6 +5,8 @@
   margin-bottom: 1rem;
   border-radius: 1rem;
   max-width: 70%;
+  padding: 2rem 1rem 2rem 1rem;
+  gap: 1rem;
 }
 .right {
   margin-left: auto;
@@ -20,6 +22,7 @@
 .reviews-val .thumbs ion-icon:active {
   color: #ff7d31;
   cursor: pointer;
+  transition: all 0.3s;
 }
 
 .reviews-val .delete ion-icon {
@@ -29,6 +32,8 @@
 .reviews-val .delete ion-icon:hover,
 .reviews-val .delete ion-icon:active {
   color: #ff7d31;
+  transition: all 0.3s;
+  cursor: pointer;
 }
 
 .reviews-val button {
@@ -40,7 +45,13 @@
 }
 
 .review-text {
-  margin-left: 2rem;
+  margin-left: 1rem;
+}
+.review-btn{
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .comment {
@@ -56,4 +67,6 @@
 .btn:hover,
 .btn:active {
   color: #ff7d31;
+  transition: all 0.3s;
+  cursor: pointer;
 }
