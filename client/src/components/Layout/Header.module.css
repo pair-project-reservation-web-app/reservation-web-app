@@ -1,7 +1,5 @@
 .header-container {
-  /* height: 5vh; */
-  display: flex;
-  align-items: left;
+  height: 5rem;
 }
 
 .logo {

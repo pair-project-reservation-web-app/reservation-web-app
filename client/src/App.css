@@ -222,7 +222,7 @@ p {
 
 .wrapper {
   max-width: 1400px;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -232,6 +232,12 @@ p {
   border: 1px solid red;
 }
 
-/* main {
-  margin-bottom: 6rem;
-} */
+main {
+  margin-bottom: 5rem;
+}
+
+@media (min-width: 800px) {
+  .wrapper {
+    width: 800px;
+  }
+}

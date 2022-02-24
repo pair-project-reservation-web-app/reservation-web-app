@@ -1,3 +1,8 @@
+.reservation-container {
+  background-color: var(--bg-color);
+  width: 100%;
+}
+
 /*==========
 Form
 ============ */
@@ -16,7 +21,8 @@ Form
 
 .form-container {
   display: flex;
-  margin-top: 2rem;
+  justify-content: space-between;
+  /* margin-top: 2rem; */
 }
 
 .container {
@@ -46,13 +52,13 @@ Table
     ". a b c d ."
     "i h . l . z"
     "k . f . . ."
-    "m e . g . y"
-    "j n n o o .";
-  /* ". . . . . ."
-    ". . . . . ."; */
+    "m e . g . ."
+    "j n n o o y";
   width: 100%;
-  height: 100vh;
-  margin-top: 2rem;
+  height: 100%;
+  /* header height(5rem) + bottom nav height (5rem) + table form height(2rem) = 12rem */
+  height: calc(100vh - 12rem);
+
   gap: 0.5rem;
   border-radius: 10px;
   background-color: hsl(201, 61%, 11%);
@@ -69,10 +75,11 @@ Table
   justify-content: space-around;
   align-items: center;
   max-width: 120px;
-  width: 100%;
-  height: 100px;
+  min-height: 80px;
+  width: 80px;
+  height: auto;
   justify-self: center;
-  align-self: center;
+  /* align-self: center; */
 
   background-color: hsl(201, 40%, 21%);
   border: 1px solid hsl(156, 61%, 57%);
@@ -91,11 +98,16 @@ Table
 }
 .entrance,
 .restrooms {
-  border-right: 3px solid white;
-  color: white;
   grid-area: y;
   position: relative;
   padding: 0;
+  border: 1px solid red;
+  /* fix it */
+  max-width: 120px;
+  min-height: 80px;
+  width: 80px;
+
+  overflow: hidden;
 }
 
 .restrooms {
@@ -107,7 +119,11 @@ Table
   transform: rotate(90deg);
   position: absolute;
   right: -10px;
-  top: 55px;
+  top: 30px;
+  border-top: 2px solid white;
+  color: white;
+  padding-top: 0.2rem;
+  font-size: 0.9rem;
 }
 
 .table.unavailable {

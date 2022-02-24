@@ -1,7 +1,6 @@
 @import "../../vars.css";
 
 .login-page {
-  /* background-color: hsl(15, 28%, 89%); */
   background-color: var(--bg-color);
   height: calc(100vh - 10rem);
   display: flex;

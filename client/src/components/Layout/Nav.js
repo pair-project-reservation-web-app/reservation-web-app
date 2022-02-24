@@ -1,84 +1,58 @@
-import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { NavLink } from "react-router-dom";
 import Logout from "../Login/Logout";
 import AuthContext from "../../store/auth-context";
 import styles from "./Nav.module.css";
 const Nav = () => {
   const ctx = useContext(AuthContext);
-  let navigate = useNavigate();
-  const [current, setCurrent] = useState("Home");
-
-  useEffect(() => {
-    if (window.location.href === "http://localhost:3000/") {
-      setCurrent("Home");
-    } else if (window.location.href === "http://localhost:3000/reviews") {
-      setCurrent("Review");
-    } else if (
-      window.location.href === "http://localhost:3000/my-reservation"
-    ) {
-      setCurrent("Reservation");
-    } else if (window.location.href === "http://localhost:3000/login") {
-      setCurrent("Login");
-    } else {
-      setCurrent("Home");
-    }
-  }, [window.location.href]);
 
   return (
-    <nav>
-      <ul>
+    <nav className={styles['nav-container']}>
+      <ul className={`wrapper ${styles['link-container']}`}>
         <li>
-          <Link
-            className={styles[`${current === "Home" ? "active" : ""}`]}
+          <NavLink
+            className={({ isActive }) => (isActive ? styles.active : '')}
             to="/"
           >
             <ion-icon name="home"></ion-icon>
             <span>Home</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link
-            className={styles[`${current === "Review" ? "active" : ""}`]}
+          <NavLink
             to="/reviews"
+            className={({ isActive }) => (isActive ? styles.active : '')}
           >
             <ion-icon name="chatbox-ellipses"></ion-icon>
             <span>Review</span>
-          </Link>
+          </NavLink>
         </li>
         {ctx.isLoggedIn && (
           <li>
-            <Link
-              className={styles[`${current === "Reservation" ? "active" : ""}`]}
+            <NavLink
               to="/my-reservation"
+              className={({ isActive }) => (isActive ? styles.active : '')}
             >
               <ion-icon name="calendar-clear"></ion-icon>
               <span>Reservation</span>
-            </Link>
+            </NavLink>
           </li>
         )}
         <li>
-          {/* <Link to="/login" >Login</Link> */}
           {!ctx.isLoggedIn ? (
-            <Link
-              className={styles[`${current === "Login" ? "active" : ""}`]}
+            <NavLink
               to="/login"
+              className={({ isActive }) => (isActive ? styles.active : '')}
             >
               <ion-icon name="person"></ion-icon>
               <span>Login</span>
-            </Link>
+            </NavLink>
           ) : (
-            <div
-              onClick={() => {
-                setCurrent("Home");
-                navigate("/");
-              }}
-            >
-              <Logout onLogout={ctx.userStatusHandler} />
-            </div>
+            <Logout onLogout={ctx.userStatusHandler} />
           )}
         </li>
       </ul>
-    </nav>
+    </nav >
   );
 };
 
