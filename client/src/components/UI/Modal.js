@@ -10,9 +10,6 @@ const ModalOverlay = (props) => {
 
   return (
     <div className={styles.modal}>
-      <header>
-        <h1>Hello</h1>
-      </header>
       <div className={styles['info-container']}>
         <h2>{props.modalMessage}</h2>
       </div>

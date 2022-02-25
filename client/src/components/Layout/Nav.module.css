@@ -50,4 +50,5 @@
 .link-container li a:focus,
 .link-container li a.active {
   color: #ff7d31;
+  transition: all 0.3s;
 }

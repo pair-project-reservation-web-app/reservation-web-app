@@ -81,7 +81,7 @@ const ReviewBundle = (props) => {
           </div>
           <div className={styles["reviews-val"]}>
             <div>
-              <h3>
+              <h3 className={styles.stars}>
                 <Stars rating={content.rating} />
               </h3>
               <h3

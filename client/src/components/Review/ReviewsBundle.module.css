@@ -4,7 +4,7 @@
   box-shadow: 0 0.4rem 2.8rem rgba(0, 0, 0, 0.075);
   margin-bottom: 1rem;
   border-radius: 1rem;
-  max-width: 70%;
+  max-width: 85%;
   padding: 2rem 1rem 2rem 1rem;
   gap: 1rem;
 }
@@ -14,6 +14,11 @@
 }
 .reviews-val {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.reviews-val .stars{
+  min-width: 6rem;
 }
 .reviews-val .thumbs {
   color: #7c8191;
@@ -52,6 +57,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 1rem;
 }
 
 .comment {
