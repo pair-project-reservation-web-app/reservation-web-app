@@ -196,9 +196,14 @@ const Tables = () => {
               options={time}
               styles={customStyles}
               className={styles.container}
+              classNamePrefix='react-select'
               // classNamePrefix={styles.container}
               onChange={userTimeHandler} />
-            <Select options={partySize} onChange={userPartySizeHandler} />
+            <Select
+              options={partySize}
+              onChange={userPartySizeHandler}
+              className={styles.container}
+            />
           </form>
 
           <ul className={styles["table-container"]}>
@@ -224,7 +229,7 @@ const Tables = () => {
                 key={index}
               >
 
-                <h3>{table.partySize}</h3>
+                <h3><ion-icon name="body-outline"></ion-icon> {table.partySize}</h3>
 
                 {/* {<TableIcon customers={table.partySize} />} */}
 
