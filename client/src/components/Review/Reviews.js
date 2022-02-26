@@ -72,6 +72,7 @@ const Reviews = () => {
     return (
       <Fragment>
         <div className="wrapper">
+          <div className={styles['reviews-container']}>
           <h1 className={styles.title}>Reviews</h1>
           <div className={styles['avg-stars']}>
             <Stars rating={avgRating} />
@@ -84,6 +85,7 @@ const Reviews = () => {
             reviews={userReviews}
             userClickHandler={userClickHandler}
           />
+          </div>
         </div>
       </Fragment>
     );

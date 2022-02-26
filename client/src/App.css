@@ -237,6 +237,7 @@ p {
 
 main {
   margin-bottom: 5rem;
+  overflow-x: hidden;
 }
 
 @media (min-width: 800px) {

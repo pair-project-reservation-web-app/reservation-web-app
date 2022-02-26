@@ -1,21 +1,23 @@
+
 .reviews {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   box-shadow: 0 0.4rem 2.8rem rgba(0, 0, 0, 0.075);
   margin-bottom: 1rem;
   border-radius: 1rem;
-  max-width: 85%;
+  max-width: 100%;
   padding: 2rem 1rem 2rem 1rem;
   gap: 1rem;
 }
-.right {
-  margin-left: auto;
-  margin-right: 0;
-}
 .reviews-val {
   display: flex;
-  justify-content: center;
   align-items: center;
+  margin-left: 1rem;
+}
+.reviews-icons{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 .reviews-val .stars{
   min-width: 6rem;
@@ -31,7 +33,10 @@
 }
 
 .reviews-val .delete ion-icon {
+  display: block;
   color: #7c8191;
+  justify-content: center;
+  align-items: center;
 }
 
 .reviews-val .delete ion-icon:hover,
@@ -76,3 +81,20 @@
   transition: all 0.3s;
   cursor: pointer;
 }
+/*MEDIA*/
+
+/* .right {
+  margin-left: auto;
+  margin-right: 0;
+
+  .reviews{
+  justify-content: space-between;
+  max-width: 85%;
+  }
+
+  .reviews-val {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+} */
