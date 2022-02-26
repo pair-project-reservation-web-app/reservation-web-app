@@ -80,7 +80,7 @@ const ReviewBundle = (props) => {
             <h3 className={styles.comment}>{content.reviewText}</h3>
           </div>
           <div className={styles["reviews-val"]}>
-            <div>
+            <div className={styles['reviews-icons']}>
               <h3 className={styles.stars}>
                 <Stars rating={content.rating} />
               </h3>

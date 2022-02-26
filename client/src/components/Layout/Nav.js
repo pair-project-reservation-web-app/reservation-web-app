@@ -1,58 +1,28 @@
-import { useContext } from "react";
-import { NavLink } from "react-router-dom";
-import Logout from "../Login/Logout";
-import AuthContext from "../../store/auth-context";
+import { Fragment,  useEffect, useState } from "react";
+import NavMobile from "./NavMobile";
+import NavDT from "./NavDT";
+
 import styles from "./Nav.module.css";
 const Nav = () => {
-  const ctx = useContext(AuthContext);
+  
+  const [isMobile, setIsMobile] = useState(false)
+
+  const handleResize = () => {
+    if (window.innerWidth < 550) {
+      setIsMobile(true)
+    }else{
+      setIsMobile(false)
+    }
+  }
+
+  useEffect(()=>{
+    window.addEventListener("resize", handleResize)
+  })
 
   return (
-    <nav className={styles['nav-container']}>
-      <ul className={`wrapper ${styles['link-container']}`}>
-        <li>
-          <NavLink
-            className={({ isActive }) => (isActive ? styles.active : '')}
-            to="/"
-          >
-            <ion-icon name="home"></ion-icon>
-            <span>Home</span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/reviews"
-            className={({ isActive }) => (isActive ? styles.active : '')}
-          >
-            <ion-icon name="chatbox-ellipses"></ion-icon>
-            <span>Review</span>
-          </NavLink>
-        </li>
-        {ctx.isLoggedIn && (
-          <li>
-            <NavLink
-              to="/my-reservation"
-              className={({ isActive }) => (isActive ? styles.active : '')}
-            >
-              <ion-icon name="calendar-clear"></ion-icon>
-              <span>Reservation</span>
-            </NavLink>
-          </li>
-        )}
-        <li>
-          {!ctx.isLoggedIn ? (
-            <NavLink
-              to="/login"
-              className={({ isActive }) => (isActive ? styles.active : '')}
-            >
-              <ion-icon name="person"></ion-icon>
-              <span>Login</span>
-            </NavLink>
-          ) : (
-            <Logout onLogout={ctx.userStatusHandler} />
-          )}
-        </li>
-      </ul>
-    </nav >
+    <Fragment>
+      {isMobile ? <NavMobile /> : <NavDT />}
+    </Fragment>
   );
 };
 

@@ -237,10 +237,18 @@ p {
 
 main {
   margin-bottom: 5rem;
+  overflow-x: hidden;
 }
 
 @media (min-width: 800px) {
   .wrapper {
     width: 800px;
+  }
+}
+
+@media (min-width: 550px){
+  main{
+    margin-top: 5rem;
+    margin-bottom: 0;
   }
 }

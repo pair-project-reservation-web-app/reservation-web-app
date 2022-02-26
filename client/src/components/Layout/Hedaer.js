@@ -5,12 +5,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <header className={`wrapper ${styles["header-container"]}`}>
-      {/* <div className={styles.logo}>Logo</div> */}
-      <Link to="/">
-        <img className={styles.logo} src={Logo} alt="web-logo" />
-      </Link>
-
-      <Nav />
+            <Nav />
     </header>
   );
 };
