@@ -37,29 +37,27 @@ Form
 
 .form-container {
   display: flex;
+  justify-content: space-around;
+  align-items: center;
   /* flex-direction: column; */
+  height: 50px;
   padding: 1rem;
   /* justify-content: space-between; */
 }
-.container .react-select__control {
-  background-color: black;
-}
-.react-select__k5CfK__control {
-  background-color: black;
-}
-.form-container input {
-  /* border: 2px solid var(--light-main-color); */
-  /* border-radius: 5px; */
-  /* width: 100%; */
 
+.form-container .input-date {
+  border-style: inherit;
   width: 150px;
+  height: 40px;
+  border: 1px solid hsl(0, 0%, 100%);
+  border-radius: 5px;
 }
 
 .container {
   /* border: 2px solid var(--light-main-color); */
   border-radius: 5px;
   /* width: 100%; */
-  margin-top: 0.5rem;
+  /* margin-top: 0.5rem; */
   width: 150px;
   /* margin-left: 0.4rem; */
 }

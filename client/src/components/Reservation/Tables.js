@@ -178,7 +178,7 @@ const Tables = () => {
       ...provided,
       borderColor: 'none',
       // backgroundColor: 'red',
-      color: 'white'
+      // color: 'white'
     })
   }
 
@@ -191,10 +191,9 @@ const Tables = () => {
           <form className={styles['form-container']}>
             {/* Do we need submit button? */}
             <label htmlFor="reservationDate" className={styles['sr-only']}>Date</label>
-            <input type="date" defaultValue={today} onChange={reservationDateHandler} />
+            <input className={styles['input-date']} type="date" defaultValue={today} onChange={reservationDateHandler} />
             <Select
               options={time}
-              styles={customStyles}
               className={styles.container}
               classNamePrefix='react-select'
               // classNamePrefix={styles.container}
