@@ -13,6 +13,22 @@
   cursor: pointer;
 }
 
+@media (min-width: 550px) {
+  .btn ion-icon{
+    display: none;
+  }
+
+  .btn span{
+    color: #3E4249;
+    font-size: 1rem;
+    font-weight: lighter;
+  }
+
+  .btn span:hover{
+  color: #ff7d31;
+  transition: all 0.3s;
+  }
+}
 /* ion-icon {
   font-size: 1.6rem;
   margin-bottom: 0.3rem;

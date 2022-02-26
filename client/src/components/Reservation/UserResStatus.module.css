@@ -33,3 +33,9 @@
     color: white;
 }
 
+@media (min-width: 550px) {
+    .status-container{
+        align-items: flex-start;
+        padding: 1rem;
+    }
+}

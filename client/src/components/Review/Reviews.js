@@ -73,7 +73,7 @@ const Reviews = () => {
       <Fragment>
         <div className="wrapper">
           <div className={styles['reviews-container']}>
-          <h1 className={styles.title}>Reviews</h1>
+          <h2 className={styles.title}>Reviews</h2>
           <div className={styles['avg-stars']}>
             <Stars rating={avgRating} />
           </div>
