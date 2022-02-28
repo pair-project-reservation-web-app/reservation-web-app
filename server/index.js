@@ -13,6 +13,7 @@ const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.json());
+
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -35,11 +36,14 @@ app.use(
 );
 
 const db = mysql.createConnection({
-  host: process.env.HOST,
+  // host: process.env.HOST,
   // user: process.env.USER,
-  user: 'sqluser',
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
+  // password: process.env.PASSWORD,
+  // database: process.env.DATABASE,
+  host: 'us-cdbr-east-05.cleardb.net',
+  user: 'b89cbf79daa28d',
+  password: '31e01f86',
+  database: 'heroku_f2aeea91fa44128',
 });
 
 //============
@@ -290,7 +294,7 @@ app.delete("/api/reviews/:id", (req, res) => {
 });
 
 try {
-  app.listen(HTTP_PORT, () => {
+  app.listen(process.env.PORT || HTTP_PORT, () => {
     console.log(`API listening on : ${HTTP_PORT}`);
   });
 } catch (error) {
