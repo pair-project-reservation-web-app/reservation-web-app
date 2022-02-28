@@ -73,7 +73,7 @@ const Tables = () => {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`
+      `https://reservation-mysql.herokuapp.com/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`
     ).then((response) => {
       // need to add error handle or initial value for api call
       if (!response.data.status) {
@@ -90,7 +90,7 @@ const Tables = () => {
     // } else {
     // }
 
-    Axios.post("http://localhost:8080/api/reservation-table", {
+    Axios.post("https://reservation-mysql.herokuapp.com/api/reservation-table", {
       tableId,
       partySize,
       dineinDate,

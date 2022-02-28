@@ -13,6 +13,7 @@ const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.json());
+
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -290,7 +291,7 @@ app.delete("/api/reviews/:id", (req, res) => {
 });
 
 try {
-  app.listen(HTTP_PORT, () => {
+  app.listen(process.env.PORT || HTTP_PORT, () => {
     console.log(`API listening on : ${HTTP_PORT}`);
   });
 } catch (error) {
