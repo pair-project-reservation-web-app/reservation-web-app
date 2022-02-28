@@ -1,7 +1,11 @@
 .header-container {
-  height: 5rem;
+  height: 1rem;
 }
 
 .logo {
   width: 5rem;
+}
+
+.logo:hover {
+  color: #ff7d31;
 }

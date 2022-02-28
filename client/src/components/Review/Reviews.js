@@ -3,6 +3,7 @@ import Axios from "axios";
 import AuthContext from "../../store/auth-context";
 import ReviewBundle from "./ReviewsBundle";
 import Stars from "../UI/Stars/Stars";
+import styles from './Reviews.module.css'
 
 const Reviews = () => {
   const [userReviews, setUserReviews] = useState([]);
@@ -71,16 +72,20 @@ const Reviews = () => {
     return (
       <Fragment>
         <div className="wrapper">
-          <h1>Reviews</h1>
-          <button onClick={starClickHandler}>star</button>
-          <button onClick={likesClickHander}>like</button>
-          <div>
+          <div className={styles['reviews-container']}>
+          <h2 className={styles.title}>Reviews</h2>
+          <div className={styles['avg-stars']}>
             <Stars rating={avgRating} />
+          </div>
+          <div className={styles['reviews-btn']}>
+          <button onClick={starClickHandler}><ion-icon name="star"></ion-icon></button>
+          <button onClick={likesClickHander}><ion-icon name="thumbs-up"></ion-icon></button>
           </div>
           <ReviewBundle
             reviews={userReviews}
             userClickHandler={userClickHandler}
           />
+          </div>
         </div>
       </Fragment>
     );

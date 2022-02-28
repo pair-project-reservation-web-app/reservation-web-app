@@ -1,0 +1,40 @@
+.rating{
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.review-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 2rem;
+    background-color: #f7f7f7;
+    padding: 2rem;
+    border-radius: 10px;
+}
+.comment textarea{
+    resize: none;
+    height: 4rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: none;
+}
+.comment textarea:focus{
+    outline:auto;
+    outline-color: #ff7d31;
+}
+
+.review-container button {
+    background: none;
+    border: solid 1px #141414;
+    border-radius: 0.3rem;
+    padding: 0.3rem 1rem 0.3rem 1rem;
+    cursor: pointer;
+}
+.review-container button:hover{
+    background-color: #ff7d31;
+    border: solid 1px #ff7d31;
+    color: white;
+    transition: all 0.3s;
+}
