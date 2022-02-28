@@ -67,6 +67,7 @@ const Login = (props) => {
       } else {
         //valid
         // props.onLogin(response.data.user, response.data.userId);
+        console.log('in',response.data.message)
         props.onLogin(true, response.data.message.userId);
         navigate("/");
       }

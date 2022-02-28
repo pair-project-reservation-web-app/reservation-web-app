@@ -36,11 +36,14 @@ app.use(
 );
 
 const db = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  // user: 'sqluser',
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
+  // host: process.env.HOST,
+  // user: process.env.USER,
+  // password: process.env.PASSWORD,
+  // database: process.env.DATABASE,
+  host: 'us-cdbr-east-05.cleardb.net',
+  user: 'b89cbf79daa28d',
+  password: '31e01f86',
+  database: 'heroku_f2aeea91fa44128',
 });
 
 //============

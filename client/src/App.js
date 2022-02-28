@@ -35,6 +35,7 @@ function App() {
   const userStatusHandler = (status, id) => {
     setLoginStatus(status);
     setUserId(id);
+    console.log('iii', loginStatus, userId)
   };
 
   const displayHandler = (e) => {
@@ -52,11 +53,12 @@ function App() {
   useEffect(() => {
     Axios.get("https://reservation-mysql.herokuapp.com/").then((response) => {
       if (response.data.loggedIn === true) {
-        //console.log(response.data);
+        
         setLoginStatus(response.data.user);
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {
+        
         //console.log("no logged in");
       }
     });
