@@ -11,15 +11,12 @@ dotenv.config();
 
 const app = express();
 
-const HTTP_PORT = process.env.PORT || 8080;
+const HTTP_PORT = process.env.PORT;
 
 app.use(express.json());
 
 app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    credentials: true,
-  })
+  cors()
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -295,7 +292,7 @@ app.delete("/api/reviews/:id", (req, res) => {
 });
 
 try {
-  app.listen(process.env.PORT || HTTP_PORT, () => {
+  app.listen(HTTP_PORT, () => {
     console.log(`API listening on : ${HTTP_PORT}`);
   });
 } catch (error) {

@@ -23,7 +23,7 @@ function App() {
 
   const [modalMessage, setModalMessage] = useState();
 
-  Axios.defaults.withCredentials = true;
+  //Axios.defaults.withCredentials = true;
   /*
   user register function. passing username, password, contact number and user full name
   to register api from input field and get response from register api
