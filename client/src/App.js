@@ -52,13 +52,13 @@ function App() {
   useEffect(() => {
     Axios.get("https://reservation-mysql.herokuapp.com/").then((response) => {
       if (response.data.loggedIn === true) {
-        
+        console.log('logged in', response.data)
         setLoginStatus(response.data.user);
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {
         
-        //console.log("no logged in");
+        console.log("no logged in");
       }
     });
   }, [userId, loginStatus]);
