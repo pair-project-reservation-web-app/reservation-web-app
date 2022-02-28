@@ -57,7 +57,7 @@ const Login = (props) => {
       password: loginStatus.password,
     }).then((response) => {
       if (!response.data.status) {
-        //invalid
+        //invalid        console.log('in f', response.data)
         ctx.setModalHandler(response.data.message);
         /*
         error handler needed here
@@ -66,7 +66,7 @@ const Login = (props) => {
       } else {
         //valid
         // props.onLogin(response.data.user, response.data.userId);
-        console.log('in',response.data.message)
+        console.log('in t',response.data.message)
         props.onLogin(true, response.data.message.userId);
         navigate("/");
       }

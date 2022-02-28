@@ -51,13 +51,13 @@ function App() {
   */
   useEffect(() => {
     Axios.get("https://reservation-mysql.herokuapp.com/").then((response) => {
+      console.log('app.jd', response.data)
       if (response.data.loggedIn === true) {
         console.log('logged in', response.data)
         setLoginStatus(response.data.user);
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {
-        
         console.log("no logged in");
       }
     });
@@ -75,7 +75,7 @@ function App() {
       >
         <Router>
           <Header />
-          <main>
+          <main>{console.log(userId)}
             <Routes>
               <Route path="*" element={<NotFound />} />
               <Route

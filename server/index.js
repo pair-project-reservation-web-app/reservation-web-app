@@ -11,12 +11,15 @@ dotenv.config();
 
 const app = express();
 
-const HTTP_PORT = process.env.PORT;
+const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 
 app.use(
-  cors()
+  cors({
+    origin: '*',
+    credentials: true 
+})
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 
