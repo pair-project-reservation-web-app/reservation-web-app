@@ -10,6 +10,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.json());

@@ -35,7 +35,6 @@ function App() {
   const userStatusHandler = (status, id) => {
     setLoginStatus(status);
     setUserId(id);
-    console.log('iii', loginStatus, userId)
   };
 
   const displayHandler = (e) => {

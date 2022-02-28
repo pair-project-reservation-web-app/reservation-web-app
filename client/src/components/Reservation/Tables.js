@@ -79,7 +79,6 @@ const Tables = () => {
       if (!response.data.status) {
         ctx.setModalHandler(response.data.message);
       } else {
-        console.log(response.data)
         setReservationList(response.data.message);
       }
     });
