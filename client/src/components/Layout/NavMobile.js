@@ -4,10 +4,10 @@ import styles from './NavMobile.module.css'
 import AuthContext from "../../store/auth-context";
 import Logout from "../Login/Logout";
 
-const NavMobile =() => {
-    const ctx = useContext(AuthContext);
-    return(
-        <nav className={styles['nav-container']}>
+const NavMobile = () => {
+  const ctx = useContext(AuthContext);
+  return (
+    <nav className={styles['nav-container']}>
       <ul className={`wrapper ${styles['link-container']}`}>
         <li>
           <NavLink
@@ -53,7 +53,7 @@ const NavMobile =() => {
         </li>
       </ul>
     </nav >
-    )
+  )
 }
 
 export default NavMobile
