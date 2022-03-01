@@ -121,13 +121,14 @@ const Register = () => {
   const registerHandler = (e) => {
     e.preventDefault();
 
-    Axios.post("http://localhost:8080/api/user/register", {
+    Axios.post("https://mysql-deploy-test-1.herokuapp.com/api/user/register", {
       username: registerStatus.username,
       password: registerStatus.password,
       contact: registerStatus.contact,
       fullname: registerStatus.fullname,
     }).then((response) => {
       if (!response.data.status) {
+        console.log(response.data)
         ctx.setModalHandler(response.data.message);
       } else {
         ctx.setModalHandler(response.data.message);

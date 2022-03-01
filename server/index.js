@@ -15,7 +15,7 @@ const HTTP_PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -35,11 +35,17 @@ app.use(
 );
 
 const db = mysql.createConnection({
-  host: process.env.HOST,
-  // user: process.env.USER,
-  user: 'sqluser',
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
+  // host: process.env.HOST,
+  // // user: process.env.USER,
+  // user: 'sqluser',
+  // password: process.env.PASSWORD,
+  // database: process.env.DATABASE,
+
+  host: 'us-cdbr-east-05.cleardb.net',
+  user: 'b84c2f5a0340b9',
+  password: '24f8275e',
+  database: 'heroku_576098d457aa506'
+  // // mysql://b84c2f5a0340b9:24f8275e@us-cdbr-east-05.cleardb.net/heroku_576098d457aa506?reconnect=true
 });
 
 //============

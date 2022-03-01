@@ -12,7 +12,7 @@ const Logout = (props) => {
 
 
   const logoutHandler = () => {
-    Axios.get("http://localhost:8080/api/user/logout").then(() => {
+    Axios.get("https://mysql-deploy-test-1.herokuapp.com/api/user/logout").then(() => {
       ctx.setModalHandler("Logged out");
       props.onLogout(false, null);
       navigate('/');

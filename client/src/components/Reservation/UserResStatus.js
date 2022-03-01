@@ -10,7 +10,7 @@ const UserResStatus = () => {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:8080/api/reservation-status/${ctx.userId}`
+      `https://mysql-deploy-test-1.herokuapp.com/api/reservation-status/${ctx.userId}`
     ).then((response) => {
       //console.log(response.data)
       if (!response.data.status) {
@@ -23,7 +23,7 @@ const UserResStatus = () => {
 
   const deleteReservation = (reservationId) => {
     Axios.delete(
-      `http://localhost:8080/api/reservation-cancel/${reservationId}`
+      `https://mysql-deploy-test-1.herokuapp.com/api/reservation-cancel/${reservationId}`
     ).then((response) => {
       if (!response.data.status) {
         ctx.setModalHandler(response.data.message);
@@ -36,17 +36,17 @@ const UserResStatus = () => {
   return (
     <div className="wrapper">
       <div className={styles['status-container']}>
-      <h2>Current Reservation Status</h2>
-      {currentStatus.map((item) => (
-        <div className={styles.status} key={item.tableId}>
-          <h3>Date : {item.dineinDate.split("T")[0]}</h3>
-          <h3>Time : {item.dineinTime}</h3>
-          <h3>Table: {item.tableId}</h3>
-          <button onClick={deleteReservation.bind(null, item.Id)}>
-            Cancel
-          </button>
-        </div>
-      ))}
+        <h2>Current Reservation Status</h2>
+        {currentStatus.map((item) => (
+          <div className={styles.status} key={item.tableId}>
+            <h3>Date : {item.dineinDate.split("T")[0]}</h3>
+            <h3>Time : {item.dineinTime}</h3>
+            <h3>Table: {item.tableId}</h3>
+            <button onClick={deleteReservation.bind(null, item.Id)}>
+              Cancel
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );

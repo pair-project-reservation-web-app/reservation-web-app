@@ -37,7 +37,7 @@ const Tables = () => {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`
+      `https://mysql-deploy-test-1.herokuapp.com/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`,
     ).then((response) => {
       // need to add error handle or initial value for api call
       if (!response.data.status) {

@@ -37,7 +37,7 @@ const ReviewBundle = (props) => {
 
   const deleteClickHandler = (e) => {
     const reviewId = e.target.parentElement.getAttribute("data-key");
-    Axios.delete(`http://localhost:8080/api/reviews/${reviewId}`).then(
+    Axios.delete(`https://mysql-deploy-test-1.herokuapp.com/api/reviews/${reviewId}`).then(
       (response) => {
         //console.log(response);
         ctx.setModalHandler(response.data.message);
@@ -57,7 +57,7 @@ const ReviewBundle = (props) => {
         const index = likes.indexOf(userId);
         likes.splice(index, 1);
       }
-      Axios.put("http://localhost:8080/api/reviews/like", {
+      Axios.put("https://mysql-deploy-test-1.herokuapp.com/api/reviews/like", {
         array: JSON.stringify(likes),
         id: reviewId,
       }).then((response) => {
@@ -108,13 +108,13 @@ const ReviewBundle = (props) => {
         </div>
       ))}
       <div className={styles["review-btn"]}>
-      <button className={styles.btn} onClick={leftClickHandler}>
-        <ion-icon name="caret-back"></ion-icon>
-      </button>
-      <span>{page}</span>
-      <button className={styles.btn} onClick={rightClickHandler}>
-        <ion-icon name="caret-forward"></ion-icon>
-      </button>
+        <button className={styles.btn} onClick={leftClickHandler}>
+          <ion-icon name="caret-back"></ion-icon>
+        </button>
+        <span>{page}</span>
+        <button className={styles.btn} onClick={rightClickHandler}>
+          <ion-icon name="caret-forward"></ion-icon>
+        </button>
       </div>
     </Fragment>
   );
