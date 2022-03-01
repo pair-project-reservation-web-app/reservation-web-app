@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: '*',
+    origin: 'http://localhost:3000',
     credentials: true 
 })
 );
@@ -46,7 +46,7 @@ const db = mysql.createConnection({
   password: '31e01f86',
   database: 'heroku_f2aeea91fa44128',
 });
-
+//mysql://b89cbf79daa28d:31e01f86@us-cdbr-east-05.cleardb.net/heroku_f2aeea91fa44128?reconnect=true
 //============
 // Resgister
 //============

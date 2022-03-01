@@ -57,7 +57,7 @@ const Login = (props) => {
       password: loginStatus.password,
     }).then((response) => {
       if (!response.data.status) {
-        //invalid        console.log('in f', response.data)
+        //invalid
         ctx.setModalHandler(response.data.message);
         /*
         error handler needed here
@@ -66,12 +66,29 @@ const Login = (props) => {
       } else {
         //valid
         // props.onLogin(response.data.user, response.data.userId);
-        console.log('in t',response.data.message)
         props.onLogin(true, response.data.message.userId);
         navigate("/");
       }
     });
   };
+
+  // const loginHandler = (e) => {
+  //   e.preventDefault();
+  //   Axios.post("https://reservation-mysql.herokuapp.com/api/user/login", {
+  //     username: loginStatus.email,
+  //     password: loginStatus.password,
+  //   }).then((response) => {
+  //     if (!response.data.status) {
+  //       //invalid        console.log('in f', response.data)
+  //       ctx.setModalHandler(response.data.message);
+        
+  //     } else {
+
+  //       props.onLogin(true, response.data.message.userId);
+  //       navigate("/");
+  //     }
+  //   });
+  // };
 
   return (
     <section className={styles['login-page']}>

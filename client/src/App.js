@@ -23,7 +23,7 @@ function App() {
 
   const [modalMessage, setModalMessage] = useState();
 
-  //Axios.defaults.withCredentials = true;
+  Axios.defaults.withCredentials = true;
   /*
   user register function. passing username, password, contact number and user full name
   to register api from input field and get response from register api
@@ -51,14 +51,13 @@ function App() {
   */
   useEffect(() => {
     Axios.get("https://reservation-mysql.herokuapp.com/").then((response) => {
-      console.log('app.jd', response.data)
       if (response.data.loggedIn === true) {
-        console.log('logged in', response.data)
+        //console.log(response.data);
         setLoginStatus(response.data.user);
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {
-        console.log("no logged in");
+        //console.log("no logged in");
       }
     });
   }, [userId, loginStatus]);
