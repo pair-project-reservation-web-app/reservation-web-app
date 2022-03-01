@@ -10,7 +10,7 @@ const Table = (props) => {
   const ctx = useContext(AuthContext);
 
   const bookingTable = (tableId, partySize, dineinDate, dineinTime) => {
-    Axios.post("https://mysql-deploy-test-1.herokuapp.com/api/reservation-table", {
+    Axios.post("https://reservation-mysql.herokuapp.com/api/reservation-table", {
       tableId,
       partySize,
       dineinDate,

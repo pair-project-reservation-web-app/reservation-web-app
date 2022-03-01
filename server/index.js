@@ -42,9 +42,9 @@ const db = mysql.createConnection({
   // database: process.env.DATABASE,
 
   host: 'us-cdbr-east-05.cleardb.net',
-  user: 'b84c2f5a0340b9',
-  password: '24f8275e',
-  database: 'heroku_576098d457aa506'
+  user: 'b89cbf79daa28d',
+  password: '31e01f86',
+  database: 'heroku_f2aeea91fa44128',
   // // mysql://b84c2f5a0340b9:24f8275e@us-cdbr-east-05.cleardb.net/heroku_576098d457aa506?reconnect=true
 });
 

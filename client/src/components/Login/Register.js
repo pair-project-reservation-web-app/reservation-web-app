@@ -121,7 +121,7 @@ const Register = () => {
   const registerHandler = (e) => {
     e.preventDefault();
 
-    Axios.post("https://mysql-deploy-test-1.herokuapp.com/api/user/register", {
+    Axios.post("https://reservation-mysql.herokuapp.com/api/user/register", {
       username: registerStatus.username,
       password: registerStatus.password,
       contact: registerStatus.contact,

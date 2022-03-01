@@ -14,7 +14,7 @@ const Reviews = () => {
 
   useEffect(() => {
     Axios.get(
-      `https://mysql-deploy-test-1.herokuapp.com/api/reviews/?order=${order}&orderBy=${orderBy}`
+      `https://reservation-mysql.herokuapp.com/api/reviews/?order=${order}&orderBy=${orderBy}`
     ).then((res) => {
       if (!res.data.status) {
         console.log(res.data.message);
@@ -59,7 +59,7 @@ const Reviews = () => {
   };
   const userClickHandler = (e) => {
     const id = +e.target.getAttribute("data-key");
-    Axios.get(`https://mysql-deploy-test-1.herokuapp.com/api/reviews/${id}`).then((res) => {
+    Axios.get(`https://reservation-mysql.herokuapp.com/api/reviews/${id}`).then((res) => {
       if (res.data.status) {
         setUserReviews(res.data.message);
       } else {
