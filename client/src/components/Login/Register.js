@@ -128,6 +128,7 @@ const Register = () => {
       fullname: registerStatus.fullname,
     }).then((response) => {
       if (!response.data.status) {
+        console.log(response.data)
         ctx.setModalHandler(response.data.message);
       } else {
         ctx.setModalHandler(response.data.message);

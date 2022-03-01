@@ -108,13 +108,13 @@ const ReviewBundle = (props) => {
         </div>
       ))}
       <div className={styles["review-btn"]}>
-      <button className={styles.btn} onClick={leftClickHandler}>
-        <ion-icon name="caret-back"></ion-icon>
-      </button>
-      <span>{page}</span>
-      <button className={styles.btn} onClick={rightClickHandler}>
-        <ion-icon name="caret-forward"></ion-icon>
-      </button>
+        <button className={styles.btn} onClick={leftClickHandler}>
+          <ion-icon name="caret-back"></ion-icon>
+        </button>
+        <span>{page}</span>
+        <button className={styles.btn} onClick={rightClickHandler}>
+          <ion-icon name="caret-forward"></ion-icon>
+        </button>
       </div>
     </Fragment>
   );

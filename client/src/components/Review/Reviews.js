@@ -73,18 +73,18 @@ const Reviews = () => {
       <Fragment>
         <div className="wrapper">
           <div className={styles['reviews-container']}>
-          <h2 className={styles.title}>Reviews</h2>
-          <div className={styles['avg-stars']}>
-            <Stars rating={avgRating} />
-          </div>
-          <div className={styles['reviews-btn']}>
-          <button onClick={starClickHandler}><ion-icon name="star"></ion-icon></button>
-          <button onClick={likesClickHander}><ion-icon name="thumbs-up"></ion-icon></button>
-          </div>
-          <ReviewBundle
-            reviews={userReviews}
-            userClickHandler={userClickHandler}
-          />
+            <h2 className={styles.title}>Reviews</h2>
+            <div className={styles['avg-stars']}>
+              <Stars rating={avgRating} />
+            </div>
+            <div className={styles['reviews-btn']}>
+              <button onClick={starClickHandler}><ion-icon name="star"></ion-icon></button>
+              <button onClick={likesClickHander}><ion-icon name="thumbs-up"></ion-icon></button>
+            </div>
+            <ReviewBundle
+              reviews={userReviews}
+              userClickHandler={userClickHandler}
+            />
           </div>
         </div>
       </Fragment>

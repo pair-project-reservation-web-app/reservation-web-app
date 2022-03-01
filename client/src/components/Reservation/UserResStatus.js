@@ -36,17 +36,17 @@ const UserResStatus = () => {
   return (
     <div className="wrapper">
       <div className={styles['status-container']}>
-      <h2>Current Reservation Status</h2>
-      {currentStatus.map((item) => (
-        <div className={styles.status} key={item.tableId}>
-          <h3>Date : {item.dineinDate.split("T")[0]}</h3>
-          <h3>Time : {item.dineinTime}</h3>
-          <h3>Table: {item.tableId}</h3>
-          <button onClick={deleteReservation.bind(null, item.Id)}>
-            Cancel
-          </button>
-        </div>
-      ))}
+        <h2>Current Reservation Status</h2>
+        {currentStatus.map((item) => (
+          <div className={styles.status} key={item.tableId}>
+            <h3>Date : {item.dineinDate.split("T")[0]}</h3>
+            <h3>Time : {item.dineinTime}</h3>
+            <h3>Table: {item.tableId}</h3>
+            <button onClick={deleteReservation.bind(null, item.Id)}>
+              Cancel
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -74,7 +74,7 @@ function App() {
       >
         <Router>
           <Header />
-          <main>{console.log(userId)}
+          <main>
             <Routes>
               <Route path="*" element={<NotFound />} />
               <Route

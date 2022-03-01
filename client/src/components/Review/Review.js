@@ -46,20 +46,20 @@ const Review = () => {
     <Fragment>
       <div className="wrapper">
         <div className={styles['review-container']}>
-        <form onSubmit={submitHandler}>
-          <div className={styles.rating}>
-            <h3>Rate us!</h3>
-            <div >
-             {/* <label>Rating</label> */}
-             <Select options={ratings} onChange={ratingHandler} />
+          <form onSubmit={submitHandler}>
+            <div className={styles.rating}>
+              <h3>Rate us!</h3>
+              <div >
+                {/* <label>Rating</label> */}
+                <Select options={ratings} onChange={ratingHandler} />
+              </div>
             </div>
-          </div>
-          <div className={styles.comment}>
-            {/* <label>Comment</label> */}
-            <textarea onChange={textAreaHandler}></textarea>
-          </div>
-          <button>Add</button>
-        </form>
+            <div className={styles.comment}>
+              {/* <label>Comment</label> */}
+              <textarea onChange={textAreaHandler}></textarea>
+            </div>
+            <button>Add</button>
+          </form>
         </div>
       </div>
     </Fragment>

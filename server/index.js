@@ -13,13 +13,15 @@ const app = express();
 
 const HTTP_PORT = process.env.PORT || 8080;
 
+app.set("trust proxy", 1);
+
 app.use(express.json());
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
-    credentials: true 
-})
+    origin: [process.env.FRONTEND_APP_URL],
+    credentials: true,
+  })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -32,21 +34,21 @@ app.use(
     rolling: true,
     cookie: {
       expires: 3600000,
+      sameSite: 'none',
+      secure: true
     },
   })
 );
 
 const db = mysql.createConnection({
-  // host: process.env.HOST,
-  // user: process.env.USER,
-  // password: process.env.PASSWORD,
-  // database: process.env.DATABASE,
-  host: 'us-cdbr-east-05.cleardb.net',
-  user: 'b89cbf79daa28d',
-  password: '31e01f86',
-  database: 'heroku_f2aeea91fa44128',
+
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
+
 });
-//mysql://b89cbf79daa28d:31e01f86@us-cdbr-east-05.cleardb.net/heroku_f2aeea91fa44128?reconnect=true
+//
 //============
 // Resgister
 //============
