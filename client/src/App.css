@@ -231,10 +231,6 @@ p {
 
 /* need to delete after create css moudles for every components */
 
-.box {
-  border: 1px solid red;
-}
-
 main {
   margin-bottom: 5rem;
   overflow-x: hidden;

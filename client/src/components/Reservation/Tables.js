@@ -92,14 +92,7 @@ const Tables = () => {
     }
   };
 
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      borderColor: 'none',
-      // backgroundColor: 'red',
-      // color: 'white'
-    })
-  }
+
 
   return (
     <>

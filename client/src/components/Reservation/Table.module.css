@@ -36,7 +36,6 @@
 
 .bookingBtn,
 .checkBtn {
-  border-style: none;
   padding: 0.2rem 0.5rem;
   color: var(--main-color);
   cursor: pointer;
