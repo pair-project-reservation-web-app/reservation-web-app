@@ -1,26 +1,27 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import Logout from '../Login/Logout';
-import AuthContext from '../../store/auth-context';
-import styles from './Nav.module.css';
-const Nav = (props) => {
+import { Fragment, useEffect, useState } from "react";
+import NavMobile from "./NavMobile";
+import NavDT from "./NavDT";
+const Nav = () => {
 
-    const ctx = useContext(AuthContext);
+  const [isMobile, setIsMobile] = useState(false)
 
-    return (
-        <nav>
-            <ul>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li>
-                    {/* <Link to="/login" >Login</Link> */}
-                    {!ctx.isLoggedIn ? <Link to="/login">Login</Link> : <Logout onLogout={props.onLogout} />}
-                </li>
-            </ul>
-        </nav>
-    )
+  const handleResize = () => {
+    if (window.innerWidth < 550) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+  })
+
+  return (
+    <Fragment>
+      {isMobile ? <NavMobile /> : <NavDT />}
+    </Fragment>
+  );
 };
-
 
 export default Nav;

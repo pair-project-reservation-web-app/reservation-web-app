@@ -1,7 +1,15 @@
-import { useState, useRef, Fragment, useReducer, useEffect } from "react";
+import {
+  useState,
+  useContext,
+  Fragment,
+  useReducer,
+  useEffect,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Input from "../UI/Input/Input";
+import AuthContext from "../../store/auth-context";
+import styles from './Register.module.css';
 
 const registerReducer = (state, action) => {
   if (action.type === "username") {
@@ -56,6 +64,7 @@ const registerReducer = (state, action) => {
 
 const Register = () => {
   let navigate = useNavigate();
+  const ctx = useContext(AuthContext);
 
   const [registerStatus, dispatchRegister] = useReducer(registerReducer, {
     username: "",
@@ -69,6 +78,19 @@ const Register = () => {
     contactValid: null,
     fullnameValid: null,
   });
+  const [buttonDisable, setButtonDisable] = useState(false);
+
+  useEffect(() => {
+    if (
+      registerStatus.usernameValid &&
+      registerStatus.passwordValid &&
+      registerStatus.password2Valid &&
+      registerStatus.contactValid &&
+      registerStatus.fullnameValid
+    ) {
+      setButtonDisable(true);
+    }
+  }, [registerStatus]);
 
   const usernameHandler = (e) => {
     dispatchRegister({ type: "username", value: e.target.value });
@@ -98,34 +120,30 @@ const Register = () => {
 
   const registerHandler = (e) => {
     e.preventDefault();
-    if (
-      registerStatus.usernameValid &&
-      registerStatus.passwordValid &&
-      registerStatus.password2Valid &&
-      registerStatus.contactValid &&
-      registerStatus.fullnameValid
-    ) {
-      Axios.post("http://localhost:8080/api/user/register", {
-        username: registerStatus.username,
-        password: registerStatus.password,
-        contact: registerStatus.contact,
-        fullname: registerStatus.fullname,
-      }).then((response) => {
-        console.log(response.data.sqlMessage);
+
+    Axios.post("https://reservation-mysql.herokuapp.com/api/user/register", {
+      username: registerStatus.username,
+      password: registerStatus.password,
+      contact: registerStatus.contact,
+      fullname: registerStatus.fullname,
+    }).then((response) => {
+      if (!response.data.status) {
+        console.log(response.data)
+        ctx.setModalHandler(response.data.message);
+      } else {
+        ctx.setModalHandler(response.data.message);
         navigate("/login");
-      });
-    } else {
-      console.log("INPUT VALUES INVALID");
-    }
-    // const username = usernameReg.current.value;
-    // const password = passwordReg.current.value;
-    // const contact = contactReg.current.value;
-    // const fullname = userFullnameReg.current.value;
+      }
+    });
   };
+  // const username = usernameReg.current.value;
+  // const password = passwordReg.current.value;
+  // const contact = contactReg.current.value;
+  // const fullname = userFullnameReg.current.value;
 
   return (
-    <Fragment>
-      <form className="registration" onSubmit={registerHandler}>
+    <section className={styles['register-page']}>
+      <form className={styles['register-form']} onSubmit={registerHandler}>
         <h1>Registration</h1>
         <Input
           type="email"
@@ -191,9 +209,12 @@ const Register = () => {
         <input type="number" ref={contactReg} />
         <label>Full name</label>
         <input type="text" ref={userFullnameReg} /> */}
-        <button type="submit"> Register </button>
+        <button type="submit" disabled={!buttonDisable}>
+          {" "}
+          Register{" "}
+        </button>
       </form>
-    </Fragment>
+    </section>
   );
 };
 

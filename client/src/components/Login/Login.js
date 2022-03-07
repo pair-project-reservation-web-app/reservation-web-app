@@ -1,9 +1,9 @@
-import { Fragment, useReducer, useState } from "react";
+import { useReducer, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import Axios from "axios";
 import Input from "../UI/Input/Input";
-import Modal from "../Layout/Modal";
+import AuthContext from "../../store/auth-context";
 
 const loginReducer = (state, action) => {
   if (action.type === "USER_EMAIL") {
@@ -32,6 +32,7 @@ const loginReducer = (state, action) => {
 
 const Login = (props) => {
   let navigate = useNavigate();
+  const ctx = useContext(AuthContext);
 
   const [loginStatus, dispatchLogin] = useReducer(loginReducer, {
     email: "",
@@ -40,13 +41,7 @@ const Login = (props) => {
     passwordIsValid: null,
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalDisplay, setModalDisplay] = useState(false);
 
-  const displayHandler = (e) => {
-    e.preventDefault();
-    setModalDisplay(false);
-  };
   const userEmailHandler = (e) => {
     dispatchLogin({ type: "USER_EMAIL", value: e.target.value });
   };
@@ -57,32 +52,46 @@ const Login = (props) => {
 
   const loginHandler = (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:8080/api/user/login", {
+    Axios.post("https://reservation-mysql.herokuapp.com/api/user/login", {
       username: loginStatus.email,
       password: loginStatus.password,
     }).then((response) => {
-      console.log(response);
-      if (response.data.message) {
+      if (!response.data.status) {
         //invalid
-
-        setErrorMessage(response.data.message);
-        setModalDisplay(true);
+        ctx.setModalHandler(response.data.message);
         /*
         error handler needed here
         add a handler later
         */
       } else {
         //valid
-        console.log(response.data.userId);
         // props.onLogin(response.data.user, response.data.userId);
-        props.onLogin(true, response.data.userId);
+        props.onLogin(true, response.data.message.userId);
         navigate("/");
       }
     });
   };
 
+  // const loginHandler = (e) => {
+  //   e.preventDefault();
+  //   Axios.post("https://reservation-mysql.herokuapp.com/api/user/login", {
+  //     username: loginStatus.email,
+  //     password: loginStatus.password,
+  //   }).then((response) => {
+  //     if (!response.data.status) {
+  //       //invalid        console.log('in f', response.data)
+  //       ctx.setModalHandler(response.data.message);
+        
+  //     } else {
+
+  //       props.onLogin(true, response.data.message.userId);
+  //       navigate("/");
+  //     }
+  //   });
+  // };
+
   return (
-    <Fragment>
+    <section className={styles['login-page']}>
       <form className={styles["login-form"]} onSubmit={loginHandler}>
         <h1>Login</h1>
         <Input
@@ -105,52 +114,8 @@ const Login = (props) => {
         <button type="submit"> Login </button>
         <Link to="/register">Register</Link>
       </form>
-      <Modal
-        display={modalDisplay}
-        displayHandler={displayHandler}
-        message={errorMessage}
-      />
-    </Fragment>
+    </section>
   );
 };
 
 export default Login;
-
-// const Login = (props) => {
-//   const username = useRef();
-//   const password = useRef();
-
-//   const loginHandler = (e) => {
-//     e.preventDefault();
-//     Axios.post("http://localhost:8080/api/user/login", {
-//       username: username.current.value,
-//       password: password.current.value,
-//     }).then((response) => {
-//       console.log(response);
-//       if (response.data.message) {
-//         //invalid
-//         console.log(response.data.message);
-//         /*
-//         error handler needed here
-//         add a handler later
-//         */
-//       } else {
-//         //valid
-//         props.onLogin(response.data.user, response.data.userId);
-//       }
-//     });
-//   };
-
-//   return (
-//     <Fragment>
-//       <form className={styles['login-form']} onSubmit={loginHandler}>
-//         <h1>Login</h1>
-//         <input type="email" placeholder="Username..." ref={username} />
-//         <input type="password" placeholder="Password..." ref={password} />
-//         <button type="submit"> Login </button>
-//       </form>
-//     </Fragment>
-//   )
-// }
-
-// export default Login;

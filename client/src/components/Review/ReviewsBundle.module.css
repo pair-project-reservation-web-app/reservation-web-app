@@ -1,0 +1,106 @@
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0.4rem 2.8rem rgba(0, 0, 0, 0.075);
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  max-width: 100%;
+  padding: 2rem 1rem 2rem 1rem;
+  gap: 1rem;
+}
+.reviews-val {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+.reviews-icons{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.reviews-val .stars{
+  min-width: 6rem;
+}
+.reviews-val .thumbs {
+  color: #7c8191;
+}
+.reviews-val .thumbs ion-icon:hover,
+.reviews-val .thumbs ion-icon:active {
+  color: #ff7d31;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.reviews-val .delete ion-icon {
+  display: block;
+  color: #7c8191;
+  justify-content: center;
+  align-items: center;
+}
+
+.reviews-val .delete ion-icon:hover,
+.reviews-val .delete ion-icon:active {
+  color: #ff7d31;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.reviews-val button {
+  border: none;
+  background: none;
+  color: #3e4249;
+  font-size: 1.3rem;
+  min-width: 2rem;
+}
+
+.review-text {
+  margin-left: 1rem;
+}
+.review-btn{
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 1rem;
+}
+
+.comment {
+  color: #7c8191;
+}
+
+.btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.btn:hover,
+.btn:active {
+  color: #ff7d31;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+/*MEDIA*/
+@media (min-width: 550px){
+
+    .reviews{
+    justify-content: space-between;
+    max-width: 85%;
+    flex-direction: row;
+    }
+    .right {
+      margin-left: auto;
+      margin-right: 0;
+    }
+    .reviews-icons{
+      flex-direction: column;
+    }
+  
+    .reviews-val {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+}

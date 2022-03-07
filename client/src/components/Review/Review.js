@@ -1,25 +1,23 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState, useContext } from "react";
 import Select from "react-select";
 import Axios from "axios";
-import Modal from "../Layout/Modal";
+import AuthContext from "../../store/auth-context";
+import styles from './Review.module.css'
 
 const Review = () => {
   const [userRating, setUserRating] = useState();
   const [userText, setUserText] = useState("");
+  const fill = <ion-icon name="star"></ion-icon>
+  const empty = <ion-icon name="star-outline"></ion-icon>
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const displayHandler = (e) => {
-    e.preventDefault();
-    setModalDisplay(false);
-  };
+  const ctx = useContext(AuthContext);
 
   const ratings = [
-    { value: 1, label: 1 },
-    { value: 2, label: 2 },
-    { value: 3, label: 3 },
-    { value: 4, label: 4 },
-    { value: 5, label: 5 },
+    { value: 1, label: <div>{fill}{empty}{empty}{empty}{empty}</div> },
+    { value: 2, label: <div>{fill}{fill}{empty}{empty}{empty}</div> },
+    { value: 3, label: <div>{fill}{fill}{fill}{empty}{empty}</div> },
+    { value: 4, label: <div>{fill}{fill}{fill}{fill}{empty}</div> },
+    { value: 5, label: <div>{fill}{fill}{fill}{fill}{fill}</div> },
   ];
 
   const ratingHandler = (input) => {
@@ -32,32 +30,38 @@ const Review = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:8080/api/review", {
+    Axios.post("https://reservation-mysql.herokuapp.com/api/review", {
       rating: userRating,
       text: userText,
     }).then((response) => {
-      console.log(response.data);
-      setErrorMessage(response.data);
-      setModalDisplay(true);
+      if (response.data.status) {
+        ctx.setModalHandler(response.data.message);
+      } else {
+        ctx.setModalHandler(response.data.message);
+      }
     });
   };
 
   return (
     <Fragment>
-      <div>
-        <form onSubmit={submitHandler}>
-          <label>Rating starts</label>
-          <Select options={ratings} onChange={ratingHandler} />
-          <label>Comment</label>
-          <textarea onChange={textAreaHandler}></textarea>
-          <button>add</button>
-        </form>
+      <div className="wrapper">
+        <div className={styles['review-container']}>
+          <form onSubmit={submitHandler}>
+            <div className={styles.rating}>
+              <h3>Rate us!</h3>
+              <div >
+                {/* <label>Rating</label> */}
+                <Select options={ratings} onChange={ratingHandler} />
+              </div>
+            </div>
+            <div className={styles.comment}>
+              {/* <label>Comment</label> */}
+              <textarea onChange={textAreaHandler}></textarea>
+            </div>
+            <button>Add</button>
+          </form>
+        </div>
       </div>
-      <Modal
-        display={modalDisplay}
-        displayHandler={displayHandler}
-        message={errorMessage}
-      />
     </Fragment>
   );
 };

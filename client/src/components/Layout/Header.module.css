@@ -1,5 +1,11 @@
-header {
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid red;
+.header-container {
+  /* height: 1rem; */
+}
+
+.logo {
+  width: 5rem;
+}
+
+.logo:hover {
+  color: #ff7d31;
 }

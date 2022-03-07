@@ -1,0 +1,102 @@
+/* #3e4249 #edf0f3  */
+.table {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 120px;
+  min-height: 80px;
+  width: 80px;
+  height: auto;
+  /* justify-self: center; */
+  /* align-self: center; */
+
+  background-color: white;
+  /* background-color: hsl(0, 9%, 94%); */
+  border: 1px solid hsl(156, 61%, 57%);
+  box-shadow: 0 0 0.5em 0 hsl(156, 61%, 67%);
+  border-radius: 10px;
+  color: black;
+}
+
+.table h3 {
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.table ion-icon {
+  font-size: 0.9rem;
+}
+
+.table.unavailable {
+  opacity: 0.4;
+  border-color: hsl(12, 64%, 59%);
+  box-shadow: 0 0 0.5em 0 hsl(12, 68%, 51%);
+}
+
+.bookingBtn,
+.checkBtn {
+  border-style: none;
+  padding: 0.2rem 0.5rem;
+  color: var(--main-color);
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: white;
+  border: 1px solid var(--main-color);
+  font-size: 0.8rem;
+}
+
+.bookingBtn:hover,
+.bookingBtn:focus,
+.bookingBtn:active {
+  background-color: var(--light-main-color);
+  border: 1px solid var(--light-main-color);
+  color: white;
+  transition: 0.7s;
+}
+
+.table-1 {
+  grid-area: a;
+}
+.table-2 {
+  grid-area: b;
+}
+.table-3 {
+  grid-area: c;
+}
+.table-4 {
+  grid-area: d;
+}
+.table-5 {
+  grid-area: e;
+}
+.table-6 {
+  grid-area: f;
+}
+.table-7 {
+  grid-area: g;
+}
+.table-8 {
+  grid-area: h;
+}
+.table-9 {
+  grid-area: i;
+}
+.table-10 {
+  grid-area: j;
+}
+.table-11 {
+  grid-area: k;
+}
+.table-12 {
+  grid-area: l;
+}
+.table-13 {
+  grid-area: m;
+}
+.table-14 {
+  grid-area: n;
+}
+.table-15 {
+  grid-area: o;
+}

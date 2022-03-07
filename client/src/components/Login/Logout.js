@@ -1,21 +1,29 @@
-import { Fragment } from "react";
-import { useNavigate } from 'react-router-dom'
+import { Fragment, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+import AuthContext from "../../store/auth-context";
 
 import Axios from "axios";
+import styles from "./Logout.module.css";
 
 const Logout = (props) => {
+  const ctx = useContext(AuthContext);
   let navigate = useNavigate();
 
-  const logoutHandler = () => {
-    Axios.get("http://localhost:8080/api/user/logout").then(() => {
-      navigate('/')
-      props.onLogout(false, null);
 
+  const logoutHandler = () => {
+    Axios.get("https://reservation-mysql.herokuapp.com/api/user/logout").then(() => {
+      ctx.setModalHandler("Logged out");
+      props.onLogout(false, null);
+      navigate('/');
     });
   };
   return (
     <Fragment>
-      <button onClick={logoutHandler}>logout</button>
+      <button className={styles.btn} onClick={logoutHandler}>
+        <ion-icon name="person"></ion-icon>
+        <span>Logout</span>
+      </button>
     </Fragment>
   );
 };
