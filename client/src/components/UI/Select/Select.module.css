@@ -1,0 +1,9 @@
+.container {
+  border: 1px solid orange;
+  background-color: white;
+  padding: 0.5rem 1rem;
+}
+
+.option {
+  padding: 1rem;
+}

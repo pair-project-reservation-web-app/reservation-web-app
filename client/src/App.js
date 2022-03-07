@@ -50,14 +50,13 @@ function App() {
   checking a user session exist to keep the user logged in when the web page is reloaded
   */
   useEffect(() => {
-    Axios.get("https://reservation-mysql.herokuapp.com/").then((response) => {
+    Axios.get("http://localhost:8080/").then((response) => {
       if (response.data.loggedIn === true) {
-        //console.log(response.data);
         setLoginStatus(response.data.user);
         ////// grab the current login userId for searching reservation by this userId
         setUserId(response.data.userId);
       } else {
-        //console.log("no logged in");
+        console.log("no logged in");
       }
     });
   }, [userId, loginStatus]);

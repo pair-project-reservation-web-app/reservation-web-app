@@ -1,5 +1,7 @@
 import styles from './ReservationForm.module.css';
-import Select from "react-select";
+import Input from '../UI/Input/Input'
+import Select from '../UI/Select/Select';
+// import Select from "react-select";
 
 
 const ReservationForm = (props) => {
@@ -32,9 +34,30 @@ const ReservationForm = (props) => {
     ];
     return (
         <form className={styles['form-container']}>
-            <label htmlFor="reservationDate" className={styles['sr-only']}>Date</label>
-            <input className={styles['input-date']} type="date" defaultValue={props.today} onChange={props.reservationDateHandler} />
+            {/* <label htmlFor="reservationDate" className={styles['sr-only']}>Date</label>
+            <input className={styles['input-date']}
+                type="date"
+                defaultValue={props.today}
+                onChange={props.reservationDateHandler} /> */}
+            <Input
+                id='userDate'
+                label='date'
+                type='date'
+                defaultValue={props.today}
+                onChange={props.reservationDateHandler}
+            />
+
             <Select
+                options={time}
+                onChange={props.userTimeHandler}
+            />
+
+            <Select
+                options={partySize}
+                onChange={props.userPartySizeHandler}
+            />
+
+            {/* <Select
                 options={time}
                 className={styles.container}
                 classNamePrefix='react-select'
@@ -44,7 +67,7 @@ const ReservationForm = (props) => {
                 options={partySize}
                 className={styles.container}
                 onChange={props.userPartySizeHandler}
-            />
+            /> */}
         </form>
     );
 };
