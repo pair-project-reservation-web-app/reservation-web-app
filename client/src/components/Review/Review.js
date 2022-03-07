@@ -30,7 +30,7 @@ const Review = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    Axios.post("https://reservation-mysql.herokuapp.com/api/review", {
+    Axios.post("http://localhost:8080/api/review", {
       rating: userRating,
       text: userText,
     }).then((response) => {

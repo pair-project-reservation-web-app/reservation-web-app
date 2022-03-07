@@ -52,7 +52,7 @@ const Login = (props) => {
 
   const loginHandler = (e) => {
     e.preventDefault();
-    Axios.post("https://reservation-mysql.herokuapp.com/api/user/login", {
+    Axios.post("http://localhost:8080/api/user/login", {
       username: loginStatus.email,
       password: loginStatus.password,
     }).then((response) => {
@@ -66,7 +66,7 @@ const Login = (props) => {
       } else {
         //valid
         // props.onLogin(response.data.user, response.data.userId);
-        props.onLogin(true, response.data.message.userId);
+        props.onLogin(response.data.status, response.data.message.userId);
         navigate("/");
       }
     });
@@ -81,7 +81,7 @@ const Login = (props) => {
   //     if (!response.data.status) {
   //       //invalid        console.log('in f', response.data)
   //       ctx.setModalHandler(response.data.message);
-        
+
   //     } else {
 
   //       props.onLogin(true, response.data.message.userId);

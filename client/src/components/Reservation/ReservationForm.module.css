@@ -1,27 +1,18 @@
 /*==========
 Form
 ============ */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  border: 0;
-  padding: 0;
-  white-space: nowrap;
-  clip-path: inset(100%);
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-}
 
 .form-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
   /* flex-direction: column; */
   /* height: 50px; */
   padding: 1rem;
   /* justify-content: space-between; */
+  /* border: 1px solid red; */
+  /* box-shadow: 0 0 0 5px; */
 }
 
 .form-container .input-date {
@@ -31,9 +22,15 @@ Form
   border: 1px solid hsl(0, 0%, 100%);
   border-radius: 5px;
 }
-
+/* 
 .container {
-  /* border: 2px solid var(--light-main-color); */
+  border: 2px solid var(--light-main-color);
   border-radius: 5px;
   width: 150px;
+} */
+
+@media (min-width: 700px) {
+  .form-container {
+    flex-direction: row;
+  }
 }

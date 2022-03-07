@@ -10,7 +10,7 @@ const UserResStatus = () => {
 
   useEffect(() => {
     Axios.get(
-      `https://reservation-mysql.herokuapp.com/api/reservation-status/${ctx.userId}`
+      `http://localhost:8080/api/reservation-status/${ctx.userId}`
     ).then((response) => {
       //console.log(response.data)
       if (!response.data.status) {
@@ -23,7 +23,7 @@ const UserResStatus = () => {
 
   const deleteReservation = (reservationId) => {
     Axios.delete(
-      `https://reservation-mysql.herokuapp.com/api/reservation-cancel/${reservationId}`
+      `http://localhost:8080/api/reservation-cancel/${reservationId}`
     ).then((response) => {
       if (!response.data.status) {
         ctx.setModalHandler(response.data.message);

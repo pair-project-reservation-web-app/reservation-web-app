@@ -1,0 +1,10 @@
+.container {
+  border: 1px solid var(--main-color);
+  background-color: white;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+
+.option {
+  padding: 1rem;
+}

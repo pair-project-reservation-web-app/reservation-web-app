@@ -10,7 +10,7 @@ const Table = (props) => {
   const ctx = useContext(AuthContext);
 
   const bookingTable = (tableId, partySize, dineinDate, dineinTime) => {
-    Axios.post("https://reservation-mysql.herokuapp.com/api/reservation-table", {
+    Axios.post("http://localhost:8080/api/reservation-table", {
       tableId,
       partySize,
       dineinDate,
@@ -36,6 +36,15 @@ const Table = (props) => {
     setModalData(userData);
     setBookingModal(true);
   };
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: 'none',
+      // backgroundColor: 'red',
+      // color: 'white'
+    })
+  }
 
 
   return (

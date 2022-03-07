@@ -37,7 +37,7 @@ const Tables = () => {
 
   useEffect(() => {
     Axios.get(
-      `https://reservation-mysql.herokuapp.com/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`,
+      `http://localhost:8080/api/current-reservation-status/?date=${selectedDate}&time=${selectedTimeBefore}&timeEnd=${selectedTimeEnd}`,
     ).then((response) => {
       // need to add error handle or initial value for api call
       if (!response.data.status) {
@@ -53,12 +53,13 @@ const Tables = () => {
     setSelectedDate(e.target.value);
   };
 
-  const userPartySizeHandler = (input) => {
-    setSelectedPartySize(input.value);
+  const userPartySizeHandler = (e) => {
+    console.log(typeof e.target.value)
+    setSelectedPartySize(+e.target.value);
   };
 
-  const userTimeHandler = (input) => {
-    const time = input.value;
+  const userTimeHandler = (e) => {
+    const time = e.target.value;
 
     const [hours, min] = time.split(":");
     const convertToInt = +hours;
@@ -92,14 +93,7 @@ const Tables = () => {
     }
   };
 
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      borderColor: 'none',
-      // backgroundColor: 'red',
-      // color: 'white'
-    })
-  }
+
 
   return (
     <>

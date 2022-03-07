@@ -28,7 +28,7 @@
 }
 
 .register-form button {
-  background-color: var(--dark-main-color);
+  background-color: var(--main-color);
   color: white;
   border-style: none;
   margin-top: 0.5rem;
@@ -41,5 +41,5 @@
 .register-form button:hover,
 .register-form button:focus,
 .register-form button:active {
-  background-color: var(--main-color);
+  background-color: var(--light-main-color);
 }

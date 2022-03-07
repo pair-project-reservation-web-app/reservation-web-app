@@ -8,7 +8,7 @@
   height: 5rem;
   list-style: none;
   background-color: #141414;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
   z-index: 100;
 }
 
@@ -18,9 +18,8 @@
   justify-content: space-around;
 }
 .link-container li {
-  border-right: 1px solid white;
-  padding: 0 1rem;
-  width: 100%;
+  /* padding: 0 0.5rem; */
+  width: 80px;
 
   display: flex;
   justify-content: center;
