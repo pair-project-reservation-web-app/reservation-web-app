@@ -37,7 +37,7 @@ const ReviewBundle = (props) => {
 
   const deleteClickHandler = (e) => {
     const reviewId = e.target.parentElement.getAttribute("data-key");
-    Axios.delete(`http://localhost:8080/api/reviews/${reviewId}`).then(
+    Axios.delete(`https://reservation-mysql.herokuapp.com/api/reviews/${reviewId}`).then(
       (response) => {
         //console.log(response);
         ctx.setModalHandler(response.data.message);
@@ -57,7 +57,7 @@ const ReviewBundle = (props) => {
         const index = likes.indexOf(userId);
         likes.splice(index, 1);
       }
-      Axios.put("http://localhost:8080/api/reviews/like", {
+      Axios.put("https://reservation-mysql.herokuapp.com/api/reviews/like", {
         array: JSON.stringify(likes),
         id: reviewId,
       }).then((response) => {

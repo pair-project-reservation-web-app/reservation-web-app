@@ -13,14 +13,13 @@ const app = express();
 
 const HTTP_PORT = process.env.PORT || 8080;
 
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 
 app.use(express.json());
 
 app.use(
   cors({
-    // origin: [process.env.FRONTEND_APP_URL],
-    origin: ["http://localhost:3000"],
+    origin: [process.env.FRONTEND_APP_URL],
     credentials: true,
   })
 );
@@ -35,8 +34,8 @@ app.use(
     rolling: true,
     cookie: {
       expires: 3600000,
-      // sameSite: 'none',
-      // secure: true
+      sameSite: 'none',
+      secure: true
     },
   })
 );
@@ -44,8 +43,7 @@ app.use(
 const db = mysql.createConnection({
 
   host: process.env.HOST,
-  // user: process.env.USER,
-  user: 'sqluser',
+  user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 
