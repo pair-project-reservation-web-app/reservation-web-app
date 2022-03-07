@@ -1,7 +1,10 @@
+.input-container {
+  width: 100%;
+}
 .input-container input {
   /* border-radius: 5px; */
   /* border-style: none; */
-  border: 1px solid orange;
+  border: 1px solid var(--main-color);
   padding: 0.5rem 1rem;
   width: 100%;
 }
